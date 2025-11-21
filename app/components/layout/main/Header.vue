@@ -77,7 +77,7 @@
                   <DropdownMenuLabel>Área de Socios</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem as-child>
-                    <NuxtLink to="/socios/login">
+                    <NuxtLink to="/socios/dashboard">
                       <Icon name="User" class="mr-2 h-4 w-4" />
                       Mi Área
                     </NuxtLink>
