@@ -51,7 +51,5 @@ export default defineNuxtConfig({
   icon: {
     componentName: 'Icon',
     provider: 'server',
-  },
-
-  
+  }
 })

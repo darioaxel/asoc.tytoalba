@@ -36,8 +36,9 @@
               <NuxtLink :to="item.href"
                 class="group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-tyto-primary/10 hover:text-tyto-primary focus:bg-tyto-primary/10 focus:text-tyto-primary focus:outline-none disabled:pointer-events-none disabled:opacity-50"
                 :class="{ 'bg-tyto-primary/10 text-tyto-primary': isActive(item.href) }">
-                <Icon v-if="item.icon" :name="item.icon" class="h-5 w-5" />
-                {{ item.label }}
+                 <span class="relative flex items-center gap-2">
+                 <Icon v-if="item.icon" :name="item.icon" class="h-5 w-5" />
+                {{ item.label }}</span>
               </NuxtLink>
             </NavigationMenuLink>
           </NavigationMenuItem>
