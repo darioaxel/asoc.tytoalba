@@ -7,13 +7,13 @@
       <PageHeaderDescription>Mi descripción</PageHeaderDescription>
       <PageActions>
         <Button as-child size="sm">
-          <NuxtLink to="/docs/installation">
-            Get Started
+          <NuxtLink to="/nosotros">
+            Nosotr@s
           </NuxtLink>
         </Button>
         <Button as-child size="sm" variant="ghost">
-          <NuxtLink to="/docs/components">
-            View Components
+          <NuxtLink to="/blog">
+            Blog
           </NuxtLink>
         </Button>
       </PageActions>
