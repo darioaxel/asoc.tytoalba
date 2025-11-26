@@ -105,10 +105,10 @@ const { isMobile } = useSidebar()
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
+          <!-- DropdownMenuItem>
             <LogOut />
             Log out
-          </DropdownMenuItem>
+          </DropdownMenuItem -->
         </DropdownMenuContent>
       </DropdownMenu>
     </SidebarMenuItem>

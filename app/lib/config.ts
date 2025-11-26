@@ -1,3 +1,11 @@
+interface NavItem {
+  href: string
+  label: string
+  requiresAuth?: boolean
+  icon?: string
+  children?: NavItem[]
+}
+
 export const siteConfig = {
   name: 'asoc.tytoalba',
   url: 'https://asoc.tytoalba.org',
@@ -9,30 +17,57 @@ export const siteConfig = {
   },
   navItems: [
     {
-      href: '/docs/installation',
-      label: 'Docs',
+      href: '/nosotros',
+      label: 'Nosotr@s',
+      icon: 'lucide:users',
     },
     {
-      href: '/docs/components',
-      label: 'Components',
+      href: '/rocodromo',
+      label: 'Rocódromo',
+      icon: 'lucide:mountain',
     },
     {
-      href: '/blocks',
-      label: 'Blocks',
+      href: '/musica',
+      label: 'Música',
+      icon: 'lucide:music',
     },
     {
-      href: '/charts/area',
-      label: 'Charts',
+      href: '/contacto',
+      label: 'Contacto',
+      icon: 'lucide:mail',
     },
     {
-      href: '/themes',
-      label: 'Themes',
+      href: '/contacto',
+      label: 'Blog',
+      icon: 'lucide:newspaper',
     },
     {
-      href: '/colors',
-      label: 'Colors',
-    },
-  ],
+      href: '/socios',
+      label: 'Socios',
+      icon: 'lucide:users',
+      // El padre SIEMPRE visible, solo los hijos requieren auth
+      children: [
+        {
+          href: '/socios/area',
+          label: 'Mi Área',
+          icon: 'lucide:user',
+          requiresAuth: true,
+        },
+        {
+          href: '/socios/documentos',
+          label: 'Documentación',
+          icon: 'lucide:file-text',
+          requiresAuth: true,
+        },
+        {
+          href: '/socios/registro',
+          label: 'Hazte Socio',
+          icon: 'lucide:user-plus',
+          // Este NO requiere auth (público)
+        },
+      ],
+      },
+  ] as NavItem[],
 }
 
 export const META_THEME_COLORS = {

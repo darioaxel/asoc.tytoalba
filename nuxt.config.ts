@@ -49,7 +49,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   
   icon: {
-    provider: 'iconify',
-    aliases: { /* ... */ }
+    componentName: 'Icon',
+    provider: 'server',
   }
 })
