@@ -18,8 +18,15 @@ export default defineNuxtConfig({
     "@nuxt/fonts",
     "@nuxtjs/seo",
     "@nuxt/icon",
-    "nuxt-svgo"
+    "nuxt-svgo",
+    "@nuxt/content"
   ],
+  
+  content: {
+    // Opciones de configuración para Nuxt Content
+    // Por ejemplo, para cambiar la ruta base de los artículos:
+    // api: { baseURL: '/api/content' }
+  },
   
   // ✅ AÑADE ESTA SECCIÓN
   fonts: {
