@@ -47,7 +47,7 @@
     </NavigationMenu>
 
     <!-- Desktop Login/Profile (botones fijos) -->
-    <NuxtLink v-if="!loggedIn" to="/login">
+    <NuxtLink v-if="!loggedIn" to="/socios/login">
       <Button variant="outline" class="border-tyto-primary text-tyto-primary hover:bg-tyto-primary hover:text-white">
         <Icon name="lucide:log-in" class="mr-2 h-4 w-4" />
         Login

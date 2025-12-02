@@ -19,9 +19,9 @@ import { Input } from '@/components/ui/input'
 <template>
   <Card>
     <CardHeader>
-      <CardTitle>Create an account</CardTitle>
+      <CardTitle>Crear una cuenta</CardTitle>
       <CardDescription>
-        Enter your information below to create your account
+        Introduce tu información a continuación para crear tu cuenta
       </CardDescription>
     </CardHeader>
     <CardContent>
@@ -29,49 +29,55 @@ import { Input } from '@/components/ui/input'
         <FieldGroup>
           <Field>
             <FieldLabel for="name">
-              Full Name
+              Nombre
             </FieldLabel>
-            <Input id="name" type="text" placeholder="John Doe" required />
+            <Input id="name" type="text" placeholder="Juan Antonio" required />
+          </Field>
+          <Field>
+            <FieldLabel for="last-name">
+              Apellidos
+            </FieldLabel>
+            <Input id="last-name" type="text" placeholder="Juan Antonio" required />
           </Field>
           <Field>
             <FieldLabel for="email">
-              Email
+              Correo electrónico
             </FieldLabel>
             <Input
               id="email"
               type="email"
-              placeholder="m@example.com"
+              placeholder="m@ejemplo.com"
               required
             />
             <FieldDescription>
-              We'll use this to contact you. We will not share your email with
-              anyone else.
+              Usaremos este correo para contactar contigo. No lo compartiremos
+              con nadie más.
             </FieldDescription>
           </Field>
           <Field>
             <FieldLabel for="password">
-              Password
+              Contraseña
             </FieldLabel>
             <Input id="password" type="password" required />
-            <FieldDescription>Must be at least 8 characters long.</FieldDescription>
+            <FieldDescription>Debe tener al menos 8 caracteres.</FieldDescription>
           </Field>
           <Field>
             <FieldLabel for="confirm-password">
-              Confirm Password
+              Confirmar contraseña
             </FieldLabel>
             <Input id="confirm-password" type="password" required />
-            <FieldDescription>Please confirm your password.</FieldDescription>
+            <FieldDescription>Por favor, confirma tu contraseña.</FieldDescription>
           </Field>
           <FieldGroup>
             <Field>
               <Button type="submit">
-                Create Account
+                Crear cuenta
               </Button>
               <Button variant="outline" type="button">
-                Sign up with Google
+                Registrarse con Google
               </Button>
               <FieldDescription class="px-6 text-center">
-                Already have an account? <a href="#">Sign in</a>
+                ¿Ya tienes una cuenta? <a href="/socios/login">Inicia sesión</a>
               </FieldDescription>
             </Field>
           </FieldGroup>

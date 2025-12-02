@@ -18,7 +18,8 @@ export default defineNuxtConfig({
     "@nuxt/fonts",
     "@nuxtjs/seo",
     "@nuxt/icon",
-    "nuxt-svgo"
+    "nuxt-svgo",
+    "@nuxt/content",
   ],
   
   // ✅ AÑADE ESTA SECCIÓN
@@ -51,5 +52,9 @@ export default defineNuxtConfig({
   icon: {
     componentName: 'Icon',
     provider: 'server',
-  }
+  },
+
+  content: {
+    prose: false // sin clases Tailwind
+  },
 })
