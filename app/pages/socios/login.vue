@@ -1,5 +1,5 @@
 <script lang="ts">
-export const description = "A login page with a muted background color."
+export const description = "Una página de inicio de sesión con un color de fondo atenuado."
 </script>
 
 <script setup lang="ts">
@@ -14,7 +14,7 @@ import LoginForm from '@/components/LoginForm.vue'
         <div class="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
           <GalleryVerticalEnd class="size-4" />
         </div>
-        Acme Inc.
+        Asoc. Tyto Alba
       </a>
       <LoginForm />
     </div>

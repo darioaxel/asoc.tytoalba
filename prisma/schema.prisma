@@ -15,11 +15,32 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  role      Role     @default(USER)
-  createdAt DateTime @default(now())
+  id              String   @id @default(uuid())
+  email           String   @unique
+  emailPersonal   String?  @unique
+  emailCenter     String?  @unique
+  firstName       String?
+  lastName        String?
+  fullName        String?
+  phone           String?
+  dni             String?  @unique
+  birthDate       DateTime?
+  picture         String?
+
+  // credenciales locales */
+  password        String?  // null si solo usa OAuth
+
+  // bloqueo / baja */
+  isActive        Boolean  @default(true)
+  deactivatedAt   DateTime?
+
+  // origen del usuario */
+  provider        String   @default("local") // local | google
+  providerId      String?  // sub de Google, etc.
+
+  role            Role     @default(USER)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 enum Role {

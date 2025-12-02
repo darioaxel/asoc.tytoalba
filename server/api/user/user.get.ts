@@ -1,30 +1,54 @@
-// 1. Primero importa Prisma con el método que funciona con pnpm
+// ~/server/api/user.get.ts
 import { PrismaClient } from '@prisma/client'
 
-// 2. Crea la instancia (o usa el singleton si lo configuraste)
 const prisma = new PrismaClient()
 
 export default defineEventHandler(async (event) => {
   const session = await getUserSession(event)
+  if (!session?.user?.id) return null
 
-  if (!session.user) return null
-
-  // Opcional: Obtener datos frescos de la base de datos
-  // (en lugar de confiar solo en la sesión)
-  const userFromDb = await prisma.user.findUnique({
+  const user = await prisma.user.findUnique({
     where: { id: session.user.id },
     select: {
       id: true,
       email: true,
+      emailPersonal: true,
+      emailCenter: true,
+      firstName: true,
+      lastName: true,
+      fullName: true,
+      phone: true,
+      dni: true,
+      birthDate: true,
+      picture: true,
       role: true,
+      isActive: true,
       createdAt: true,
-    }
+      updatedAt: true,
+    },
   })
 
+  if (!user || !user.isActive) {
+    // borramos la sesión por si acaso
+    await clearUserSession(event)
+    return null
+  }
+
   return {
-    id: userFromDb?.id || session.user.id,
-    email: userFromDb?.email || session.user.email,
-    role: userFromDb?.role || session.user.role,
+    id: user.id,
+    email: user.email,
+    emailPersonal: user.emailPersonal,
+    emailCenter: user.emailCenter,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    fullName: user.fullName,
+    phone: user.phone,
+    dni: user.dni,
+    birthDate: user.birthDate,
+    picture: user.picture,
+    role: user.role,
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt,
     loggedInAt: session.loggedInAt,
   }
 })

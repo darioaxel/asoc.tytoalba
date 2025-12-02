@@ -74,7 +74,7 @@
             </Button>
           </NuxtLink>
 
-          <NuxtLink to="/login">
+          <NuxtLink to="/socios/login">
             <Button class="w-full bg-tyto-primary hover:bg-tyto-primary/90">
               <Icon name="lucide:log-in" class="mr-2 h-4 w-4" />
               Iniciar Sesión
