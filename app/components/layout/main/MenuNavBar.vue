@@ -53,7 +53,7 @@
         Login
       </Button>
     </NuxtLink>
-    <NuxtLink v-else to="/socios/area">
+    <NuxtLink v-else to="/socios/dashboard">
       <Button variant="outline" class="border-tyto-primary text-tyto-primary hover:bg-tyto-primary hover:text-white">
         <Icon name="lucide:user" class="mr-2 h-4 w-4" />
         Mi Área
