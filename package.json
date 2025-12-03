@@ -9,7 +9,8 @@
     "preview": "nuxt preview",
     "postinstall": "prisma generate && nuxt prepare",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:generate": "prisma generate"
+    "prisma:generate": "prisma generate",
+    "prisma:setup": "prisma migrate dev --name init && prisma db seed"
   },
   "dependencies": {
     "@fontsource/inter": "^5.2.8",
