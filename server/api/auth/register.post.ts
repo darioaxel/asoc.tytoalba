@@ -1,44 +1,89 @@
-import { PrismaClient, Role } from "@prisma/client"
-import bcrypt from "bcrypt"
+// ~/server/api/auth/register.post.ts
+import { z } from 'zod'
+import bcrypt from 'bcrypt'
+import { PrismaClient, Role } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
+// Esquema de validación
+const registerSchema = z.object({
+  firstName: z.string().min(2, 'Nombre muy corto'),
+  lastName: z.string().min(2, 'Apellidos muy cortos'),
+  email: z.string().email('Email inválido').toLowerCase(),
+  password: z.string().min(8, 'Mínimo 8 caracteres'),
+})
+
 export default defineEventHandler(async (event) => {
-  const body = await readBody(event)
-  const { email, password, role } = body
+  try {
+    const body = await readValidatedBody(event, registerSchema.parse)
+    
+    console.log('📝 Registro recibido:', body.email)
 
-  // Validaciones básicas
-  if (!email || !password) {
-    throw createError({ statusCode: 400, message: "Email y password requeridos" })
-  }
+    // Verificar si existe
+    const exists = await prisma.user.findUnique({ 
+      where: { email: body.email } 
+    })
 
-  const exists = await prisma.user.findUnique({ where: { email } })
-
-  if (exists) {
-    throw createError({ statusCode: 400, message: "El usuario ya existe" })
-  }
-
-  // Hash password
-  const hashed = await bcrypt.hash(password, 10)
-
-  // Crear usuario con rol (o user si no lo especifican)
-  const user = await prisma.user.create({
-    data: {
-      email,
-      password: hashed,
-      role: role ? role.toUpperCase() as Role : Role.USER
+    if (exists) {
+      throw createError({
+        statusCode: 409, // Conflict
+        message: 'Este email ya está registrado'
+      })
     }
-  })
 
-  // Guardamos sesión en auth-utils
-  const session = useUserSession(event)
-  await session.update({
-    user: {
-      id: user.id,
-      email: user.email,
-      role: user.role.toLowerCase()  // admin → "admin"
+    // Hash password
+    const hashedPassword = await bcrypt.hash(body.password, 12)
+
+    // Crear usuario
+    const user = await prisma.user.create({
+      data: {
+        email: body.email,
+        emailPersonal: body.email,
+        emailCenter: body.email,
+        firstName: body.firstName,
+        lastName: body.lastName,
+        fullName: `${body.firstName} ${body.lastName}`,
+        role: Role.USER, // Siempre USER para registro público
+        isActive: true,
+        passwordHash: hashedPassword, // ✅ Campo correcto
+        failedLoginAttempts: 0,
+        picture: `https://ui-avatars.com/api/?name=${encodeURIComponent(body.firstName + '+' + body.lastName)}&background=random`,
+      }
+    })
+
+    console.log('✅ Usuario creado:', user.email)
+
+    // Crear sesión con nuxt-auth-utils
+    await setUserSession(event, {
+      user: {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+      },
+      loggedInAt: new Date(),
+    })
+
+    return {
+      success: true,
+      user: {
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        role: user.role,
+      }
     }
-  })
 
-  return { ok: true }
+  } catch (error: any) {
+    console.error('❌ Error en registro:', error)
+    
+    if (error.name === 'ZodError') {
+      throw createError({
+        statusCode: 400,
+        message: error.errors[0]?.message || 'Datos inválidos'
+      })
+    }
+    
+    throw error
+  }
 })
