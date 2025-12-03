@@ -52,9 +52,5 @@ export default defineNuxtConfig({
   icon: {
     componentName: 'Icon',
     provider: 'server',
-  },
-
-  content: {
-    prose: false // sin clases Tailwind
-  },
+  }  
 })

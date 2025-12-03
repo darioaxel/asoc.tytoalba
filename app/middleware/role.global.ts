@@ -3,7 +3,7 @@ export default defineNuxtRouteMiddleware((to) => {
 
   // Si no está autenticado → login
   if (!loggedIn) {
-    return navigateTo("/login")
+    return navigateTo("/socios/login")
   }
   
   // Lee los roles permitidos desde definePageMeta

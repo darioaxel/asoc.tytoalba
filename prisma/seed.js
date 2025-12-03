@@ -1,8 +1,9 @@
 // prisma/seed.js
-const { PrismaClient, Role } = require('@prisma/client')
-const bcrypt = require('bcrypt')
-require('dotenv').config()
+import { PrismaClient, Role } from '@prisma/client'
+import bcrypt from 'bcrypt'
+import dotenv from 'dotenv'
 
+dotenv.config()
 const prisma = new PrismaClient()
 
 // Datos de usuarios con información completa
@@ -23,7 +24,7 @@ const users = [
       postalCode: '28001',
       locality: 'Madrid',
       province: 'Madrid',
-      region: 'Comunidad de Madrid',
+     
     },
   },
   {
@@ -42,7 +43,7 @@ const users = [
       postalCode: '46001',
       locality: 'Valencia',
       province: 'Valencia',
-      region: 'Comunidad Valenciana',
+     
     },
   },
   {
@@ -61,7 +62,7 @@ const users = [
       postalCode: '41001',
       locality: 'Sevilla',
       province: 'Sevilla',
-      region: 'Andalucía',
+   
     },
   },
   {
@@ -92,7 +93,7 @@ const users = [
       postalCode: '08001',
       locality: 'Barcelona',
       province: 'Barcelona',
-      region: 'Cataluña',
+  
     },
   },
 ]
@@ -118,8 +119,7 @@ async function main() {
     const user = await prisma.user.create({
       data: {
         email: u.email,
-        emailPersonal: u.emailPersonal,
-        emailCenter: u.email, // Usamos email como emailCenter por defecto
+        emailPersonal: u.emailPersonal,   
         firstName: u.firstName,
         lastName: u.lastName,
         fullName: `${u.firstName} ${u.lastName}`,
