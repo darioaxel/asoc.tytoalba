@@ -11,8 +11,7 @@ export default defineEventHandler(async (event) => {
     where: { id: session.user.id },
     select: {
       id: true,
-      email: true,
-      emailPersonal: true,
+      email: true,   
       emailCenter: true,
       firstName: true,
       lastName: true,
@@ -36,8 +35,7 @@ export default defineEventHandler(async (event) => {
 
   return {
     id: user.id,
-    email: user.email,
-    emailPersonal: user.emailPersonal,
+    email: user.email,  
     emailCenter: user.emailCenter,
     firstName: user.firstName,
     lastName: user.lastName,
