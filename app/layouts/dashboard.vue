@@ -1,11 +1,5 @@
-<script lang="ts">
-export const description
-  = "A sidebar that collapses to icons."
-export const iframeHeight = "800px"
-export const containerClass = "w-full h-full"
-</script>
-
 <script setup lang="ts">
+
 import AppSidebar from '@/components/AppSidebar.vue'
 import { Separator } from '@/components/ui/separator'
 import {
@@ -27,7 +21,7 @@ import DynamicBreadCrumb from '~/components/layout/dashboard/DynamicBreadCrumb.v
             orientation="vertical"
             class="mr-2 data-[orientation=vertical]:h-4"
           />
-          <DynamicBreadCrumb :url="$route.path" />
+          <DynamicBreadCrumb :url="useRoute().path" />
             
         </div>
       </header>
