@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/sidebar'
 
 defineProps<{
+  title: string 
   items: {
     title: string
     url: string
@@ -33,7 +34,7 @@ defineProps<{
 
 <template>
   <SidebarGroup>
-    <SidebarGroupLabel>Platform</SidebarGroupLabel>
+    <SidebarGroupLabel>{{title}}</SidebarGroupLabel>
     <SidebarMenu>
       <Collapsible
         v-for="item in items"

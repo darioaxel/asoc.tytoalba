@@ -6,6 +6,26 @@ interface NavItem {
   children?: NavItem[]
 }
 
+// Define interfaces
+interface NavSubItem {
+  title: string
+  url: string
+}
+
+interface NavMainItem {
+  title: string
+  url: string
+  icon?: string // formato 'lucide:icon-name'
+  isActive?: boolean
+  items?: NavSubItem[]
+}
+
+export interface NavSection {
+  title: string
+  roles?: string[] 
+  items: NavMainItem[]
+}
+
 export const siteConfig = {
   name: 'asoc.tytoalba',
   url: 'https://asoc.tytoalba.org',
@@ -81,20 +101,10 @@ export const siteConfig = {
   },
   teams: [
     {
-      name: "Acme Inc",
+      name: "Asociación Tyto Alba",
       logo: "lucide:GalleryVerticalEnd",
       plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: "lucide:AudioWaveform",
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: "lucide:Command",
-      plan: "Free",
-    },
+    }
   ],
   navMain: [
     {
@@ -183,23 +193,58 @@ export const siteConfig = {
       ],
     },
   ],
-  projects: [
+  navSections: [
     {
-      name: "Design Engineering",
-      url: "#",
-      icon: "lucide:Frame",
+      title: 'Socio',
+      roles: ['ROOT', 'USER', 'ADMIN'],
+      items: [
+        {
+          title: "Mis Cuotas",
+          url: "#",
+          icon: "lucide:receipt",
+          isActive: true,
+          items: [
+            { title: "Pagar Cuotas", url: "#" },
+            { title: "Historico Pagos", url: "#" },
+          ],
+        },
+        {
+          title: "Documentación",
+          url: "#",
+          icon: "lucide:book-open",
+          items: [
+            { title: "Estatutos", url: "#" },
+            { title: "Otros", url: "#" },
+          ],
+        },
+      ]
     },
     {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: "lucide:PieChart",
+      title: 'Administración',      
+      roles: ['ADMIN', 'ROOT'],
+      items: [
+        {
+          title: "Cuentas asociación",
+          url: "#",
+          icon: "lucide:bot",
+          items: [
+            { title: "Lista Morosos", url: "#" },
+            { title: "Ingresos - Gastos", url: "#" },
+            { title: "Cargar Facturas", url: "#" },
+          ],
+        },
+        {
+          title: "Tesorería",
+          url: "#",
+          icon: "lucide:settings-2",
+          items: [
+            { title: "Validación Pagos", url: "#" },
+            { title: "Creación de Recibos", url: "#" },           
+          ],
+        },
+      ]
     },
-    {
-      name: "Travel",
-      url: "#",
-      icon: "lucide:Map",
-    },
-  ],
+  ] as NavSection[],
 }
 
 
