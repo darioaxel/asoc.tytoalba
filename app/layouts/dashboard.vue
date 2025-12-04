@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import AppSidebar from '@/components/AppSidebar.vue'
 import { Separator } from '@/components/ui/separator'
 import {
@@ -7,7 +6,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar'
-import DynamicBreadCrumb from '~/components/layout/dashboard/DynamicBreadCrumb.vue'
+import DynamicBreadCrumb from '@/components/layout/dashboard/DynamicBreadCrumb.vue'
 </script>
 
 <template>
