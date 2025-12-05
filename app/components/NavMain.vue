@@ -46,7 +46,7 @@ defineProps<{
         <SidebarMenuItem>
           <CollapsibleTrigger as-child>
             <SidebarMenuButton :tooltip="item.title">
-              <component :is="item.icon" v-if="item.icon" />
+              <Icon v-if="item.icon" :name="item.icon" class="h-4 w-4" />
               <span>{{ item.title }}</span>
               <ChevronRight class="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
             </SidebarMenuButton>

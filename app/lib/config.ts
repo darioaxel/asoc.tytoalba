@@ -245,6 +245,35 @@ export const siteConfig = {
       ]
     },
   ] as NavSection[],
+  navSecondary : [
+  {
+    label: 'Página principal',
+    href: '/',
+    icon: "lucide:home"
+  },
+  {
+    label: 'Blog',
+    href: '/blog',
+    icon: "lucide:newspaper"
+  },
+  {
+    label: 'Desconectarse',
+    href: '/logout',
+    icon: "lucide:log-out"
+  }
+] satisfies NavItem[],
+navUser : [
+  {
+    label: 'Datos Personales',
+    href: '/socios/perfil',
+    icon: "lucide:home"
+  },
+  {
+    label: 'Datos Bancarios',
+    href: '/socios/banco',
+    icon: "lucide:newspaper"
+  }
+] satisfies NavItem[]
 }
 
 

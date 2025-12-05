@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { SidebarProps } from '@/components/ui/sidebar'
 
-
 import NavMain from '@/components/NavMain.vue'
 import NavUser from '@/components/NavUser.vue'
+import NavSecondary from '@/components/NavSecondary.vue'
 import TeamSwitcher from '@/components/TeamSwitcher.vue'
 
 import {
@@ -18,13 +18,6 @@ const props = withDefaults(defineProps<SidebarProps>(), {
   collapsible: "icon",
 })
 const { user } = await useUserSession()
-
-const user_data = computed(() => ({
-  name: user.value?.name || siteConfig.user.name,
-  email: user.value?.email || siteConfig.user.email,
-  avatar: user.value?.avatar || siteConfig.user.avatar
-}))
-
 const user_role = computed(() => user.value?.role || 'none')
 
 // Filtrar secciones visibles según auth/roles
@@ -42,7 +35,6 @@ const visibleSections = computed(() => {
     return true
  })
 })
-
 
 const teams = siteConfig.teams
 
@@ -62,8 +54,9 @@ const teams = siteConfig.teams
         :items="section.items"
       />    
     </SidebarContent>
+    <NavSecondary :items="siteConfig.navSecondary" class="mt-auto" />    
     <SidebarFooter>
-      <NavUser :user="user_data" />
+      <NavUser :items="siteConfig.navUser" />
     </SidebarFooter>
     <SidebarRail />
   </Sidebar>

@@ -19,7 +19,7 @@ const logout = async () => {
 <template>
   <div>
     <h1>Página protegida</h1>
-    <p>Bienvenido: {{ user?.email }}</p>
+    <p>Bienvenido: {{ user?.firstName }} , {{ user?.email }}</p>
     <p>Rol: {{ user?.role }}</p>
   </div>
   <button

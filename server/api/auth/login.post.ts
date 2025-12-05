@@ -25,6 +25,7 @@ export default defineEventHandler(async (event) => {
       email: true,
       firstName: true,
       lastName: true,
+      avatar: true,
       role: true,
       isActive: true,
       passwordHash: true,
@@ -78,7 +79,7 @@ export default defineEventHandler(async (event) => {
 
   // Crear sesión
   await setUserSession(event, {
-    user: { id: user.id, email: user.email, role: user.role },
+    user: { id: user.id, name: user.firstName,  email: user.email, role: user.role, avatar: user.avatar },
     loggedInAt: new Date(),
   })
 

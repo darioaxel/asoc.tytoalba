@@ -54,7 +54,7 @@ model User {
   dni             String?  @unique
   birthDate       DateTime?
 
-  picture         String?
+  avatar         String?
 
   // Credenciales locales (renombrado para seguridad)
   passwordHash    String?  // null si solo usa OAuth
