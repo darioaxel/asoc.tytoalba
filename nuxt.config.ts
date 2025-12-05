@@ -1,4 +1,4 @@
-import tailwindcss from "@tailwindcss/vite"; // ❌ ELIMINA ESTA LÍNEA
+import tailwindcss from "@tailwindcss/vite"; 
 
 export default defineNuxtConfig({
   modules: [
@@ -11,7 +11,6 @@ export default defineNuxtConfig({
     "nuxt-vitalizer",
     "nuxt-security",
     "@nuxt/eslint",
-    "@nuxtjs/i18n",
     "@vueuse/nuxt",
     "shadcn-nuxt",
     "@nuxt/image",
@@ -52,5 +51,18 @@ export default defineNuxtConfig({
   icon: {
     componentName: 'Icon',
     provider: 'server',
-  }  
+  },
+  // 1. Desactivar CSP en desarrollo
+  security: {
+    headers: {
+      crossOriginEmbedderPolicy: false,
+      contentSecurityPolicy: false,        // ← desactiva CSP completo
+    },
+  },
+
+  content: {
+    build: {
+      adapter: 'json'  // Usa JSON en lugar de SQLite
+    }
+  }
 })

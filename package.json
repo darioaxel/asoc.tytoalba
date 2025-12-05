@@ -18,7 +18,6 @@
     "@nuxt/fonts": "^0.12.1",
     "@nuxt/image": "^1.11.0",
     "@nuxtjs/fontaine": "^0.4.4",
-    "@nuxtjs/i18n": "^10.2.0",
     "@nuxtjs/seo": "^3.2.2",
     "@pinia/nuxt": "^0.11.3",
     "@prisma/client": "5.22.0",
