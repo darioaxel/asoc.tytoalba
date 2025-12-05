@@ -255,11 +255,6 @@ export const siteConfig = {
     label: 'Blog',
     href: '/blog',
     icon: "lucide:newspaper"
-  },
-  {
-    label: 'Desconectarse',
-    href: '/logout',
-    icon: "lucide:log-out"
   }
 ] satisfies NavItem[],
 navUser : [

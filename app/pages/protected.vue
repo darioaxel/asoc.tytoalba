@@ -3,7 +3,7 @@ definePageMeta({
   middleware: ['auth'], // usa app/middleware/auth.ts
 })
 
-const { user, loggedIn } = useUserSession()
+const { user } = useUserSession()
 const logout = async () => {
   // Llamamos a la API para cerrar sesión en el backend
   await $fetch('/api/auth/logout', { method: 'POST' })
@@ -19,7 +19,7 @@ const logout = async () => {
 <template>
   <div>
     <h1>Página protegida</h1>
-    <p>Bienvenido: {{ user?.firstName }} , {{ user?.email }}</p>
+    <p>Bienvenido: {{ user?.name }} , {{ user?.email }}</p>
     <p>Rol: {{ user?.role }}</p>
   </div>
   <button

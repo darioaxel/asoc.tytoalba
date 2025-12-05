@@ -35,8 +35,6 @@ defineProps<{
 }>()
 
 const { user } = await useUserSession()
-
-
 const user_data = computed(() => ({
   name: user.value?.name || siteConfig.user.name,
   email: user.value?.email || siteConfig.user.email,
