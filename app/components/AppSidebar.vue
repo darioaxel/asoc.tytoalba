@@ -30,7 +30,7 @@ const user_role = computed(() => user.value?.role || 'none')
 // Filtrar secciones visibles según auth/roles
 const visibleSections = computed(() => {
   return siteConfig.navSections.filter(section => {
-    console.log('Evaluando sección:', user_role)    // Si no hay usuario logeado, no visible
+   
     if (user_role.value === 'none') return false
     
     // Si tiene roles específicos, verificar pertenencia

@@ -6,8 +6,11 @@ import dotenv from 'dotenv'
 dotenv.config()
 const prisma = new PrismaClient()
 
-// Datos de usuarios con información completa
-const users = [
+/* ---------- Helpers ---------- */
+const hash = (pw) => bcrypt.hash(pw, 12)
+
+/* ---------- Usuarios base ---------- */
+const rawUsers = [
   {
     email: 'root@example.com',
     password: 'root1234',
@@ -24,7 +27,6 @@ const users = [
       postalCode: '28001',
       locality: 'Madrid',
       province: 'Madrid',
-     
     },
   },
   {
@@ -43,7 +45,6 @@ const users = [
       postalCode: '46001',
       locality: 'Valencia',
       province: 'Valencia',
-     
     },
   },
   {
@@ -62,7 +63,6 @@ const users = [
       postalCode: '41001',
       locality: 'Sevilla',
       province: 'Sevilla',
-   
     },
   },
   {
@@ -75,7 +75,6 @@ const users = [
     phone: '+34333333333',
     birthDate: new Date('1992-03-22'),
     emailPersonal: 'ana.martinez@email.com',
-    // Sin dirección para este usuario
   },
   {
     email: 'user2@example.com',
@@ -93,60 +92,96 @@ const users = [
       postalCode: '08001',
       locality: 'Barcelona',
       province: 'Barcelona',
-  
+    },
+  },
+  {
+    email: 'user3@example.com',
+    password: 'user1234',
+    role: Role.USER,
+    firstName: 'Marta',
+    lastName: 'López',
+    dni: '55555555F',
+    phone: '+34555555555',
+    birthDate: new Date('1993-07-12'),
+    emailPersonal: 'marta.lopez@email.com',
+  },
+  {
+    email: 'user4@example.com',
+    password: 'user1234',
+    role: Role.USER,
+    firstName: 'Pablo',
+    lastName: 'Ramírez',
+    dni: '66666666G',
+    phone: '+34666666666',
+    birthDate: new Date('1994-01-25'),
+    emailPersonal: 'pablo.ramirez@email.com',
+    address: {
+      addressLine: 'Avenida del Pinar 45',
+      floorDoor: '2º A',
+      postalCode: '29001',
+      locality: 'Málaga',
+      province: 'Málaga',
     },
   },
 ]
 
+/* ---------- Semilla ---------- */
 async function main() {
   console.log('🌱 Iniciando seed...\n')
 
-  for (const u of users) {
-    // Verificar si el usuario ya existe
-    const exists = await prisma.user.findUnique({ 
-      where: { email: u.email } 
-    })
-
+  /* 1. Crear / actualizar usuarios */
+  for (const u of rawUsers) {
+    const exists = await prisma.user.findUnique({ where: { email: u.email } })
     if (exists) {
-      console.log(`✅ Ya existe: ${u.email} (${u.role})`)
+      console.log(`✔  Ya existe: ${u.email} (${u.role})`)
       continue
     }
 
-    // Hashear contraseña
-    const hashedPassword = await bcrypt.hash(u.password, 12)
-
-    // Crear usuario
     const user = await prisma.user.create({
       data: {
         email: u.email,
-        emailPersonal: u.emailPersonal,   
+        emailPersonal: u.emailPersonal,
         firstName: u.firstName,
         lastName: u.lastName,
         fullName: `${u.firstName} ${u.lastName}`,
         phone: u.phone,
         dni: u.dni,
         birthDate: u.birthDate,
-        passwordHash: hashedPassword, // ✅ CAMPO CORRECTO
+        passwordHash: await hash(u.password),
         role: u.role,
         isActive: true,
-        failedLoginAttempts: 0, // ✅ CAMPO NUEVO
-        picture: `https://ui-avatars.com/api/?name=${encodeURIComponent(u.firstName + '+' + u.lastName)}&background=random`,
-        // Crear dirección si existe en los datos
-        address: u.address ? {
-          create: {
-            ...u.address,
-          },
-        } : undefined,
+        failedLoginAttempts: 0,
+        picture: `https://ui-avatars.com/api/?name=${encodeURIComponent(
+          u.firstName + '+' + u.lastName
+        )}&background=random`,
+        address: u.address ? { create: u.address } : undefined,
       },
     })
+    console.log(`✔  Creado: ${user.email} (${user.role})`)
 
-    console.log(`✅ Creado: ${user.email} (${user.role})`)
-    if (u.address) {
-      console.log(`   📍 Dirección: ${u.address.addressLine}, ${u.address.locality}`)
-    }
+    /* 2. Datos bancarios */
+    const needsAccount =
+      u.role === Role.ADMIN || (u.role === Role.USER && Math.random() < 0.5) // 50 % cuentas para USER
+
+    await prisma.userPaymentData.create({
+      data: {
+        userId: user.id,
+        paymentMethod: needsAccount ? 'CARGO_BANCARIO' : 'TRANSFERENCIA',
+        iban: needsAccount
+          ? `ES${Math.floor(Math.random() * 90 + 10)}${Math.floor(
+              Math.random() * 1e20
+            )
+              .toString()
+              .padStart(20, '0')}`
+          : null,
+      },
+    })
+    console.log(
+      `   💰  ${needsAccount ? 'Cuenta bancaria' : 'Ingreso / transferencia'}`
+    )
   }
 
-  console.log('\n✨ Seed completado exitosamente')
+  console.log('\n✨ Seed completado')
 }
 
 main()
@@ -154,6 +189,4 @@ main()
     console.error('❌ Error en seed:', e)
     process.exit(1)
   })
-  .finally(async () => {
-    await prisma.$disconnect()
-  })
+  .finally(() => prisma.$disconnect())

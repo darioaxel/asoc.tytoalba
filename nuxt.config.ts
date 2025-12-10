@@ -61,8 +61,17 @@ export default defineNuxtConfig({
   },
 
   content: {
-    build: {
-      adapter: 'json'  // Usa JSON en lugar de SQLite
-    }
+   experimental: {
+      // antes se llamaba 'cacheVersion'; ahora:
+      clientDb: false   // <= clave
+    },
+    // carpeta fuente por defecto: content/
+    // prefixo de url: / (sin prefijo, así blog queda en /blog, docs en /docs)
+    highlight: {
+      theme: 'github-light',
+      preload: ['ts', 'js', 'vue', 'sql']
+    },
+    // ignora la carpeta que usas para Prisma o cualquier otra
+    ignores: ['^/prisma', '^/server']
   }
 })
