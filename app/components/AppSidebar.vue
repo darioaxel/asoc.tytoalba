@@ -14,16 +14,27 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar'
 import { siteConfig } from '@/lib/config'
+
 const props = withDefaults(defineProps<SidebarProps>(), {
   collapsible: "icon",
 })
-const { user } = await useUserSession()
+
+const session = useAppUserSession()
+const user = computed(() => session.value.user)
+
+const user_data = computed(() => ({
+  name: user.value?.name || 'castaña',
+  lastName: user.value?.lastName || 'test',
+  email: user.value?.email || siteConfig.user.email,
+  picture: user.value?.picture || siteConfig.user.avatar
+}))
+
 const user_role = computed(() => user.value?.role || 'none')
 
 // Filtrar secciones visibles según auth/roles
 const visibleSections = computed(() => {
   return siteConfig.navSections.filter(section => {
-    console.log('Evaluando sección:', user_role)    // Si no hay usuario logeado, no visible
+   
     if (user_role.value === 'none') return false
     
     // Si tiene roles específicos, verificar pertenencia

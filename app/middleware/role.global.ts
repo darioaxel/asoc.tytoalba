@@ -1,7 +1,11 @@
 export default defineNuxtRouteMiddleware((to) => {
+  
+  if (to.path.startsWith('/blog/')) {
+    console.log('ROL  no debería entrar aqui')
+    return
+  }
   const { user, loggedIn } = useUserSession()
-
-  // Si no está autenticado → login
+  
   if (!loggedIn) {
     return navigateTo("/socios/login")
   }

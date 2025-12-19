@@ -1,10 +1,9 @@
 // ~/server/api/user.get.ts
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '../utils/prisma'
 
-const prisma = new PrismaClient()
 
 export default defineEventHandler(async (event) => {
-  const session = await getUserSession(event)
+  const session = await requireUserSession(event)
   if (!session?.user?.id) return null
 
   const user = await prisma.user.findUnique({
@@ -19,7 +18,7 @@ export default defineEventHandler(async (event) => {
       phone: true,
       dni: true,
       birthDate: true,
-      avatar: true,
+      picture: true,
       role: true,
       isActive: true,
       createdAt: true,
@@ -37,7 +36,7 @@ export default defineEventHandler(async (event) => {
     id: user.id,
     email: user.email,  
     emailPersonal: user.emailPersonal,
-    firstName: user.firstName,
+    name: user.firstName,
     lastName: user.lastName,
     fullName: user.fullName,
     phone: user.phone,

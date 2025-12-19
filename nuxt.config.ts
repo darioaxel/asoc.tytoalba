@@ -1,4 +1,4 @@
-import tailwindcss from "@tailwindcss/vite"; // ❌ ELIMINA ESTA LÍNEA
+import tailwindcss from "@tailwindcss/vite"; 
 
 export default defineNuxtConfig({
   modules: [
@@ -11,7 +11,6 @@ export default defineNuxtConfig({
     "nuxt-vitalizer",
     "nuxt-security",
     "@nuxt/eslint",
-    "@nuxtjs/i18n",
     "@vueuse/nuxt",
     "shadcn-nuxt",
     "@nuxt/image",
@@ -52,5 +51,27 @@ export default defineNuxtConfig({
   icon: {
     componentName: 'Icon',
     provider: 'server',
-  }  
+  },
+  // 1. Desactivar CSP en desarrollo
+  security: {
+    headers: {
+      crossOriginEmbedderPolicy: false,
+      contentSecurityPolicy: false,        // ← desactiva CSP completo
+    },
+  },
+
+  content: {
+   experimental: {
+      // antes se llamaba 'cacheVersion'; ahora:
+      clientDb: false   // <= clave
+    },
+    // carpeta fuente por defecto: content/
+    // prefixo de url: / (sin prefijo, así blog queda en /blog, docs en /docs)
+    highlight: {
+      theme: 'github-light',
+      preload: ['ts', 'js', 'vue', 'sql']
+    },
+    // ignora la carpeta que usas para Prisma o cualquier otra
+    ignores: ['^/prisma', '^/server']
+  }
 })

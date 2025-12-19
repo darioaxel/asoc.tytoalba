@@ -1,8 +1,7 @@
 // ~/prisma/schema.prisma
-
 generator client {
   provider = "prisma-client-js"
-  output   = "../node_modules/.prisma/client"  
+  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -11,33 +10,31 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-// Dirección válida para España
-model Address {
-  id           String @id @default(uuid())
-  
-  // Línea principal: "Calle Número"
-  addressLine  String
-  
-  // Piso, puerta, escalera: "3º B" o "Bajo Dcha"
-  floorDoor    String?
-  
-  // Código postal (5 dígitos)
-  postalCode   String
-  
-  // Municipio/Población
-  locality     String
-  
-  // Provincia (ej: "Madrid", "Barcelona")
-  province     String
+// ENUMS ------------------------------------------------
+enum Role {
+  USER
+  ADMIN
+  ROOT
+}
 
-  // Relación con User (uno a uno opcional)
+enum PaymentMethod {
+  TRANSFERENCIA
+  CARGO_BANCARIO
+}
+
+// MODELS -----------------------------------------------
+model Address {
+  id           String  @id @default(uuid())
+  addressLine  String
+  floorDoor    String?
+  postalCode   String
+  locality     String
+  province     String
   userId       String? @unique
   user         User?   @relation(fields: [userId], references: [id])
-
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  // Índice para búsquedas por CP y provincia
   @@index([postalCode, province])
 }
 
@@ -49,43 +46,43 @@ model User {
   lastName        String?
   fullName        String?
   phone           String?
-  
-  // Datos de identificación española
   dni             String?  @unique
   birthDate       DateTime?
-
-  avatar         String?
-
-  // Credenciales locales (renombrado para seguridad)
-  passwordHash    String?  // null si solo usa OAuth
-
-  // Bloqueo - baja
+  picture         String?
+  passwordHash    String?
   isActive        Boolean  @default(true)
   deactivatedAt   DateTime?
-
-  // Seguridad: intentos fallidos y último login
   failedLoginAttempts Int   @default(0)
-  lastLoginAt         DateTime?
-
-  // Origen del usuario
-  provider        String   @default("local") // local | google
-  providerId      String?  // sub de Google, etc.
-
+  lastLoginAt     DateTime?
+  provider        String   @default("local")
+  providerId      String?
   role            Role     @default(USER)
-  
-  // Relación con dirección
+
   address         Address?
+  paymentData     UserPaymentData?
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  // Índices para búsquedas frecuentes
   @@index([isActive, role])
   @@index([provider, providerId])
 }
 
-enum Role {
-  USER
-  ADMIN
-  ROOT
+// Datos de pago del usuario
+model UserPaymentData {
+  id            String        @id @default(uuid())
+  userId        String        @unique
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  paymentMethod PaymentMethod
+
+  // Solo obligatorio cuando el método es CARGO_BANCARIO
+  iban          String?
+
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  // Restricciones
+  @@index([paymentMethod])
+  @@index([iban]) // búsquedas rápidas por IBAN
 }

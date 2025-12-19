@@ -42,7 +42,7 @@ const features = [
     description: "We automatically save your files as you type.",
     href: "/",
     image:
-      "https://images.pexels.com/photos/2762083/pexels-photo-2762083.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "/images/old-page/ines-roco1.jpeg",
     cta: "Learn more",
     class: "lg:row-start-1 lg:row-end-4 lg:col-start-2 lg:col-end-3",
   },
@@ -51,7 +51,7 @@ const features = [
     description: "Search through all your files in one place.",
     href: "/",
     image:
-      "https://images.pexels.com/photos/1309766/pexels-photo-1309766.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "/images/old-page/ciudadano-logo.jpg",
     cta: "Learn more",
     class: "lg:col-start-1 lg:col-end-2 lg:row-start-1 lg:row-end-3",
   },
@@ -74,7 +74,7 @@ const features = [
     description: "Get notified when someone shares a file or mentions you in a comment.",
     href: "/",
     image:
-      "https://images.pexels.com/photos/1682821/pexels-photo-1682821.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "/images/old-page/entrada-roco.jpg",
     cta: "Learn more",
     class: "lg:col-start-3 lg:col-end-3 lg:row-start-2 lg:row-end-4",
   },
