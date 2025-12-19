@@ -19,6 +19,7 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "nuxt-svgo",
     "@nuxt/content",
+    '@vueuse/nuxt',
   ],
   
   // ✅ AÑADE ESTA SECCIÓN

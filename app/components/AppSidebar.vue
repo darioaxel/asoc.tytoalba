@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<SidebarProps>(), {
   collapsible: "icon",
 })
 
-const session = useAppUserSession()
+const { session } = useAppUserSession()
 const user = computed(() => session.value.user)
 
 const user_data = computed(() => ({

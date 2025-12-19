@@ -1,46 +1,107 @@
 // ~/composables/useAppUserSession.ts
+
+import { useEventBus } from '@vueuse/core'
+import type { UserSessionState, FullUser } from '~/types/auth' // ✅ Usa alias
+
+export const authBus = useEventBus<string>('auth-events')
+
 export const useAppUserSession = () => {
-  
-  const { user: baseUser, loggedIn} = useUserSession()
-  
-  // 2. Tu API de Prisma
-  const { data: userData, refresh } = useFetch('/api/user', {
-    lazy: true,
-    server: false,
-    // Solo ejecuta si hay sesión
-    immediate: false
-  })
+  const { user: baseUser } = useUserSession()
 
+  // Estado reactivo compartido
+  const state = useState<UserSessionState>('auth:state', () => ({
+    user: null,
+    loggedIn: false,
+    loading: true,
+    role: null
+  }))
 
+  const loadUser = async (): Promise<void> => {
+    if (!baseUser.value?.id) {
+      // ✅ CORREGIDO: Incluye role: null para consistencia
+      state.value = { user: null, loggedIn: false, loading: false, role: null }
+      return
+    }
+
+    state.value.loading = true
+
+    // ✅ TIPADO: useFetch<FullUser> para seguridad de tipos
+    const { data, error } = await useFetch<FullUser>('/api/user', {
+      server: false,
+      lazy: false
+    })
+
+    if (error.value) {
+      console.error('❌ Error cargando usuario:', error.value)
+      state.value = { user: null, loggedIn: false, loading: false, role: null }
+      return
+    }
+
+    if (data.value) {
+      state.value = {
+        user: data.value,
+        loggedIn: true,
+        loading: false,
+        role: data.value.role
+      }
+      authBus.emit('user-loaded')
+    }
+  }
+
+  // Watch para cambios en la sesión base
   watch(
     () => baseUser.value?.id,
-    (userId) => {      
-      if (userId) {       
-        refresh() // Esto ejecuta /api/user
+    (userId) => {
+      console.log('👀 ID de usuario cambiado:', userId)
+      if (userId) {
+        loadUser()
+      } else {
+        // ✅ Reset completo (ya estaba bien)
+        state.value = { user: null, loggedIn: false, loading: false, role: null }
       }
     },
-    { immediate: true } // Ejecuta al montar si ya hay sesión
+    { immediate: true }
   )
 
-  // ✅ Combinación final
-  return computed(() => {   
-    if (!baseUser.value?.id) {
-      return { 
-        user: null, 
-        loggedIn: false,
-        loading: false
-      }
-    }
+  // Listener de eventos globales
+  authBus.on((event) => {
+    console.log('📡 Evento recibido:', event)
 
-    // Mientras carga, userData.value será null
-    const isLoading = loggedIn.value && !userData.value
-    console.log('⏳ LOADING:', isLoading)
-
-    return {
-      user: userData.value || { id: baseUser.value.id }, // Fallback mientras carga
-      loggedIn: true,
-      role: baseUser.value.role, // El rol viene de la sesión base
-      loading: isLoading
+    if (event === 'logout') {
+      // ✅ Reset completo (ya estaba bien)
+      state.value = { user: null, loggedIn: false, loading: false, role: null }
+      clearNuxtData('/api/user')
+      console.log('✅ Estado reseteado por evento logout')
+    } else if (event === 'login') {
+      loadUser()
     }
   })
+
+  onMounted(() => {
+    if (baseUser.value?.id) {
+      loadUser()
+    } else {
+      state.value.loading = false
+    }
+  })
+
+  // Método logout
+  const logout = async (): Promise<void> => {
+    try {
+      await $fetch('/api/auth/logout', { method: 'POST' })
+      await clearUserSession()
+      authBus.emit('logout')
+      await navigateTo('/login')
+    } catch (error) {
+      console.error('❌ Error en logout:', error)
+      authBus.emit('logout')
+      await navigateTo('/login') // ✅ CORREGIDO: await faltaba en tu versión
+    }
+  }
+
+  return {
+    session: computed(() => state.value),
+    logout,
+    refresh: loadUser
+  }
 }
