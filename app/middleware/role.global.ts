@@ -5,7 +5,7 @@ export default defineNuxtRouteMiddleware((to) => {
     return
   }
   const { user, loggedIn } = useUserSession()
-  // Si no está autenticado → login
+  
   if (!loggedIn) {
     return navigateTo("/socios/login")
   }

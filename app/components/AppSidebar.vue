@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { SidebarProps } from '@/components/ui/sidebar'
 
-
 import NavMain from '@/components/NavMain.vue'
 import NavUser from '@/components/NavUser.vue'
 import TeamSwitcher from '@/components/TeamSwitcher.vue'
@@ -14,15 +13,19 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar'
 import { siteConfig } from '@/lib/config'
+
 const props = withDefaults(defineProps<SidebarProps>(), {
   collapsible: "icon",
 })
-const { user } = await useUserSession()
+
+const session = useAppUserSession()
+const user = computed(() => session.value.user)
 
 const user_data = computed(() => ({
-  name: user.value?.name || siteConfig.user.name,
+  name: user.value?.name || 'castaña',
+  lastName: user.value?.lastName || 'test',
   email: user.value?.email || siteConfig.user.email,
-  avatar: user.value?.avatar || siteConfig.user.avatar
+  picture: user.value?.picture || siteConfig.user.avatar
 }))
 
 const user_role = computed(() => user.value?.role || 'none')
@@ -42,7 +45,6 @@ const visibleSections = computed(() => {
     return true
  })
 })
-
 
 const teams = siteConfig.teams
 

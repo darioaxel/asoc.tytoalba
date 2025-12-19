@@ -2,6 +2,7 @@
 import { PrismaClient } from '@prisma/client'
 import { z } from 'zod'
 import bcrypt from 'bcrypt'
+import { prisma } from '../../utils/prisma'
 
 const loginSchema = z.object({
   email: z.string().email().toLowerCase(),
@@ -14,21 +15,17 @@ export default defineEventHandler(async (event) => {
   console.log('=== 🔐 INICIO LOGIN ===')
   console.log('📧 Email recibido:', body.email)
   console.log('🔑 Password recibida:', body.password)
-
-  const prisma = new PrismaClient()
   
   // Buscar usuario con TODOS los campos necesarios
-  const user = await prisma.user.findFirst({
+  const user = await prisma.user.findUnique({
     where: { email: body.email },
     select: {
       id: true,
-      email: true,
-      firstName: true,
-      lastName: true,
+      email: true,  
       role: true,
       isActive: true,
       passwordHash: true,
-      failedLoginAttempts: true,
+      failedLoginAttempts: true,      
     }
   })
   
@@ -88,9 +85,7 @@ export default defineEventHandler(async (event) => {
     success: true,
     user: {
       id: user.id,
-      email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
+      email: user.email,     
       role: user.role,
     },
   }
