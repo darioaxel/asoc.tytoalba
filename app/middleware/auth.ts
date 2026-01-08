@@ -11,8 +11,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     return navigateTo('/socios/login')
   }
 
-  // Si ya está logueado y va a /login → mandarlo a la protegida
   if (loggedIn.value && to.path === 'login') {
-    return navigateTo('/protected')
+    return navigateTo('/socios/dashboard')
   }
 })

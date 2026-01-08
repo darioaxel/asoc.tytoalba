@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { LogOutIcon, type LucideIcon } from "lucide-vue-next"
 
+
 interface NavItem {
   title: string
   url: string
@@ -8,6 +9,13 @@ interface NavItem {
 }
 
 defineProps<{ items: NavItem[] }>()
+const { clear } = useUserSession()
+
+async function onLogout() {
+  await $fetch('/api/auth/logout', { method: 'POST' }) // clearUserSession
+  await clear()        // user → null, loggedIn → false 
+  await navigateTo('/') 
+}
 </script>
 
 <template>
@@ -27,6 +35,7 @@ defineProps<{ items: NavItem[] }>()
       <Button        
         class="bg-sidebar-primary text-sidebar-primary-foreground w-full shadow-none"
         size="sm"
+        @click="onLogout"
       >
         <LogOutIcon class="h-4 w-4" />
         Desconectarse
