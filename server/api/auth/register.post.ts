@@ -40,8 +40,7 @@ export default defineEventHandler(async (event) => {
         email: body.email,
         emailPersonal: body.email,        
         firstName: body.firstName,
-        lastName: body.lastName,
-        fullName: `${body.firstName} ${body.lastName}`,
+        lastName: body.lastName,       
         role: Role.USER, // Siempre USER para registro público
         isActive: true,
         passwordHash: hashedPassword, // ✅ Campo correcto
