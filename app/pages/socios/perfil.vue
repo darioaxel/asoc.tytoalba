@@ -4,7 +4,7 @@ definePageMeta({
   layout: 'dashboard',
 })
 
-const { user, loggedIn } = await useUserSession()
+const { user } = await useUserSession()
 const router = useRouter()
 const isEditing = ref(false)
 const isLoading = ref(false)
@@ -30,12 +30,6 @@ const form = reactive({
 // Cargar datos del usuario logueado
 const loadUserData = async () => {
   console.log('📋 Cargando datos para usuario:', user.value?.id)
-  
-  if (!user.value?.id) {
-    console.log('❌ No hay usuario logueado')
-    await router.push('/socios/login')
-    return
-  }
 
   try {
     const data = await $fetch('/api/user/profile')

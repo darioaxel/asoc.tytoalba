@@ -5,7 +5,7 @@ import {
   ChevronsUpDown,
   CreditCard,
   LogOut,
-  Sparkles,
+  User,
 } from "lucide-vue-next"
 
 import {
@@ -39,8 +39,7 @@ const props = defineProps<{
 }>()
 
 const { isMobile } = useSidebar()
-
-import { siteConfig } from '@/lib/config'
+const { user } = await useUserSession()
 
 </script>
 
@@ -54,14 +53,14 @@ import { siteConfig } from '@/lib/config'
             class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
           >
             <Avatar class="h-8 w-8 rounded-lg">
-              <AvatarImage :src="user.picture" :alt="user.name" />
+              <AvatarImage :src="user?.picture || ''" :alt="user?.firstName || 'Usuario'" />
               <AvatarFallback class="rounded-lg">
-                CN
+                {{ user?.firstName?.slice(0, 2).toUpperCase() || 'US' }}
               </AvatarFallback>
             </Avatar>
             <div class="grid flex-1 text-left text-sm leading-tight">
-              <span class="truncate font-medium">{{ user.name }} {{ user.lastName }}</span>
-              <span class="truncate text-xs">{{ user.email }}</span>
+              <span class="truncate font-medium">{{ user?.firstName }} {{ user?.lastName }}</span>
+              <span class="truncate text-xs">{{ user?.email }}</span>
             </div>
             <ChevronsUpDown class="ml-auto size-4" />
           </SidebarMenuButton>
@@ -75,19 +74,32 @@ import { siteConfig } from '@/lib/config'
           <DropdownMenuLabel class="p-0 font-normal">
             <div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
               <Avatar class="h-8 w-8 rounded-lg">
-                <AvatarImage :src="user.picture" :alt="user.name" />
+                <AvatarImage :src="user?.picture || ''" :alt="user?.firstName || 'Usuario'" />
                 <AvatarFallback class="rounded-lg">
-                  CN
+                  {{ user?.firstName?.slice(0, 2).toUpperCase() || 'US' }}
                 </AvatarFallback>
               </Avatar>
               <div class="grid flex-1 text-left text-sm leading-tight">
-                <span class="truncate font-semibold">{{ user.name }}</span>
-                <span class="truncate text-xs">{{ user.email }}</span>
+                <span class="truncate font-semibold">{{ user?.firstName }}</span>
+                <span class="truncate text-xs">{{ user?.email }}</span>
               </div>
             </div>
           </DropdownMenuLabel>
-          <DropdownMenuSeparator />                  
-            <NavUserSecondary :items="siteConfig.navUser" />
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <DropdownMenuItem as-child>
+              <NuxtLink :to="`/socios/perfil`">
+                <User class="mr-2 h-4 w-4" />
+                Datos personales
+              </NuxtLink>
+            </DropdownMenuItem>
+            <DropdownMenuItem as-child>
+              <NuxtLink :to="`/socios/banco`">
+                <CreditCard class="mr-2 h-4 w-4" />
+                Datos de pagos
+              </NuxtLink>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
           <DropdownMenuSeparator />          
         </DropdownMenuContent>
       </DropdownMenu>

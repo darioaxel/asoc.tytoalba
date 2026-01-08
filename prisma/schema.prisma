@@ -43,8 +43,7 @@ model User {
   email           String   @unique
   emailPersonal   String?  @unique
   firstName       String?
-  lastName        String?
-  fullName        String?
+  lastName        String?  
   phone           String?
   dni             String?  @unique
   birthDate       DateTime?

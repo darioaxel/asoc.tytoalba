@@ -251,18 +251,6 @@ export const siteConfig = {
       url: "/",
       icon: "lucide:home"
     },
-  ],
-  navUser: [
-    {
-      title: "Datos Personales",
-      url: "/perfil",
-      icon: "lucide:user"
-    },
-    {
-      title: "Datos de Pago",
-      url: "/banco",
-      icon: "lucide:credit-card"
-    }
   ]
 }
 
