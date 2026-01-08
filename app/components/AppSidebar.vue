@@ -2,6 +2,7 @@
 import type { SidebarProps } from '@/components/ui/sidebar'
 
 import NavMain from '@/components/NavMain.vue'
+import NavSecondary from '@/components/NavSecondary.vue'
 import NavUser from '@/components/NavUser.vue'
 import TeamSwitcher from '@/components/TeamSwitcher.vue'
 
@@ -64,6 +65,7 @@ const teams = siteConfig.teams
         :items="section.items"
       />    
     </SidebarContent>
+    <NavSecondary :items="siteConfig.navSecondary" class="mt-auto" />
     <SidebarFooter>
       <NavUser :user="user_data" />
     </SidebarFooter>

@@ -245,6 +245,13 @@ export const siteConfig = {
       ]
     },
   ] as NavSection[],
+  navSecondary: [
+    {
+      title: "Página Inicio",
+      url: "/",
+      icon: "lucide:home"
+    },
+  ]
 }
 
 
