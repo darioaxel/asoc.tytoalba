@@ -4,7 +4,7 @@ Desarrollo para la nueva web de la asociacion tyto alba
 ## Listado Tareas
 
  - [X] Insertar imágen en página principal
- - [ ] Menú usuario configurable por parametrización
+ - [X] Menú usuario configurable por parametrización
  - [ ] Utilización de Pinia para stores que permitan la actualización de datos en multiples puntos.
  - [ ] 
 

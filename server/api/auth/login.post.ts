@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
   console.log('🔑 Password recibida:', body.password)
   
   // Buscar usuario con TODOS los campos necesarios
-  const user = await prisma.user.findUnique({
+  const dbUser = await prisma.user.findUnique({
     where: { email: body.email },
     select: {
       id: true,
@@ -29,64 +29,59 @@ export default defineEventHandler(async (event) => {
     }
   })
   
-  console.log('👤 Usuario encontrado:', user)
-  console.log('✅ Usuario activo:', user?.isActive)
-  console.log('🔐 Tiene passwordHash:', !!user?.passwordHash)
+  console.log('👤 Usuario encontrado:', dbUser)
+  console.log('✅ Usuario activo:', dbUser?.isActive)
+  console.log('🔐 Tiene passwordHash:', !!dbUser?.passwordHash)
 
   // ✅ Verificación PASO A PASO
-  if (!user) {
+  if (!dbUser) {
     console.log('❌ ERROR: Usuario no encontrado')
     throw createError({ statusCode: 401, message: 'Credenciales inválidas' })
   }
 
-  if (!user.isActive) {
+  if (!dbUser.isActive) {
     console.log('❌ ERROR: Usuario inactivo')
     throw createError({ statusCode: 401, message: 'Credenciales inválidas' })
   }
 
-  if (!user.passwordHash) {
+  if (!dbUser.passwordHash) {
     console.log('❌ ERROR: Sin passwordHash (usuario OAuth?)')
     throw createError({ statusCode: 401, message: 'Credenciales inválidas' })
   }
 
   console.log('🔐 Comparando passwords...')
   console.log('📥 Password plana:', body.password)
-  console.log('🗃️ Password hash:', user.passwordHash.substring(0, 20) + '...')
+  console.log('🗃️ Password hash:', dbUser.passwordHash.substring(0, 20) + '...')
 
-  const valid = await bcrypt.compare(body.password, user.passwordHash)
+  const valid = await bcrypt.compare(body.password, dbUser.passwordHash)
   console.log('✅ Resultado bcrypt.compare:', valid)
 
   if (!valid) {
     console.log('❌ ERROR: Password incorrecta')
     await prisma.user.update({
-      where: { id: user.id },
+      where: { id: dbUser.id },
       data: { failedLoginAttempts: { increment: 1 } },
     })
     throw createError({ statusCode: 401, message: 'Credenciales inválidas' })
   }
 
-  console.log('🎉 LOGIN EXITOSO para:', user.email)
+  console.log('🎉 LOGIN EXITOSO para:', dbUser.email)
 
   // Actualizar último login
   await prisma.user.update({
-    where: { id: user.id },
+    where: { id: dbUser.id },
     data: { failedLoginAttempts: 0, lastLoginAt: new Date() },
   })
 
   // Crear sesión
   await setUserSession(event, {
-    user: { id: user.id, email: user.email, role: user.role },
-    loggedInAt: new Date(),
+    user: { id: dbUser.id, email: dbUser.email, role: dbUser.role, isActive: dbUser.isActive},
+    loggedInAt: new Date().toISOString(),
   })
 
   console.log('=== ✅ LOGIN COMPLETADO ===')
 
   return {
-    success: true,
-    user: {
-      id: user.id,
-      email: user.email,     
-      role: user.role,
-    },
+    success: true,    
   }
 })
