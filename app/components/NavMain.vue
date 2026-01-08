@@ -16,13 +16,14 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar'
+import { Icon } from '#components'
 
 defineProps<{
   title: string 
   items: {
     title: string
     url: string
-    icon?: LucideIcon
+    icon?: string
     isActive?: boolean
     items?: {
       title: string
@@ -46,7 +47,7 @@ defineProps<{
         <SidebarMenuItem>
           <CollapsibleTrigger as-child>
             <SidebarMenuButton :tooltip="item.title">
-              <component :is="item.icon" v-if="item.icon" />
+              <Icon :name="item.icon" v-if="item.icon" />
               <span>{{ item.title }}</span>
               <ChevronRight class="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
             </SidebarMenuButton>
@@ -54,7 +55,7 @@ defineProps<{
           <CollapsibleContent>
             <SidebarMenuSub>
               <SidebarMenuSubItem v-for="subItem in item.items" :key="subItem.title">
-                <SidebarMenuSubButton as-child>
+                <SidebarMenuSubButton as-child>                  
                   <a :href="subItem.url">
                     <span>{{ subItem.title }}</span>
                   </a>
