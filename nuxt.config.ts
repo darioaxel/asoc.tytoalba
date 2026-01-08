@@ -21,8 +21,7 @@ export default defineNuxtConfig({
     "@nuxt/content",
     '@vueuse/nuxt',
   ],
-  
-  // ✅ AÑADE ESTA SECCIÓN
+
   fonts: {
     providers: {
       fontsource: false, // Desactiva Fontsource
