@@ -14,7 +14,6 @@
   },
   "dependencies": {
     "@fontsource/inter": "^5.2.8",
-    "@nuxt/content": "^3.8.2",
     "@nuxt/fonts": "^0.12.1",
     "@nuxt/image": "^1.11.0",
     "@nuxtjs/fontaine": "^0.4.4",
