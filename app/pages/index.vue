@@ -1,5 +1,6 @@
+<!-- pages/index.vue (landing) -->
 <template>
-  <div class="flex flex flex-col items-center justify-center">
+  <div class="flex flex-col items-center justify-center">
     <PageHeader>
       <PageHeaderHeading class="max-w-4xl">
         Asociación Tyto Alba
@@ -7,76 +8,62 @@
       <PageHeaderDescription>Mi descripción</PageHeaderDescription>
       <PageActions>
         <Button as-child size="sm">
-          <NuxtLink to="/nosotros">
-            Nosotr@s
-          </NuxtLink>
+          <NuxtLink to="/nosotros"> Nosotr@s </NuxtLink>
         </Button>
         <Button as-child size="sm" variant="ghost">
-          <NuxtLink to="/blog">
-            Blog
-          </NuxtLink>
+          <NuxtLink to="/blog"> Ver todo el blog </NuxtLink>
         </Button>
       </PageActions>
     </PageHeader>
 
-    <BentoGrid class="grid w-full auto-rows-[22rem] grid-cols-3 gap-4 lg:grid-rows-3">
-      <BentoGridCard v-for="(feature, index) in features" :key="index" v-bind="feature" :class="feature.class">
-        <template v-if="feature.image" #background>
+    <!-- Bento Grid con posts reales -->
+    <BentoGrid class="grid w-full auto-rows-[22rem] grid-cols-3 gap-4 lg:grid-rows-3 mt-12">
+      <BentoGridCard
+        v-for="(post, index) in latestPosts"
+        :key="post.id"
+        :name="post.title"
+        :description="post.excerpt"
+        :href="`/blog/${post.slug}`"
+        cta="Leer artículo"
+        :class="getBentoClass(index)"
+      >
+        <template #background>
           <div
-            class="absolute right-0 top-0 size-full bg-center opacity-40 transition duration-150 ease-in-out group-hover:opacity-20"
-            :style="`background-image: url('${feature.image}')`"></div>
+            v-if="post.cover"
+            class="absolute inset-0 bg-cover bg-center opacity-40 transition duration-150 ease-in-out group-hover:opacity-20"
+            :style="{ backgroundImage: `url(${post.cover})` }"
+          />
+          <div
+            v-else
+            class="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/5"
+          />
+        </template>
+
+        <template #overlay>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
         </template>
       </BentoGridCard>
     </BentoGrid>
-
-
-
   </div>
 </template>
-<script lang="ts" setup>
-import BentoGridCard from "@/components/ui/bento-grid/BentoGridCard.vue";
 
-const features = [
-  {
-    name: "Save your files",
-    description: "We automatically save your files as you type.",
-    href: "/",
-    image:
-      "/images/old-page/ines-roco1.jpeg",
-    cta: "Learn more",
-    class: "lg:row-start-1 lg:row-end-4 lg:col-start-2 lg:col-end-3",
-  },
-  {
-    name: "Full text search",
-    description: "Search through all your files in one place.",
-    href: "/",
-    image:
-      "/images/old-page/ciudadano-logo.jpg",
-    cta: "Learn more",
-    class: "lg:col-start-1 lg:col-end-2 lg:row-start-1 lg:row-end-3",
-  },
-  {
-    name: "Multilingual",
-    description: "Supports 100+ languages and counting.",
-    href: "/",
-    cta: "Learn more",
-    class: "lg:col-start-1 lg:col-end-2 lg:row-start-3 lg:row-end-4",
-  },
-  {
-    name: "Calendar",
-    description: "Use the calendar to filter your files by date.",
-    href: "/",
-    cta: "Learn more",
-    class: "lg:col-start-3 lg:col-end-3 lg:row-start-1 lg:row-end-2",
-  },
-  {
-    name: "Notifications",
-    description: "Get notified when someone shares a file or mentions you in a comment.",
-    href: "/",
-    image:
-      "/images/old-page/entrada-roco.jpg",
-    cta: "Learn more",
-    class: "lg:col-start-3 lg:col-end-3 lg:row-start-2 lg:row-end-4",
-  },
-];
+<script lang="ts" setup>
+// Fetch últimos 5 posts publicados
+const { data: postsData } = await useLazyFetch('/api/posts/latest', {
+  query: { limit: 5 }
+})
+
+const latestPosts = computed(() => postsData.value?.posts || [])
+
+// Asigna clases responsivas según posición
+function getBentoClass(index: number) {
+  const classes = [
+    'lg:col-start-1 lg:col-end-2 lg:row-start-1 lg:row-end-3',   // Post 1 (grande izq)
+    'lg:row-start-1 lg:row-end-4 lg:col-start-2 lg:col-end-3',   // Post 2 (grande centro)
+    'lg:col-start-3 lg:col-end-3 lg:row-start-1 lg:row-end-2',   // Post 3 (peq arr-dcha)
+    'lg:col-start-1 lg:col-end-2 lg:row-start-3 lg:row-end-4',   // Post 4 (peq abj-izq)
+    'lg:col-start-3 lg:col-end-3 lg:row-start-2 lg:row-end-4',   // Post 5 (peq abj-dcha)
+  ]
+  return classes[index] || ''
+}
 </script>

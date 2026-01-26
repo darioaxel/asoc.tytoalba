@@ -61,7 +61,7 @@ export const siteConfig = {
       requiresAuth: false,
     },
     {
-      href: '/contacto',
+      href: '/blog',
       label: 'Blog',
       icon: 'lucide:newspaper',
       requiresAuth: false,
