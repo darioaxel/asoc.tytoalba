@@ -1,4 +1,4 @@
-// server/api/posts/latest.get.ts
+// ~/server/api/posts/latest.get.ts
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
@@ -16,6 +16,19 @@ export default defineEventHandler(async (event) => {
       excerpt: true,
       cover: true,
       publishedAt: true,
+      author: {               // <-- relación autor
+        select: {
+          firstName: true,
+          lastName: true,
+          picture: true,
+        },
+      },
+      tags: {                 // opcional, si también quieres los tags
+        select: {
+          name: true,
+          slug: true,
+        },
+      },
     },
     orderBy: { publishedAt: 'desc' },
     take: limit,
