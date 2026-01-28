@@ -57,5 +57,9 @@ export default defineNuxtConfig({
       crossOriginEmbedderPolicy: false,
       contentSecurityPolicy: false,        // ← desactiva CSP completo
     },
-  }  
+  },
+
+  build: {
+    transpile: ['@prisma/client']
+  }
 })
