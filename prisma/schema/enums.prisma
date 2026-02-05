@@ -1,0 +1,11 @@
+// ENUMS ------------------------------------------------
+enum Role {
+  USER
+  ADMIN
+  ROOT
+}
+
+enum PaymentMethod {
+  TRANSFERENCIA
+  CARGO_BANCARIO
+}

@@ -1,0 +1,19 @@
+
+// Datos de pago del usuario
+model UserPaymentData {
+  id     String @id @default(uuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  paymentMethod PaymentMethod
+
+  // Solo obligatorio cuando el método es CARGO_BANCARIO
+  iban String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Restricciones
+  @@index([paymentMethod])
+  @@index([iban]) // búsquedas rápidas por IBAN
+}
