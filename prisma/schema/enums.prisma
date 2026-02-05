@@ -1,4 +1,3 @@
-// ENUMS ------------------------------------------------
 enum Role {
   USER
   ADMIN
@@ -8,4 +7,18 @@ enum Role {
 enum PaymentMethod {
   TRANSFERENCIA
   CARGO_BANCARIO
+}
+
+enum TaskType {
+  IMPORTANTE
+  URGENTE
+  PROPUESTA
+}
+
+enum TaskStatus {
+  CREADA
+  ASIGNADA
+  EN_CURSO
+  RESUELTA
+  ESPERANDO_VALIDACION
 }

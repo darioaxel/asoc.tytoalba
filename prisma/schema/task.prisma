@@ -1,0 +1,57 @@
+model Task {
+  id            String     @id @default(uuid())
+  shortDesc     String     @db.VarChar(255)
+  longDesc      String?    @db.Text
+  type          TaskType
+  status        TaskStatus @default(CREADA)
+  
+  // Relaciones usuario
+  creatorId     String
+  creator       User       @relation("TaskCreator", fields: [creatorId], references: [id])
+  
+  // Asignados (muchos a muchos)
+  assignees     TaskAssignee[]
+  
+  // Validador (debe ser ADMIN)
+  validatorId   String?
+  validator     User?      @relation("TaskValidator", fields: [validatorId], references: [id])
+  
+  // Fechas
+  createdAt     DateTime   @default(now())
+  startDate     DateTime?
+  endDate       DateTime?
+  resolvedAt    DateTime?
+  
+  // Documentos
+  documents     TaskDocument[]
+  
+  @@index([status, type])
+  @@index([creatorId])
+  @@index([validatorId])
+  @@index([createdAt])
+}
+
+model TaskAssignee {
+  taskId    String
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assignedAt DateTime @default(now())
+
+  @@id([taskId, userId])
+  @@index([userId])
+}
+
+model TaskDocument {
+  id          String   @id @default(uuid())
+  filename    String
+  originalName String
+  mimeType    String
+  size        Int
+  url         String
+  taskId      String
+  task        Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  uploadedAt  DateTime @default(now())
+  
+  @@index([taskId])
+}

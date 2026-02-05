@@ -39,6 +39,11 @@ model User {
 
   posts Post[]
 
+  // Tareas
+  createdTasks      Task[]       @relation("TaskCreator")
+  assignedTasks     TaskAssignee[]
+  validatedTasks    Task[]       @relation("TaskValidator")
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
