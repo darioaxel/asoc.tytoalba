@@ -1,5 +1,4 @@
 // ~/server/api/user/index.get.ts
-import { prisma } from '../../utils/prisma'
 import type { User } from '#auth-utils'
 
 

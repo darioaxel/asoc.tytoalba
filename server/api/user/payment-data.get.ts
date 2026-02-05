@@ -1,5 +1,4 @@
 import { isValidSpanishIBAN } from '../../utils/iban'   // si la usas más adelante
-import { prisma } from '../../utils/prisma'   // ✅ IMPORTAR
 
 export default defineEventHandler(async (event) => {
   const session = await getUserSession(event)

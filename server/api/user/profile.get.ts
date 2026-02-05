@@ -1,7 +1,4 @@
 import { z } from 'zod'
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
 
 export default defineEventHandler(async (event) => {
   const session = await getUserSession(event)
@@ -11,9 +8,7 @@ export default defineEventHandler(async (event) => {
       statusCode: 401,
       message: 'No autenticado'
     })
-  }
-
-  
+  }  
   
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },

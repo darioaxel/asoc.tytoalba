@@ -1,8 +1,6 @@
 // ~/server/api/auth/login.post.ts
-import { PrismaClient } from '@prisma/client'
 import { z } from 'zod'
 import bcrypt from 'bcrypt'
-import { prisma } from '../../utils/prisma'
 
 const loginSchema = z.object({
   email: z.string().email().toLowerCase(),

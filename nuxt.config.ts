@@ -58,8 +58,9 @@ export default defineNuxtConfig({
       contentSecurityPolicy: false,        // ← desactiva CSP completo
     },
   },
-
-  build: {
-    transpile: ['@prisma/client']
-  }
+  nitro: {
+    externals: {
+      inline: ['@prisma/client']
+    }
+  }, 
 })
