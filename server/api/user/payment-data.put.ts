@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { isValidSpanishIBAN } from '../../utils/iban'
-import { prisma } from '../../utils/prisma'
+
 const bodySchema = z.object({
   paymentMethod: z.enum(['TRANSFERENCIA', 'CARGO_BANCARIO']),
   iban: z.string().optional(), // undefined cuando es TRANSFERENCIA

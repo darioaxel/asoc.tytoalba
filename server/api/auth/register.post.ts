@@ -1,9 +1,7 @@
 // ~/server/api/auth/register.post.ts
 import { z } from 'zod'
 import bcrypt from 'bcrypt'
-import { PrismaClient, Role } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import { Role } from '../../../prisma/generated/client'
 
 // Esquema de validación
 const registerSchema = z.object({

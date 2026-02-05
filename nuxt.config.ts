@@ -57,5 +57,10 @@ export default defineNuxtConfig({
       crossOriginEmbedderPolicy: false,
       contentSecurityPolicy: false,        // ← desactiva CSP completo
     },
-  }  
+  },
+  nitro: {
+    externals: {
+      inline: ['@prisma/client']
+    }
+  }, 
 })
