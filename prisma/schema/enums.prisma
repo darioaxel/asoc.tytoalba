@@ -5,7 +5,54 @@ enum Role {
   ROOT
 }
 
+enum MemberType {
+  NORMAL
+  JUVENIL
+  FUNDADOR
+}
+
 enum PaymentMethod {
   TRANSFERENCIA
   CARGO_BANCARIO
 }
+
+enum ReceiptType {
+  MONTHLY_FEE
+  BANK_RETURN_CHARGE
+  OTHER_CONCEPTS
+}
+
+enum ReceiptStatus {
+  PENDING          // Pendiente de pago (inicial)
+  IN_PROCESS
+  PARTIALLY_PAID
+  FULLY_PAID      // Pagado y validado
+  RETURNED        // Devuelto/rechazado (no validado)
+}
+
+enum InvoiceType {
+  EXPENSE
+  INCOME
+}
+
+enum InvoiceStatus {
+  PENDING
+  PARTIALLY_PAID
+  FULLY_PAID
+}
+
+enum AccountingEntryType {
+  INCOME
+  EXPENSE
+  ADJUSTMENT
+}
+
+enum AccountingCategory {
+  INCOME_FEES
+  INCOME_OTHER
+  EXPENSE_SERVICES
+  EXPENSE_MATERIALS
+  EXPENSE_FINANCIAL
+  ADJUSTMENTS
+}
+
