@@ -91,41 +91,7 @@
       </Carousel>
     </div>
 
-    <!-- resto del dashboard sin cambios -->
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <Card>
-        <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle class="text-sm font-medium">Total Posts</CardTitle>
-          <Icon name="lucide:file-text" class="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div class="text-2xl font-bold">{{ totalPosts }}</div>
-          <p class="text-xs text-muted-foreground">Artículos publicados</p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle class="text-sm font-medium">Actividad</CardTitle>
-          <Icon name="lucide:activity" class="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div class="text-2xl font-bold">{{ recentActivity }}</div>
-          <p class="text-xs text-muted-foreground">Visitas esta semana</p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle class="text-sm font-medium">Próximos eventos</CardTitle>
-          <Icon name="lucide:calendar" class="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div class="text-2xl font-bold">{{ upcomingEvents }}</div>
-          <p class="text-xs text-muted-foreground">Eventos programados</p>
-        </CardContent>
-      </Card>
-    </div>
+   
   </div>
 </template>
 
