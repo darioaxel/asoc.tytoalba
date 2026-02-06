@@ -4,6 +4,7 @@ import { landingPosts } from './data/posts.js'
 import { UserSeeder } from './seeders/user.seeder.js'
 import { TagSeeder } from './seeders/tag.seeder.js'
 import { PostSeeder } from './seeders/post.seeder.js'
+import { TaskSeeder } from './seeders/task.seeder.js'
 
 async function main() {
   console.log('🌱 Iniciando seed...\n')
@@ -21,6 +22,10 @@ async function main() {
     // 3. Posts
     const postSeeder = new PostSeeder()
     await postSeeder.run(landingPosts, createdUsers, tagMap)
+
+    // 4. Tasks
+    const taskSeeder = new TaskSeeder()
+    await taskSeeder.run(createdUsers)
 
     console.log('\n✨ Seed completado exitosamente')
   } catch (error) {
