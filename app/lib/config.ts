@@ -200,12 +200,13 @@ export const siteConfig = {
       items: [
         {
           title: "Mis Cuotas",
-          url: "#",
+          url: "/socios/recibos",
           icon: "lucide:receipt",
           isActive: true,
           items: [
-            { title: "Pagar Cuotas", url: "#" },
-            { title: "Historico Pagos", url: "#" },
+            { title: "Mis Recibos", url: "/socios/recibos" },
+            { title: "Pagar Recibos", url: "/socios/pagar" },
+            
           ],
         },
         {
