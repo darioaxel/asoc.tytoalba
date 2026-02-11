@@ -1,7 +1,7 @@
 // ~/server/api/admin/receipts/reject.post.ts
 // Rechaza/devuelve un recibo en trámite (pasa de UNDER_REVIEW a RETURNED)
 
-import { ReceiptStatus } from '../../../../prisma/generated/client'
+import { ReceiptStatus, TaskStatus } from '../../../../prisma/generated/client'
 import { z } from 'zod'
 
 const rejectSchema = z.object({
@@ -28,11 +28,12 @@ export default defineEventHandler(async (event) => {
   const body = await readValidatedBody(event, rejectSchema.parse)
 
   try {
-    // Buscar el recibo
+    // Buscar el recibo con tarea asociada
     const receipt = await prisma.receipt.findUnique({
       where: { id: body.receiptId },
       include: {
         payments: true,
+        task: true, // Incluir tarea de validación
         user: {
           select: {
             id: true,
@@ -79,6 +80,21 @@ export default defineEventHandler(async (event) => {
           data: { 
             registeredById: session.user!.id,
             reference: `RECHAZADO: ${body.reason}`
+          }
+        })
+      }
+
+      // Si existe una tarea de validación asociada, actualizarla
+      if (receipt.task) {
+        await tx.task.update({
+          where: { id: receipt.task.id },
+          data: {
+            status: body.unlockForRetry ? TaskStatus.CREADA : TaskStatus.RESUELTA,
+            resolvedAt: body.unlockForRetry ? null : new Date(),
+            validatorId: session.user!.id,
+            longDesc: receipt.task.longDesc + `\n\n❌ RECHAZADO el ${new Date().toLocaleDateString('es-ES')} por ${session.user!.email}` +
+              `\n📋 Motivo: ${body.reason}` +
+              (body.unlockForRetry ? '\n🔓 Recibo desbloqueado para nuevo intento' : ''),
           }
         })
       }

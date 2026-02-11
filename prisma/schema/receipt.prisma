@@ -43,6 +43,7 @@ model Receipt {
   
   payments         Payment[]
   receiptFiles     ReceiptFile[]  // ← CORREGIDO: receiptFiles, no files
+  task             Task?          // Relación 1:1 con tarea de validación
 
   @@unique([number, fiscalYear])
   @@index([userId, status, dueDate])

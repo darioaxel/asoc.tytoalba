@@ -1,7 +1,7 @@
 // ~/server/api/admin/receipts/validate.post.ts
 // Valida un pago por transferencia (pasa de UNDER_REVIEW a FULLY_PAID)
 
-import { ReceiptStatus } from '../../../../prisma/generated/client'
+import { ReceiptStatus, TaskStatus } from '../../../../prisma/generated/client'
 import { z } from 'zod'
 
 const validateSchema = z.object({
@@ -27,11 +27,12 @@ export default defineEventHandler(async (event) => {
   const body = await readValidatedBody(event, validateSchema.parse)
 
   try {
-    // Buscar el recibo con sus pagos
+    // Buscar el recibo con sus pagos y tarea asociada
     const receipt = await prisma.receipt.findUnique({
       where: { id: body.receiptId },
       include: {
         payments: true,
+        task: true, // Incluir tarea de validación
         user: {
           select: {
             id: true,
@@ -98,6 +99,20 @@ export default defineEventHandler(async (event) => {
           receiptId: receipt.id,
         }
       })
+
+      // Si existe una tarea de validación asociada, marcarla como resuelta
+      if (receipt.task) {
+        await tx.task.update({
+          where: { id: receipt.task.id },
+          data: {
+            status: TaskStatus.RESUELTA,
+            resolvedAt: new Date(),
+            validatorId: session.user!.id,
+            longDesc: receipt.task.longDesc + `\n\n✅ VALIDADO el ${new Date().toLocaleDateString('es-ES')} por ${session.user!.email}` +
+              (body.notes ? `\n📝 Notas: ${body.notes}` : ''),
+          }
+        })
+      }
 
       return updatedReceipt
     })

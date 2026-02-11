@@ -56,3 +56,18 @@ enum AccountingCategory {
   ADJUSTMENTS
 }
 
+// Enums para Sistema de Tareas
+enum TaskType {
+  IMPORTANTE
+  URGENTE
+  PROPUESTA
+}
+
+enum TaskStatus {
+  CREADA
+  ASIGNADA
+  EN_CURSO
+  RESUELTA
+  ESPERANDO_VALIDACION
+}
+
