@@ -12,6 +12,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
   }
 
   if (loggedIn.value && to.path === 'login') {
-    return navigateTo('/socios/dashboard')
+    return navigateTo('/socios/')
   }
 })

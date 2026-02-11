@@ -74,7 +74,7 @@ export const siteConfig = {
       // El padre SIEMPRE visible, solo los hijos requieren auth
       children: [
         {
-          href: '/socios/dashboard',
+          href: '/socios/',
           label: 'Mi Área',
           icon: 'lucide:user',
           requiresAuth: true,

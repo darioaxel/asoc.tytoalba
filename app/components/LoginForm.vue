@@ -76,9 +76,9 @@ const handleSubmit = async () => {
       if (user?.role === 'ROOT') {
         await navigateTo('/admin/system')
       } else if (user?.role === 'ADMIN') {
-        await navigateTo('/socios/dashboard')
+        await navigateTo('/socios/')
       } else {
-        await navigateTo('/socios/dashboard')
+        await navigateTo('/socios/')
       }
     }
   } catch (error: any) {

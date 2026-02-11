@@ -83,7 +83,7 @@
         </template>
 
         <template v-else>
-          <NuxtLink to="/socios/dashboard">
+          <NuxtLink to="/socios/">
             <Button class="w-full bg-tyto-primary hover:bg-tyto-primary/90">
               <Icon name="lucide:user" class="mr-2 h-4 w-4" />
               Mi Área
