@@ -1,4 +1,4 @@
-import { MemberType, ReceiptStatus, PaymentMethod } from '../../generated/client'
+import { MemberType, ReceiptStatus, PaymentMethod } from '~/prisma/generated/client'
 import { ReceiptScenarioType, MonthConfig } from '../types.js'
 
 // Configuración de escenarios por email de usuario

@@ -6,7 +6,7 @@ import {
   ReceiptType,
   MemberType,
   MembershipType,
-} from '../../generated/client'
+} from '~/prisma/generated/client'
 import { MonthConfig } from '../types.js'
 import { getScenarioType, buildScenario } from '../data/receipts.js'
 
