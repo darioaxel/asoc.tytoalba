@@ -385,7 +385,7 @@ const handleSubmit = async () => {
               </Button>
               
               <FieldDescription class="px-6 text-center">
-                ¿Ya tienes una cuenta? <a href="/socios/login" class="text-primary hover:underline">Inicia sesión</a>
+                ¿Ya tienes una cuenta? <NuxtLink to="/socios/login" class="text-primary hover:underline">Inicia sesión</NuxtLink>
               </FieldDescription>
             </Field>
           </FieldGroup>

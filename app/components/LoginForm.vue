@@ -185,9 +185,9 @@ const handleSubmit = async () => {
               
               <FieldDescription class="text-center">
                 ¿No tienes una cuenta?
-                <a href="/socios/signup">
+                <NuxtLink to="/socios/signup" class="text-primary hover:underline">
                   Regístrate
-                </a>
+                </NuxtLink>
               </FieldDescription>
             </Field>
           </FieldGroup>
