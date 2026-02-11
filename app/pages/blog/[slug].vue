@@ -58,7 +58,7 @@
 
       <!-- Content -->
       <div class="prose prose-lg dark:prose-invert max-w-none">
-        <div v-html="renderedContent"></div>
+        <MDC v-if="post.content" :value="post.content" />
       </div>
 
       <!-- Divider -->
@@ -113,12 +113,7 @@ useHead({
   ],
 })
 
-// Render content (por ahora simple, luego puedes añadir markdown-it)
-const renderedContent = computed(() => {
-  if (!post.value?.content) return ''
-  // Convertir saltos de línea a <br> por ahora
-  return post.value.content.replace(/\n/g, '<br>')
-})
+
 
 // Métodos
 function formatDate(date: string) {

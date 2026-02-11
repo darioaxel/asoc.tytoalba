@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@fontsource/inter": "^5.2.8",
+    "@nuxt/content": "^3.11.2",
     "@nuxt/fonts": "^0.12.1",
     "@nuxt/image": "^1.11.0",
     "@nuxtjs/fontaine": "^0.4.4",
@@ -21,6 +22,7 @@
     "@pinia/nuxt": "^0.11.3",
     "@prisma/adapter-neon": "^7.3.0",
     "@prisma/adapter-pg": "^7.3.0",
+    "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.1.17",
     "@tanstack/vue-table": "^8.21.3",
     "@vee-validate/nuxt": "^4.15.1",

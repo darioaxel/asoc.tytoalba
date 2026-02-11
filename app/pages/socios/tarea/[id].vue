@@ -53,8 +53,8 @@
             <h3 class="font-semibold text-sm text-muted-foreground uppercase tracking-wide">
               Descripción
             </h3>
-            <div class="bg-muted/50 rounded-lg p-4 whitespace-pre-line">
-              {{ task.longDesc }}
+            <div class="bg-muted/50 rounded-lg p-4 prose prose-sm max-w-none dark:prose-invert">
+              <MDC :value="task.longDesc" />
             </div>
           </div>
 
