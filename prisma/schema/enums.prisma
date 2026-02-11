@@ -23,11 +23,11 @@ enum ReceiptType {
 }
 
 enum ReceiptStatus {
-  PENDING          // Pendiente de pago (inicial)
+  PENDING // Pendiente de pago (inicial)
   IN_PROCESS
   PARTIALLY_PAID
-  FULLY_PAID      // Pagado y validado
-  RETURNED        // Devuelto/rechazado (no validado)
+  FULLY_PAID // Pagado y validado
+  RETURNED // Devuelto/rechazado (no validado)
 }
 
 enum InvoiceType {
@@ -70,4 +70,3 @@ enum TaskStatus {
   RESUELTA
   ESPERANDO_VALIDACION
 }
-

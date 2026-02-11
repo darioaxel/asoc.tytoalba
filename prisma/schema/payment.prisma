@@ -1,24 +1,23 @@
 model Payment {
-  id            String        @id @default(uuid())
-  receiptId     String
-  receipt       Receipt       @relation(fields: [receiptId], references: [id])
-  
-  amount        Decimal       @db.Decimal(12,2)
-  method        PaymentMethod
-  paymentDate   DateTime      @default(now())
-  reference     String?
-  
+  id        String  @id @default(uuid())
+  receiptId String
+  receipt   Receipt @relation(fields: [receiptId], references: [id])
+
+  amount      Decimal       @db.Decimal(12, 2)
+  method      PaymentMethod
+  paymentDate DateTime      @default(now())
+  reference   String?
+
   // Si fue por transferencia, vincular al justificante (1:1)
-  receiptFileId String?       @unique  // ← AÑADIDO @unique
-  receiptFile   ReceiptFile?  @relation(fields: [receiptFileId], references: [id])
-  
+  receiptFileId String?      @unique // ← AÑADIDO @unique
+  receiptFile   ReceiptFile? @relation(fields: [receiptFileId], references: [id])
+
   // Quién registró el pago (sistema o admin)
   registeredById String?
-  
+
   @@index([receiptId])
   @@map("payments")
 }
-
 
 model UserPaymentData {
   id     String @id @default(uuid())

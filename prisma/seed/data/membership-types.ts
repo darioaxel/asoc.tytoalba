@@ -1,4 +1,4 @@
-import { MemberType } from '~/prisma/generated/client'
+import { MemberType } from '../../generated/client'
 import { MembershipTypeData } from '../types'
 
 export const membershipTypes: MembershipTypeData[] = [

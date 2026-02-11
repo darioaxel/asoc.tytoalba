@@ -1,6 +1,12 @@
 import tailwindcss from "@tailwindcss/vite"; 
 
 export default defineNuxtConfig({
+  app: {
+    head: {
+      title: 'Asociación Tyto Alba',
+      titleTemplate: '%s - Tyto Alba',
+    }
+  },
   modules: [
     'nuxt-auth-utils',
     "@pinia/nuxt",
@@ -15,7 +21,7 @@ export default defineNuxtConfig({
     "shadcn-nuxt",
     "@nuxt/image",
     "@nuxt/fonts",
-    "@nuxtjs/seo",
+    // "@nuxtjs/seo", // Temporalmente deshabilitado - causa error useHead
     "@nuxt/icon",
     "nuxt-svgo",
     '@vueuse/nuxt',

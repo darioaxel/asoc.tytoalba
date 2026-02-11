@@ -1,7 +1,7 @@
-import { Post, User, Role } from '~/prisma/generated/client'
+import { Post, User, Role } from '../../generated/client'
 import { prisma } from '../config.js'
 import { generateSlug } from '../utils/slug.js'
-import { PostData } from '~/types'
+import { PostData } from '../types.js'
 
 export class PostSeeder {
   async run(posts: PostData[], users: User[], tagMap: Map<string, any>): Promise<void> {

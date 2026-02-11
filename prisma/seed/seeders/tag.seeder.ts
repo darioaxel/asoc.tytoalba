@@ -1,4 +1,4 @@
-import { Tag } from '~/prisma/generated/client'
+import { Tag } from '../../generated/client'
 import { prisma } from '../config.js'
 import { generateSlug } from '../utils/slug.js'
 

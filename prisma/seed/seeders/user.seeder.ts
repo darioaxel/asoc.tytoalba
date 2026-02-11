@@ -1,4 +1,4 @@
-import { User, Role, MembershipType } from '~/prisma/generated/client'
+import { User, Role, MembershipType } from '../../generated/client'
 import { prisma } from '../config.js'
 import { hash } from '../utils/hash.js'
 import { UserData } from '../types.js'

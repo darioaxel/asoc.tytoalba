@@ -1,35 +1,35 @@
 // MODELS: Sistema de Tareas ---------------------------------
 
 model Task {
-  id            String     @id @default(uuid())
-  shortDesc     String     @db.VarChar(255)
-  longDesc      String?    @db.Text
-  type          TaskType
-  status        TaskStatus @default(CREADA)
-  
+  id        String     @id @default(uuid())
+  shortDesc String     @db.VarChar(255)
+  longDesc  String?    @db.Text
+  type      TaskType
+  status    TaskStatus @default(CREADA)
+
   // Relación opcional con recibo (para tareas de validación de pago)
-  receiptId     String?    @unique
-  receipt       Receipt?   @relation(fields: [receiptId], references: [id])
-  
+  receiptId String?  @unique
+  receipt   Receipt? @relation(fields: [receiptId], references: [id])
+
   // Relaciones usuario
-  creatorId     String
-  creator       User       @relation("TaskCreator", fields: [creatorId], references: [id])
-  
+  creatorId String
+  creator   User   @relation("TaskCreator", fields: [creatorId], references: [id])
+
   // Asignados (muchos a muchos)
-  assignees     TaskAssignee[]
-  
+  assignees TaskAssignee[]
+
   // Validador (debe ser ADMIN)
-  validatorId   String?
-  validator     User?      @relation("TaskValidator", fields: [validatorId], references: [id])
-  
+  validatorId String?
+  validator   User?   @relation("TaskValidator", fields: [validatorId], references: [id])
+
   // Fechas
-  createdAt     DateTime   @default(now())
-  startDate     DateTime?
-  endDate       DateTime?
-  resolvedAt    DateTime?
-  
+  createdAt  DateTime  @default(now())
+  startDate  DateTime?
+  endDate    DateTime?
+  resolvedAt DateTime?
+
   // Documentos
-  documents     TaskDocument[]
+  documents TaskDocument[]
 
   @@index([status, type])
   @@index([creatorId])

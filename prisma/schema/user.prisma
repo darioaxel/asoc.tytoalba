@@ -1,4 +1,3 @@
-
 // MODELS -----------------------------------------------
 model Address {
   id          String   @id @default(uuid())
@@ -34,20 +33,25 @@ model User {
   providerId          String?
   role                Role      @default(USER)
 
-  memberTypeId    String?
-  memberType      MembershipType? @relation(fields: [memberTypeId], references: [id])
+  memberTypeId String?
+  memberType   MembershipType? @relation(fields: [memberTypeId], references: [id])
 
   address     Address?
   paymentData UserPaymentData?
 
   posts Post[]
-  
+
   // Relaciones con Receipt (como socio)
-  receipts     Receipt[] 
-  
+  receipts Receipt[]
+
   // Relaciones con Receipt (como admin que desbloquea/valida)
-  unlockedReceipts   Receipt[]  @relation("ReceiptUnlockedBy")
-  validatedReceipts  Receipt[]  @relation("ReceiptValidatedBy")
+  unlockedReceipts  Receipt[] @relation("ReceiptUnlockedBy")
+  validatedReceipts Receipt[] @relation("ReceiptValidatedBy")
+
+  // Relaciones con Task
+  createdTasks   Task[]         @relation("TaskCreator")
+  assignedTasks  TaskAssignee[]
+  validatedTasks Task[]         @relation("TaskValidator")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -57,15 +61,15 @@ model User {
 }
 
 model MembershipType {
-  id          String   @id @default(uuid())
+  id          String     @id @default(uuid())
   type        MemberType @unique
-  name        String   // "Socio Normal", "Socio Juvenil"...
-  monthlyFee  Decimal  @db.Decimal(10,2)
+  name        String // "Socio Normal", "Socio Juvenil"...
+  monthlyFee  Decimal    @db.Decimal(10, 2)
   description String?
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
+  isActive    Boolean    @default(true)
+  createdAt   DateTime   @default(now())
 
   users User[]
-  
+
   @@map("membership_types")
 }

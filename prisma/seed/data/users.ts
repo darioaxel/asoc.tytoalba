@@ -1,4 +1,4 @@
-import { Role, MemberType } from '~/prisma/generated/client'
+import { Role, MemberType } from '../../generated/client'
 import { UserData } from '../types'
 
 const yearsAgo = (years: number) => new Date(new Date().getFullYear() - years, 0, 1)
