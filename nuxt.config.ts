@@ -1,6 +1,15 @@
 import tailwindcss from "@tailwindcss/vite"; 
 
 export default defineNuxtConfig({
+  runtimeConfig: {
+    // Private keys (only available on server-side)
+    oauth: {
+      google: {
+        clientId: process.env.NUXT_OAUTH_GOOGLE_CLIENT_ID,
+        clientSecret: process.env.NUXT_OAUTH_GOOGLE_CLIENT_SECRET,
+      }
+    }
+  },
   modules: [
     'nuxt-auth-utils',
     "@pinia/nuxt",
