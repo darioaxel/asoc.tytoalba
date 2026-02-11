@@ -125,10 +125,11 @@ export const siteConfig = {
         {
           title: "Tareas",
           url: "#",
-          icon: "lucide:book-open",
+          icon: "lucide:list-todo",
+          isActive: true,
           items: [
             { title: "Gestionar tareas", url: "/socios/tareas" },
-            { title: "Crear tarea", url: "/socios/tareas/nueva" },
+            { title: "Crear tarea", url: "/socios/tarea/nueva" },
           ],
         },
         {
