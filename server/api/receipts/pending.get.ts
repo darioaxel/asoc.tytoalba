@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
     },
   })
 
-  const totalDebt = receipts.reduce((sum, r) => sum + r.totalAmount, 0)
+  const totalDebt = receipts.reduce((sum, r) => sum + Number(r.totalAmount), 0)
 
   return {
     receipts,
