@@ -4,10 +4,10 @@ const createPostSchema = z.object({
   title: z.string().min(1, 'El título es obligatorio').max(200, 'Máximo 200 caracteres'),
   slug: z.string().min(1, 'El slug es obligatorio').max(200, 'Máximo 200 caracteres'),
   excerpt: z.string().max(500, 'Máximo 500 caracteres').optional(),
-  coverImage: z.string().max(500, 'Máximo 500 caracteres').optional(),
+  coverImageId: z.string().uuid().optional(), // Ahora es UUID de File, no URL string
   category: z.string().optional(),
   tags: z.array(z.string()).optional(),
-  content: z.string().min(1, 'El contenido es obligatorio'),
+  content: z.string().optional(),
   published: z.boolean().default(false),
 })
 
@@ -46,10 +46,22 @@ export default defineEventHandler(async (event) => {
       })
     }
 
+    // Verificar que el coverImage existe si se proporcionó
+    if (validated.coverImageId) {
+      const file = await prisma.file.findUnique({
+        where: { id: validated.coverImageId }
+      })
+      if (!file) {
+        throw createError({
+          statusCode: 400,
+          message: 'La imagen de portada no existe'
+        })
+      }
+    }
+
     // Generar excerpt si no se proporcionó
     let excerpt = validated.excerpt
-    if (!excerpt) {
-      // Extraer texto plano del contenido HTML y limitar a 200 caracteres
+    if (!excerpt && validated.content) {
       const plainText = validated.content
         .replace(/<[^>]*>/g, '')
         .replace(/\s+/g, ' ')
@@ -65,7 +77,6 @@ export default defineEventHandler(async (event) => {
       for (const tagName of validated.tags) {
         const tagSlug = generateSlug(tagName)
         
-        // Buscar o crear el tag
         const tag = await prisma.tag.upsert({
           where: { slug: tagSlug },
           update: {},
@@ -85,8 +96,8 @@ export default defineEventHandler(async (event) => {
         title: validated.title,
         slug: validated.slug,
         excerpt: excerpt || '',
-        content: validated.content,
-        cover: validated.coverImage,
+        content: validated.content || '',
+        coverImageId: validated.coverImageId,
         published: validated.published,
         publishedAt: validated.published ? new Date() : null,
         authorId: session.user.id,
@@ -112,6 +123,12 @@ export default defineEventHandler(async (event) => {
             slug: true,
           },
         },
+        coverImage: {
+          select: {
+            id: true,
+            path: true,
+          }
+        }
       },
     })
 
@@ -127,7 +144,7 @@ export default defineEventHandler(async (event) => {
         title: post.title,
         slug: post.slug,
         excerpt: post.excerpt,
-        cover: post.cover,
+        cover: post.coverImage?.path,
         published: post.published,
         publishedAt: post.publishedAt,
         author: post.author,

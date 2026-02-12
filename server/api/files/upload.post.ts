@@ -1,4 +1,4 @@
-import { writeFile } from 'fs/promises'
+import { writeFile, mkdir } from 'fs/promises'
 import { join } from 'path'
 import crypto from 'crypto'
 
@@ -18,16 +18,20 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, message: 'Archivo no encontrado' })
   }
 
-  // Detectar tipo de upload (receipts o blog)
+  // Detectar tipo de upload (receipts, blog, o post-content)
   const typeField = formData.find(f => f.name === 'type')
   const uploadType = typeField?.data?.toString() || 'receipt'
   
+  // Post ID opcional (para relacionar imagen con post)
+  const postIdField = formData.find(f => f.name === 'postId')
+  const postId = postIdField?.data?.toString()
+  
   // Configurar según tipo
-  const isBlogImage = uploadType === 'blog'
+  const isBlogImage = uploadType === 'blog' || uploadType === 'post-content'
   const allowedTypes = isBlogImage 
     ? ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
     : ['image/jpeg', 'image/png', 'image/webp', 'application/pdf']
-  const maxSize = isBlogImage ? 10 * 1024 * 1024 : 5 * 1024 * 1024 // 10MB para blog, 5MB para recibos
+  const maxSize = isBlogImage ? 10 * 1024 * 1024 : 5 * 1024 * 1024
   const uploadDirName = isBlogImage ? 'blog' : 'receipts'
 
   // Validar tipo
@@ -53,6 +57,9 @@ export default defineEventHandler(async (event) => {
   const uploadDir = join(process.cwd(), 'uploads', uploadDirName)
   const filePath = join(uploadDir, fileName)
 
+  // Crear directorio si no existe
+  await mkdir(uploadDir, { recursive: true })
+
   // Guardar archivo
   await writeFile(filePath, file.data)
 
@@ -66,6 +73,16 @@ export default defineEventHandler(async (event) => {
       checksum: hash,
     },
   })
+
+  // Si se proporcionó postId, crear la relación
+  if (postId && uploadType === 'post-content') {
+    await prisma.postImage.create({
+      data: {
+        postId: Number(postId),
+        fileId: fileRecord.id,
+      }
+    })
+  }
 
   return {
     id: fileRecord.id,

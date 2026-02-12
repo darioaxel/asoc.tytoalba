@@ -11,6 +11,10 @@ model File {
   // Relaciones inversas
   receiptFile     ReceiptFile?
   supplierPayment SupplierPayment?
+  
+  // Relaciones con posts
+  postCoverImage  Post?       @relation("PostCoverImage") // Una imagen puede ser cover de un post
+  postImages      PostImage[] // Una imagen puede estar en múltiples posts
 
   @@map("files")
 }

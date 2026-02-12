@@ -144,7 +144,7 @@
                 type="button"
                 variant="ghost"
                 size="icon"
-                @click="form.coverImage = ''"
+                @click="form.coverImage = ''; form.coverImageId = ''"
               >
                 <Icon name="lucide:x" class="h-4 w-4" />
               </Button>
@@ -251,7 +251,8 @@ const form = ref({
   title: '',
   slug: '',
   excerpt: '',
-  coverImage: '',
+  coverImage: '',  // URL para preview
+  coverImageId: '', // UUID para guardar en BD
   category: '',
   tags: [] as string[],
 })
@@ -347,6 +348,7 @@ const uploadFile = async (file: File) => {
       body: formData
     })
     form.value.coverImage = response.url
+    form.value.coverImageId = response.id
     toast.success('Imagen subida', {
       description: 'La imagen se ha subido correctamente'
     })
@@ -372,7 +374,7 @@ const handleSubmit = async () => {
       title: form.value.title,
       slug: form.value.slug,
       excerpt: form.value.excerpt || undefined,
-      coverImage: form.value.coverImage || undefined,
+      coverImageId: form.value.coverImageId || undefined,
       category: form.value.category || undefined,
       tags: form.value.tags.length > 0 ? form.value.tags : undefined,
       content: '<p></p>', // Contenido temporal vacío

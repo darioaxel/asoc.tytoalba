@@ -66,6 +66,10 @@
         <CardTitle>Contenido del artículo</CardTitle>
         <CardDescription>
           Escribe el contenido completo. Puedes formatear texto, añadir imágenes y más.
+          <br>
+          <span class="text-xs text-muted-foreground">
+            Usa "/" para ver comandos, selecciona texto para formato rápido.
+          </span>
         </CardDescription>
       </CardHeader>
       <CardContent class="space-y-4">
@@ -75,7 +79,7 @@
             type="button"
             variant="ghost"
             size="sm"
-            @click="insertImage"
+            @click="uploadAndInsertImage"
           >
             <Icon name="lucide:image-plus" class="h-4 w-4 mr-2" />
             Subir imagen
@@ -89,15 +93,25 @@
             <Icon name="lucide:link" class="h-4 w-4 mr-2" />
             Imagen desde URL
           </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            @click="insertImageFromGallery"
+          >
+            <Icon name="lucide:images" class="h-4 w-4 mr-2" />
+            Galería del post
+          </Button>
         </div>
 
         <!-- Novel Editor -->
-        <div class="min-h-[500px]">
-          <Editor
-            v-model="content"
-            class="min-h-[500px]"
-          />
-        </div>
+        <NovelEditor
+          ref="editorRef"
+          v-model="content"
+          :storage-key="`novel-post-${postId}`"
+          placeholder="Empieza a escribir tu artículo..."
+          class="min-h-[500px]"
+        />
       </CardContent>
     </Card>
 
@@ -138,7 +152,7 @@
       </Button>
       <Button
         type="button"
-        :disabled="isSaving || !content.trim()"
+        :disabled="isSaving"
         variant="secondary"
         class="flex-1"
         @click="saveDraft"
@@ -149,7 +163,7 @@
       </Button>
       <Button
         type="button"
-        :disabled="isPublishing || !content.trim()"
+        :disabled="isPublishing"
         class="flex-1"
         @click="publish"
       >
@@ -177,8 +191,6 @@ import {
   CardDescription,
   CardContent,
 } from '@/components/ui/card'
-import { Editor } from '@codeverze/novel-vue'
-import '@codeverze/novel-vue/dist/style.css'
 
 definePageMeta({
   middleware: ['auth'],
@@ -194,7 +206,7 @@ const content = ref('')
 const published = ref(false)
 const isSaving = ref(false)
 const isPublishing = ref(false)
-const isLoading = ref(true)
+const editorRef = ref()
 
 // Cargar el post
 const fetchPost = async () => {
@@ -208,13 +220,11 @@ const fetchPost = async () => {
       description: 'No se pudo cargar el post'
     })
     navigateTo('/socios')
-  } finally {
-    isLoading.value = false
   }
 }
 
-// Subir imagen e insertarla
-const insertImage = async () => {
+// Subir imagen e insertarla en el editor
+const uploadAndInsertImage = async () => {
   const input = document.createElement('input')
   input.type = 'file'
   input.accept = 'image/jpeg,image/png,image/webp,image/gif'
@@ -222,36 +232,11 @@ const insertImage = async () => {
   input.onchange = async (e) => {
     const file = (e.target as HTMLInputElement).files?.[0]
     if (!file) return
-
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
-    if (!allowedTypes.includes(file.type)) {
-      toast.error('Tipo no permitido')
-      return
-    }
-
-    if (file.size > 10 * 1024 * 1024) {
-      toast.error('Archivo demasiado grande (máx 10MB)')
-      return
-    }
-
-    const formData = new FormData()
-    formData.append('file', file)
-    formData.append('type', 'blog')
-
+    
     try {
-      toast.info('Subiendo imagen...')
-      const response = await $fetch('/api/files/upload', {
-        method: 'POST',
-        body: formData
-      })
-      
-      // Insertar imagen en el contenido (markdown)
-      const imageMarkdown = `\n![${file.name}](${response.url})\n`
-      content.value += imageMarkdown
-      
-      toast.success('Imagen insertada')
-    } catch (error: any) {
-      toast.error('Error', { description: error.message })
+      await editorRef.value?.insertUploadedImage?.(file, postId)
+    } catch (error) {
+      console.error('Error:', error)
     }
   }
   
@@ -261,28 +246,57 @@ const insertImage = async () => {
 // Insertar imagen desde URL
 const insertImageFromUrl = () => {
   const url = window.prompt('URL de la imagen:')
-  if (url) {
-    const alt = window.prompt('Texto alternativo (descripción):') || 'Imagen'
-    const imageMarkdown = `\n![${alt}](${url})\n`
-    content.value += imageMarkdown
+  if (!url) return
+  
+  const alt = window.prompt('Texto alternativo (descripción):') || 'Imagen'
+  
+  try {
+    editorRef.value?.insertImage?.(url, alt)
+  } catch (error) {
+    toast.error('Error al insertar imagen')
+  }
+}
+
+// Mostrar galería de imágenes del post
+const insertImageFromGallery = async () => {
+  try {
+    // Obtener imágenes relacionadas con el post
+    const images = await $fetch(`/api/posts/${postId}/images`)
+    
+    if (!images || images.length === 0) {
+      toast.info('No hay imágenes', {
+        description: 'Este post no tiene imágenes en la galería'
+      })
+      return
+    }
+    
+    // Mostrar selector simple (podría ser un modal más elaborado)
+    const urls = images.map((img: any) => img.file?.path).filter(Boolean)
+    const selected = window.prompt(
+      `Imágenes disponibles:\n${urls.map((u: string, i: number) => `${i + 1}. ${u}`).join('\n')}\n\nIntroduce el número de la imagen:`
+    )
+    
+    const index = parseInt(selected || '0') - 1
+    if (index >= 0 && index < urls.length) {
+      editorRef.value?.insertImage?.(urls[index], 'Imagen del post')
+    }
+  } catch (error) {
+    toast.error('Error al cargar galería')
   }
 }
 
 // Volver al paso 1 (editar datos básicos)
 const goBackToStep1 = () => {
-  // Guardar contenido actual como borrador antes de salir
-  if (content.value.trim()) {
-    saveContent(false)
-  }
-  // Aquí podríamos redirigir a una página de edición de datos básicos
-  // Por ahora, mostramos un mensaje
-  toast.info('Función en desarrollo', {
-    description: 'La edición de datos básicos estará disponible próximamente'
+  // Guardar contenido actual antes de salir
+  saveContent(false).then(() => {
+    toast.info('Función en desarrollo', {
+      description: 'La edición de datos básicos estará disponible próximamente'
+    })
   })
 }
 
 // Guardar contenido
-const saveContent = async (showToast = true) => {
+const saveContent = async (showToast = true): Promise<boolean> => {
   try {
     const { error } = await $fetch(`/api/posts/${postId}`, {
       method: 'PUT',
@@ -307,7 +321,7 @@ const saveContent = async (showToast = true) => {
 // Guardar borrador
 const saveDraft = async () => {
   isSaving.value = true
-  const success = await saveContent(true)
+  await saveContent(true)
   isSaving.value = false
 }
 
@@ -351,27 +365,3 @@ onMounted(() => {
   fetchPost()
 })
 </script>
-
-<style>
-/* Novel Editor - Personalización en español */
-.novel-editor {
-  --novel-white: hsl(var(--background));
-  --novel-black: hsl(var(--foreground));
-}
-
-.novel-editor .ProseMirror {
-  padding: 1rem;
-  min-height: 400px;
-  outline: none;
-}
-
-/* Placeholder traducido */
-.novel-editor .ProseMirror p.is-editor-empty:first-child::before {
-  color: hsl(var(--muted-foreground));
-  content: "Empieza a escribir o usa el botón '+' para añadir contenido...";
-  float: left;
-  height: 0;
-  pointer-events: none;
-  font-style: italic;
-}
-</style>

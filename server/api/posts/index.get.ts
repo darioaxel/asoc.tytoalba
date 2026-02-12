@@ -35,7 +35,6 @@ export default defineEventHandler(async (event) => {
         title: true,
         slug: true,
         excerpt: true,
-        cover: true,
         publishedAt: true,
         author: {
           select: {
@@ -44,6 +43,11 @@ export default defineEventHandler(async (event) => {
             lastName: true,
             picture: true,
           },
+        },
+        coverImage: {
+          select: {
+            path: true,
+          }
         },
         tags: {
           select: {
@@ -60,8 +64,14 @@ export default defineEventHandler(async (event) => {
     prisma.post.count({ where }),
   ])
 
+  // Transformar posts para mantener compatibilidad
+  const transformedPosts = posts.map(post => ({
+    ...post,
+    cover: post.coverImage?.path,
+  }))
+
   return {
-    posts,
+    posts: transformedPosts,
     pagination: {
       page,
       limit,

@@ -14,15 +14,7 @@ export default defineEventHandler(async (event) => {
       id: Number(id),
       authorId: session.user.id // Solo el autor puede ver/editar
     },
-    select: {
-      id: true,
-      title: true,
-      slug: true,
-      excerpt: true,
-      content: true,
-      cover: true,
-      published: true,
-      publishedAt: true,
+    include: {
       author: {
         select: {
           id: true,
@@ -38,6 +30,12 @@ export default defineEventHandler(async (event) => {
           slug: true,
         },
       },
+      coverImage: {
+        select: {
+          id: true,
+          path: true,
+        }
+      }
     },
   })
 
@@ -48,5 +46,9 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  return post
+  // Transformar para mantener compatibilidad con el frontend
+  return {
+    ...post,
+    cover: post.coverImage?.path,
+  }
 })

@@ -4,7 +4,6 @@ model Post {
   slug        String    @unique @db.VarChar(255)
   excerpt     String    @db.Text
   content     String    @db.Text
-  cover       String?   @db.VarChar(500)
   published   Boolean   @default(false)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -13,7 +12,13 @@ model Post {
   authorId String
   author   User   @relation(fields: [authorId], references: [id])
 
-  tags Tag[]
+  // Relaciones
+  tags   Tag[]
+  images PostImage[]
+  
+  // Imagen de portada (relación opcional con File)
+  coverImageId String? @unique
+  coverImage   File?   @relation("PostCoverImage", fields: [coverImageId], references: [id])
 
   @@index([published, publishedAt])
   @@index([slug])
@@ -27,4 +32,19 @@ model Tag {
 
   @@index([slug])
   @@map("tags")
+}
+
+// Relación entre Posts e imágenes (para imágenes dentro del contenido)
+model PostImage {
+  id     Int   @id @default(autoincrement())
+  postId Int
+  post   Post  @relation(fields: [postId], references: [id], onDelete: Cascade)
+  fileId String
+  file   File  @relation(fields: [fileId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+  
+  @@index([postId])
+  @@index([fileId])
+  @@map("post_images")
 }

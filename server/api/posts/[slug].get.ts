@@ -12,14 +12,7 @@ export default defineEventHandler(async (event) => {
 
   const post = await prisma.post.findFirst({
     where: { slug, published: true },
-    select: {
-      id: true,
-      title: true,
-      slug: true,
-      excerpt: true,
-      content: true,
-      cover: true,
-      publishedAt: true,
+    include: {
       author: {
         select: {
           id: true,
@@ -35,6 +28,11 @@ export default defineEventHandler(async (event) => {
           slug: true,
         },
       },
+      coverImage: {
+        select: {
+          path: true,
+        }
+      }
     },
   })
 
@@ -45,5 +43,9 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  return post
+  // Transformar para mantener compatibilidad
+  return {
+    ...post,
+    cover: post.coverImage?.path,
+  }
 })

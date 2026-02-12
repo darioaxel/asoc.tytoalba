@@ -68,6 +68,13 @@ export default defineNuxtConfig({
   nitro: {
     externals: {
       inline: ['@prisma/client']
-    }
+    },
+    publicAssets: [
+      {
+        dir: 'uploads',
+        baseURL: '/uploads',
+        maxAge: 60 * 60 * 24 * 365 // 1 año de caché
+      }
+    ]
   }, 
 })

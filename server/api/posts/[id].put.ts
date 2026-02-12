@@ -4,7 +4,7 @@ const updatePostSchema = z.object({
   title: z.string().min(1, 'El título es obligatorio').max(200).optional(),
   slug: z.string().min(1).max(200).optional(),
   excerpt: z.string().max(500).optional(),
-  coverImage: z.string().max(500).optional().nullable(),
+  coverImageId: z.string().uuid().optional().nullable(),
   category: z.string().optional(),
   tags: z.array(z.string()).optional(),
   content: z.string().optional(),
@@ -67,6 +67,19 @@ export default defineEventHandler(async (event) => {
       }
     }
 
+    // Verificar que el coverImage existe si se proporcionó
+    if (validated.coverImageId) {
+      const file = await prisma.file.findUnique({
+        where: { id: validated.coverImageId }
+      })
+      if (!file) {
+        throw createError({
+          statusCode: 400,
+          message: 'La imagen de portada no existe'
+        })
+      }
+    }
+
     // Procesar tags si se proporcionaron
     let tagData = undefined
     if (validated.tags) {
@@ -91,7 +104,7 @@ export default defineEventHandler(async (event) => {
       ...(validated.title && { title: validated.title }),
       ...(validated.slug && { slug: validated.slug }),
       ...(validated.excerpt !== undefined && { excerpt: validated.excerpt }),
-      ...(validated.coverImage !== undefined && { cover: validated.coverImage }),
+      ...(validated.coverImageId !== undefined && { coverImageId: validated.coverImageId }),
       ...(validated.content !== undefined && { content: validated.content }),
       ...(validated.published !== undefined && { 
         published: validated.published,
@@ -120,6 +133,12 @@ export default defineEventHandler(async (event) => {
             slug: true,
           },
         },
+        coverImage: {
+          select: {
+            id: true,
+            path: true,
+          }
+        }
       },
     })
 
@@ -130,7 +149,17 @@ export default defineEventHandler(async (event) => {
       message: validated.published 
         ? 'Post publicado exitosamente' 
         : 'Borrador guardado exitosamente',
-      post
+      post: {
+        id: post.id,
+        title: post.title,
+        slug: post.slug,
+        excerpt: post.excerpt,
+        cover: post.coverImage?.path,
+        published: post.published,
+        publishedAt: post.publishedAt,
+        author: post.author,
+        tags: post.tags,
+      }
     }
 
   } catch (error: any) {

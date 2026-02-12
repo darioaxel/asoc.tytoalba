@@ -6,30 +6,35 @@ export default defineEventHandler(async (event) => {
 
   const posts = await prisma.post.findMany({
     where: { published: true },
-    select: {
-      id: true,
-      title: true,
-      slug: true,
-      excerpt: true,
-      cover: true,
-      publishedAt: true,
-      author: {               // <-- relación autor
+    include: {
+      author: {
         select: {
           firstName: true,
           lastName: true,
           picture: true,
         },
       },
-      tags: {                 // opcional, si también quieres los tags
+      tags: {
         select: {
           name: true,
           slug: true,
         },
       },
+      coverImage: {
+        select: {
+          path: true,
+        }
+      }
     },
     orderBy: { publishedAt: 'desc' },
     take: limit,
   })
 
-  return { posts }
+  // Transformar posts para mantener compatibilidad
+  const transformedPosts = posts.map(post => ({
+    ...post,
+    cover: post.coverImage?.path,
+  }))
+
+  return { posts: transformedPosts }
 })
