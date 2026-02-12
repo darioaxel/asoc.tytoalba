@@ -140,3 +140,5 @@ vite.config.ts.timestamp-*
 
 # Si usas output = "./generated/client":
 prisma/generated/
+
+.output/*

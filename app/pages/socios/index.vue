@@ -77,7 +77,7 @@
         </CardContent>
         <CardFooter>
           <Button class="w-full" as-child>
-            <NuxtLink to="/post/nuevo">
+            <NuxtLink to="/socios/posts/crear">
               <Icon name="lucide:plus" class="mr-2 h-4 w-4" />
               Crear Noticia
             </NuxtLink>

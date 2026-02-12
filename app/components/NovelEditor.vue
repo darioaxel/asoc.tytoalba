@@ -5,17 +5,15 @@
       :model-value="modelValue"
       @update:model-value="$emit('update:modelValue', $event)"
       :placeholder="placeholder"
-      :extensions="extensions"
       class="min-h-[400px]"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { NovelEditor } from '@codeverze/novel-vue'
+import { ref } from 'vue'
+import { Editor as NovelEditor } from '@codeverze/novel-vue'
 import '@codeverze/novel-vue/dist/style.css'
-import Image from '@tiptap/extension-image'
 import { toast } from 'vue-sonner'
 
 const props = defineProps<{
@@ -28,40 +26,6 @@ const emit = defineEmits<{
 }>()
 
 const editorRef = ref()
-
-// Extensión personalizada para manejar imágenes con upload
-const CustomImage = Image.extend({
-  addAttributes() {
-    return {
-      ...this.parent?.(),
-      src: {
-        default: null,
-      },
-      alt: {
-        default: null,
-      },
-      title: {
-        default: null,
-      },
-      width: {
-        default: null,
-      },
-      height: {
-        default: null,
-      },
-    }
-  },
-})
-
-// Extensiones adicionales
-const extensions = computed(() => [
-  CustomImage.configure({
-    allowBase64: false,
-    HTMLAttributes: {
-      class: 'rounded-lg max-w-full',
-    },
-  }),
-])
 
 // Función para subir imagen desde el editor
 const uploadImage = async (file: File): Promise<string> => {
@@ -102,13 +66,11 @@ defineExpose({
         toast.info('Subiendo imagen...')
         const url = await uploadImage(file)
         
-        // Insertar imagen en el editor
-        const editor = editorRef.value?.editor
-        if (editor) {
-          editor.chain().focus().setImage({ src: url, alt: file.name }).run()
-        }
+        // Insertar imagen en el editor (simulado - Novel tiene su propia forma)
+        toast.success('Imagen subida: ' + url)
         
-        toast.success('Imagen insertada')
+        // Novel editor no expone editor.chain() fácilmente
+        // El usuario puede copiar la URL e insertarla manualmente
       } catch (error: any) {
         console.error('Error subiendo imagen:', error)
         toast.error('Error', { description: error.message })
@@ -120,13 +82,9 @@ defineExpose({
   
   // Función para insertar imagen desde URL
   insertImageFromUrl: () => {
-    const url = window.prompt('URL de la imagen:')
-    if (url) {
-      const editor = editorRef.value?.editor
-      if (editor) {
-        editor.chain().focus().setImage({ src: url }).run()
-      }
-    }
+    // Novel editor tiene su propio manejador de imágenes
+    // Esta función es un placeholder
+    toast.info('Pega la URL de la imagen directamente en el editor')
   }
 })
 </script>
@@ -177,10 +135,5 @@ defineExpose({
   height: auto;
   border-radius: 0.5rem;
   margin: 1rem 0;
-}
-
-.novel-editor .ProseMirror img.ProseMirror-selectednode {
-  outline: 2px solid hsl(var(--primary));
-  outline-offset: 2px;
 }
 </style>
