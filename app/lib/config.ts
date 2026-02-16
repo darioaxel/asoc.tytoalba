@@ -109,8 +109,7 @@ export const siteConfig = {
           isActive: true,
           items: [
             { title: "Mis Recibos", url: "/socios/recibos" },
-            { title: "Pagar Recibos", url: "/socios/pagar" },
-            
+            { title: "Pagar Recibos", url: "/socios/pagar" },            
           ],
         },   
         {
@@ -119,6 +118,7 @@ export const siteConfig = {
           icon: "lucide:vote",
           isActive: true,
           items: [
+            { title: "Ver/Votar propuestas", url: "/socios/propuestas" },
             { title: "Crear propuestas", url: "/socios/propuesta/nueva" },            
           ],
         },       
