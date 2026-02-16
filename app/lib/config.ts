@@ -112,7 +112,16 @@ export const siteConfig = {
             { title: "Pagar Recibos", url: "/socios/pagar" },
             
           ],
-        },        
+        },   
+        {
+          title: "Propuestas",
+          url: "/socios/propuestas",
+          icon: "lucide:vote",
+          isActive: true,
+          items: [
+            { title: "Crear propuestas", url: "/socios/propuesta/nueva" },            
+          ],
+        },       
         {
           title: "Documentación",
           url: "#",

@@ -53,6 +53,11 @@ model User {
   assignedTasks  TaskAssignee[]
   validatedTasks Task[]         @relation("TaskValidator")
 
+  // Relaciones con Proposal
+  createdProposals    Proposal[]           @relation("ProposalCreator")
+  responsibleFor     ProposalResponsible[]
+  votes              Vote[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

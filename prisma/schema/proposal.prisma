@@ -1,0 +1,93 @@
+// MODELS: Sistema de Propuestas ---------------------------------
+
+model Proposal {
+  id          String          @id @default(uuid())
+  title       String          @db.VarChar(255)
+  summary     String          @db.Text
+  description String          @db.Text
+  status      ProposalStatus  @default(VOTANDO)
+
+  // Relaciones usuario
+  creatorId   String
+  creator     User            @relation("ProposalCreator", fields: [creatorId], references: [id])
+
+  // Responsables adicionales (muchos a muchos)
+  responsibles ProposalResponsible[]
+
+  // Votos
+  votes       Vote[]
+
+  // Archivos adjuntos
+  documents   ProposalDocument[]
+  images      ProposalImage[]
+
+  // Fechas
+  createdAt   DateTime        @default(now())
+  startDate   DateTime?       // Fecha en la que se llevaría a cabo
+  endDate     DateTime?       // Fecha de finalización / cierre de votación
+
+  @@index([status])
+  @@index([creatorId])
+  @@index([createdAt])
+  @@map("proposals")
+}
+
+model ProposalResponsible {
+  proposalId   String
+  proposal     Proposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assignedAt   DateTime @default(now())
+
+  @@id([proposalId, userId])
+  @@index([userId])
+  @@map("proposal_responsibles")
+}
+
+model Vote {
+  id          String    @id @default(uuid())
+  type        VoteType
+  
+  proposalId  String
+  proposal    Proposal  @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime  @default(now())
+
+  @@unique([proposalId, userId]) // Un usuario solo puede votar una vez por propuesta
+  @@index([proposalId])
+  @@index([userId])
+  @@map("votes")
+}
+
+model ProposalDocument {
+  id           String   @id @default(uuid())
+  filename     String
+  originalName String
+  mimeType     String
+  size         Int
+  url          String
+  proposalId   String
+  proposal     Proposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  uploadedAt   DateTime @default(now())
+
+  @@index([proposalId])
+  @@map("proposal_documents")
+}
+
+model ProposalImage {
+  id           String   @id @default(uuid())
+  filename     String
+  originalName String
+  mimeType     String
+  size         Int
+  url          String
+  proposalId   String
+  proposal     Proposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  uploadedAt   DateTime @default(now())
+
+  @@index([proposalId])
+  @@map("proposal_images")
+}

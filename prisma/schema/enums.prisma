@@ -70,3 +70,15 @@ enum TaskStatus {
   RESUELTA
   ESPERANDO_VALIDACION
 }
+
+// Enums para Sistema de Propuestas
+enum ProposalStatus {
+  VOTANDO
+  ACEPTADA
+  RECHAZADA
+}
+
+enum VoteType {
+  UP
+  DOWN
+}
