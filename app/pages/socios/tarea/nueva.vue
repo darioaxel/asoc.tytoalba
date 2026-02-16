@@ -256,7 +256,7 @@ import {
 } from '@/components/ui/select'
 
 definePageMeta({
-  middleware: ['auth'],
+  middleware: ['ADMIN', 'ROOT'],
   layout: 'dashboard',
 })
 

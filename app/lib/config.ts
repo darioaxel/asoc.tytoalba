@@ -112,17 +112,7 @@ export const siteConfig = {
             { title: "Pagar Recibos", url: "/socios/pagar" },
             
           ],
-        },
-        {
-          title: "Tareas",
-          url: "#",
-          icon: "lucide:list-todo",
-          isActive: true,
-          items: [
-            { title: "Gestionar tareas", url: "/socios/tareas" },
-            { title: "Crear tarea", url: "/socios/tarea/nueva" },
-          ],
-        },
+        },        
         {
           title: "Documentación",
           url: "#",
@@ -155,6 +145,16 @@ export const siteConfig = {
           items: [
             { title: "Validación Pagos", url: "#" },
             { title: "Creación de Recibos", url: "#" },           
+          ],
+        },
+        {
+          title: "Tareas",
+          url: "#",
+          icon: "lucide:list-todo",
+          isActive: true,
+          items: [
+            { title: "Gestionar tareas", url: "/socios/tareas" },
+            { title: "Crear tarea", url: "/socios/tarea/nueva" },
           ],
         },
       ]
