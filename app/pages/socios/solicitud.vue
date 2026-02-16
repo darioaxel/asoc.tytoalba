@@ -91,10 +91,11 @@
 
             <!-- Consentimiento -->
             <div class="flex items-start gap-2">
-              <Checkbox
+              <input
                 id="consent"
-                v-model:checked="form.consent"
-                required
+                v-model="form.consent"
+                type="checkbox"
+                class="w-4 h-4 mt-0.5 rounded border-gray-300 text-primary focus:ring-primary cursor-pointer"
               />
               <Label for="consent" class="text-sm font-normal leading-normal cursor-pointer">
                 He leído y acepto la
@@ -118,16 +119,12 @@
         <CardFooter class="flex flex-col items-start gap-2 text-sm text-muted-foreground border-t pt-6">
           <p class="flex items-center gap-2">
             <Info class="w-4 h-4" />
-            Recuerda que también deberás enviar por email:
+            Recuerda que para completar tu inscripción como socio, una vez que te contactemos, deberás proporcionar la siguiente documentación:
           </p>
           <ul class="list-disc list-inside ml-4 space-y-1">
-            <li>Fotografía del DNI (ambas caras)</li>
             <li>Documento de consentimiento firmado (si eres menor)</li>
             <li>Número de cuenta bancaria (IBAN)</li>
-          </ul>
-          <p class="mt-2">
-            Email: <a href="mailto:asoc.tytoalba@gmail.com" class="text-primary hover:underline">asoc.tytoalba@gmail.com</a>
-          </p>
+          </ul>         
         </CardFooter>
       </Card>
     </div>
@@ -156,7 +153,7 @@ import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Textarea } from '~/components/ui/textarea'
-import { Checkbox } from '~/components/ui/checkbox'
+
 
 const form = ref({
   firstName: '',

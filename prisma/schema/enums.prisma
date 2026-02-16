@@ -61,6 +61,7 @@ enum TaskType {
   IMPORTANTE
   URGENTE
   PROPUESTA
+  VERIFICAR_NUEVO_SOCIO
 }
 
 enum TaskStatus {

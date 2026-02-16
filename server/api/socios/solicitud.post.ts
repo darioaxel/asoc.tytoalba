@@ -12,6 +12,7 @@ const solicitudSchema = z.object({
 export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event)
+    console.log('📥 Body recibido:', JSON.stringify(body, null, 2))
     const validated = solicitudSchema.parse(body)
 
     // Buscar usuarios con rol ADMIN o ROOT para asignarles la tarea
@@ -24,13 +25,6 @@ export default defineEventHandler(async (event) => {
       },
       select: { id: true }
     })
-
-    if (admins.length === 0) {
-      throw createError({
-        statusCode: 500,
-        message: 'No hay administradores disponibles para procesar la solicitud'
-      })
-    }
 
     const adminIds = admins.map(admin => admin.id)
 
@@ -67,14 +61,14 @@ Solicitud recibida el ${new Date().toLocaleDateString('es-ES')} a las ${new Date
         type: TaskType.IMPORTANTE,
         status: TaskStatus.CREADA,
         // Como es una solicitud pública, no hay un creador (usuario autenticado)
-        // Usamos el primer admin como creador para cumplir con el schema
-        creatorId: adminIds[0],
-        assignees: {
+        // Usamos el primer admin como creador si existe, o null
+        creatorId: adminIds[0] || undefined,
+        assignees: adminIds.length > 0 ? {
           create: adminIds.map(userId => ({
             userId,
             assignedAt: new Date()
           }))
-        }
+        } : undefined
       },
       include: {
         assignees: {

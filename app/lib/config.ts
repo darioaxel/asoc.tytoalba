@@ -138,7 +138,15 @@ export const siteConfig = {
       roles: ['ADMIN', 'ROOT'],
       items: [
         {
-          title: "Cuentas asociación",
+          title: "Administrar socios",
+          url: "#",
+          icon: "lucide:user-check",
+          items: [
+            { title: "Lista socios", url: "/socios/lista" },            
+          ],
+        },
+        {
+          title: "Resumen cuentas",
           url: "#",
           icon: "lucide:bot",
           items: [
