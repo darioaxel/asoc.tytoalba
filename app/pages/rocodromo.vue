@@ -1,11 +1,13 @@
 <template>
   <div class="min-h-screen">
     <!-- Header -->
-    <PageHeader class="bg-gradient-to-br from-orange-500/5 to-red-500/5">
-      <PageHeaderHeading class="max-w-4xl">
+    <PageHeader class="relative bg-cover bg-center bg-no-repeat" style="background-image: url('/images/old-page/fondo-roco-2.jpeg');">
+      <!-- Overlay oscuro para mejorar legibilidad -->
+      <div class="absolute inset-0 bg-black/40"></div>
+      <PageHeaderHeading class="relative z-10 max-w-4xl text-white drop-shadow-lg">
         Rocódromo
       </PageHeaderHeading>
-      <PageHeaderDescription>
+      <PageHeaderDescription class="relative z-10 text-white/90 drop-shadow-md">
         Sala de escalada indoor de la Asociación Tyto Alba
       </PageHeaderDescription>
     </PageHeader>

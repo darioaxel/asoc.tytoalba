@@ -71,28 +71,19 @@ export const siteConfig = {
       label: 'Socios',
       icon: 'lucide:users',
       requiresAuth: false,
-      // El padre SIEMPRE visible, solo los hijos requieren auth
       children: [
         {
-          href: '/socios/',
-          label: 'Mi Área',
-          icon: 'lucide:user',
-          requiresAuth: true,
+          href: '/socios/landing',
+          label: 'Soci@s',
+          icon: 'lucide:info',
         },
         {
-          href: '/socios/documentos',
-          label: 'Documentación',
-          icon: 'lucide:file-text',
-          requiresAuth: true,
-        },
-        {
-          href: '/socios/registro',
+          href: '/socios/solicitud',
           label: 'Hazte Socio',
           icon: 'lucide:user-plus',
-          // Este NO requiere auth (público)
         },
       ],
-      },
+    },
   ] as NavItem[],
   user: {
     name: "shadcn",
