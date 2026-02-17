@@ -33,7 +33,7 @@
             <SelectValue placeholder="Todos los estados" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">Todos</SelectItem>
+            <SelectItem value="ALL">Todos</SelectItem>
             <SelectItem v-for="(label, key) in taskStatusLabels" :key="key" :value="key">
               {{ label }}
             </SelectItem>
@@ -237,8 +237,8 @@ const pagination = ref({
 })
 
 const filters = ref({
-  status: '',
-  type: '',
+  status: 'ALL',
+  type: 'ALL',
   search: ''
 })
 
@@ -250,8 +250,8 @@ const fetchTasks = async () => {
     params.append('limit', pagination.value.limit.toString())
     params.append('mine', 'true') // Solo mis tareas asignadas
     
-    if (filters.value.status) params.append('status', filters.value.status)
-    if (filters.value.type) params.append('type', filters.value.type)
+    if (filters.value.status && filters.value.status !== 'ALL') params.append('status', filters.value.status)
+    if (filters.value.type && filters.value.type !== 'ALL') params.append('type', filters.value.type)
     if (filters.value.search) params.append('search', filters.value.search)
     
     const data = await $fetch<{ tasks: Task[], pagination: any }>(`/api/tasks?${params}`)

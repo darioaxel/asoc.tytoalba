@@ -381,25 +381,23 @@ const handleSubmit = async () => {
       published: false, // Siempre borrador en el paso 1
     }
 
-    const { data, error } = await useFetch('/api/posts', {
+    // Usar $fetch en lugar de useFetch para acciones del cliente
+    const response = await $fetch('/api/posts', {
       method: 'POST',
       body: payload
     })
-
-    if (error.value) {
-      throw new Error(error.value.message || 'Error al crear el post')
-    }
 
     toast.success('Post creado', {
       description: 'Ahora puedes añadir el contenido'
     })
 
     // Redirigir al paso 2 (editor de contenido)
-    navigateTo(`/socios/posts/${data.value?.post?.id}/editar`)
+    navigateTo(`/socios/posts/${response.post?.id}/editar`)
     
   } catch (error: any) {
+    console.error('Error creando post:', error)
     toast.error('Error', {
-      description: error.message || 'No se pudo crear el post'
+      description: error.data?.message || error.message || 'No se pudo crear el post'
     })
   } finally {
     isSubmitting.value = false

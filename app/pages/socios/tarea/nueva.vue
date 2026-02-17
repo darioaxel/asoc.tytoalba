@@ -419,14 +419,10 @@ const handleSubmit = async () => {
       endDate: form.value.endDate || undefined,
     }
 
-    const { data, error } = await useFetch('/api/tasks', {
+    await $fetch('/api/tasks', {
       method: 'POST',
       body: payload
     })
-
-    if (error.value) {
-      throw new Error(error.value.message || 'Error al crear la tarea')
-    }
 
     toast.success('Tarea creada', {
       description: 'La tarea ha sido creada exitosamente'

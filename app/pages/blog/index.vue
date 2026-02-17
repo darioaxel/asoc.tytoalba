@@ -19,7 +19,7 @@
           <SelectValue placeholder="Todas las etiquetas" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="">Todas las etiquetas</SelectItem>
+          <SelectItem value="ALL">Todas las etiquetas</SelectItem>
           <SelectItem v-for="tag in availableTags" :key="tag.slug" :value="tag.slug">
             {{ tag.name }}
           </SelectItem>
@@ -81,7 +81,7 @@
 
 // Estado
 const search = ref('')
-const selectedTag = ref('')
+const selectedTag = ref('ALL')
 const currentPage = ref(1)
 const pageSize = 5
 

@@ -13,20 +13,19 @@ if (loggedIn.value) {
 const loginUser = async () => {
   errorMessage.value = ''
 
-  const { error } = await useFetch('/api/auth/login', {
-    method: 'POST',
-    body: { email: email.value, password: password.value }
-  })
+  try {
+    await $fetch('/api/auth/login', {
+      method: 'POST',
+      body: { email: email.value, password: password.value }
+    })
 
-  if (error.value) {
-    errorMessage.value = 'Credenciales incorrectas'
-    return
+    // refrescamos la sesión en el cliente
+    await fetch()
+
+    navigateTo('/protected')
+  } catch (error) {
+    errorMessage.value = error?.data?.message || 'Credenciales incorrectas'
   }
-
-  // refrescamos la sesión en el cliente
-  await fetch()
-
-  navigateTo('/protected')
 }
 </script>
 
