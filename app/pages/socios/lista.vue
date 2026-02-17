@@ -158,8 +158,10 @@
                           <Switch
                             :checked="socio.activo"
                             :disabled="togglingId === socio.id || socio.rol === 'ROOT'"
-                            class="data-[state=checked]:!bg-green-500 data-[state=unchecked]:!bg-red-500"
-                            @update:checked="toggleUserStatus(socio)"
+                            :style="{
+                              backgroundColor: socio.activo ? '#22c55e' : '#ef4444'
+                            }"
+                            @click="openToggleDialog(socio)"
                           />
                         </TooltipTrigger>
                         <TooltipContent>
@@ -175,6 +177,54 @@
         </CardContent>
       </Card>
     </div>
+
+    <!-- Dialog de Confirmación para Habilitar/Deshabilitar -->
+    <Dialog v-model:open="toggleDialog.open">
+      <DialogContent class="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle :class="toggleDialog.activar ? 'text-green-600' : 'text-red-600'">
+            {{ toggleDialog.activar ? 'Habilitar usuario' : 'Deshabilitar usuario' }}
+          </DialogTitle>
+          <DialogDescription>
+            {{ toggleDialog.activar 
+              ? '¿Estás seguro de que deseas habilitar el acceso a este usuario?' 
+              : '¿Estás seguro de que deseas deshabilitar el acceso a este usuario?' 
+            }}
+          </DialogDescription>
+        </DialogHeader>
+        
+        <div class="py-4" v-if="toggleDialog.socio">
+          <div class="flex items-center gap-3 p-3 bg-muted rounded-lg">
+            <Avatar class="h-10 w-10">
+              <AvatarFallback class="bg-primary/10 text-primary">
+                {{ getInitials(toggleDialog.socio.nombre, toggleDialog.socio.apellidos) }}
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <p class="font-medium">{{ toggleDialog.socio.nombre }} {{ toggleDialog.socio.apellidos }}</p>
+              <p class="text-sm text-muted-foreground">{{ toggleDialog.socio.email }}</p>
+            </div>
+          </div>
+          <p v-if="!toggleDialog.activar" class="text-sm text-muted-foreground mt-3">
+            El usuario no podrá acceder a la aplicación hasta que sea habilitado nuevamente.
+          </p>
+        </div>
+        
+        <DialogFooter>
+          <Button variant="outline" @click="toggleDialog.open = false">
+            NO
+          </Button>
+          <Button 
+            :variant="toggleDialog.activar ? 'default' : 'destructive'"
+            :disabled="togglingId !== null"
+            @click="confirmToggle"
+          >
+            <Loader2 v-if="togglingId !== null" class="h-4 w-4 mr-2 animate-spin" />
+            SI
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   </div>
 </template>
 
@@ -185,9 +235,18 @@ import {
   Search,
   RefreshCw,
   Landmark,
-  Banknote
+  Banknote,
+  Loader2
 } from 'lucide-vue-next'
 import { toast } from 'vue-sonner'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 
 interface Socio {
   id: string
@@ -218,6 +277,13 @@ const loading = ref(false)
 const togglingId = ref<string | null>(null)
 const searchQuery = ref('')
 const debounceTimer = ref<NodeJS.Timeout | null>(null)
+
+// Dialog de confirmación
+const toggleDialog = ref({
+  open: false,
+  socio: null as Socio | null,
+  activar: false // true = habilitar, false = deshabilitar
+})
 
 // Computed
 const filteredSocios = computed(() => {
@@ -250,14 +316,28 @@ const fetchSocios = async () => {
   }
 }
 
-const toggleUserStatus = async (socio: Socio) => {
-  // No permitir modificar ROOT desde la interfaz (solo por seguridad extra)
+// Abrir diálogo de confirmación al hacer clic en el switch
+const openToggleDialog = (socio: Socio) => {
+  // No permitir modificar ROOT desde la interfaz
   if (socio.rol === 'ROOT') {
     toast.error('No se puede modificar el estado de un usuario ROOT desde aquí')
     return
   }
 
+  toggleDialog.value = {
+    open: true,
+    socio,
+    activar: !socio.activo // Si está activo, vamos a desactivar (false), y viceversa
+  }
+}
+
+// Confirmar el cambio de estado
+const confirmToggle = async () => {
+  if (!toggleDialog.value.socio) return
+
+  const socio = toggleDialog.value.socio
   togglingId.value = socio.id
+
   try {
     const result = await $fetch(`/api/admin/socios/${socio.id}/toggle-status`, {
       method: 'POST'
@@ -270,6 +350,7 @@ const toggleUserStatus = async (socio: Socio) => {
     }
 
     toast.success(result.message)
+    toggleDialog.value.open = false
   } catch (error: any) {
     console.error('Error al cambiar estado:', error)
     toast.error(error.message || 'Error al cambiar el estado del usuario')
