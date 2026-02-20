@@ -47,13 +47,13 @@
     </NavigationMenu>
 
     <!-- Desktop Login/Profile (botones fijos) -->
-    <NuxtLink v-if="!loggedIn" to="/socios/login">
+    <NuxtLink v-if="!loggedIn" to="/login">
       <Button variant="outline" class="border-tyto-primary text-tyto-primary hover:bg-tyto-primary hover:text-white">
         <Icon name="lucide:log-in" class="mr-2 h-4 w-4" />
         Login
       </Button>
     </NuxtLink>
-    <NuxtLink v-else to="/socios/">
+    <NuxtLink v-else to="/usuario/">
       <Button variant="outline" class="border-tyto-primary text-tyto-primary hover:bg-tyto-primary hover:text-white">
         <Icon name="lucide:user" class="mr-2 h-4 w-4" />
         Mi Área

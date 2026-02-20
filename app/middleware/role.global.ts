@@ -3,7 +3,7 @@ export default defineNuxtRouteMiddleware((to) => {
   const { user, loggedIn } = useUserSession()
   
   if (!loggedIn) {
-    return navigateTo("/socios/login")
+    return navigateTo("/login")
   }
   
   // Lee los roles permitidos desde definePageMeta

@@ -7,11 +7,11 @@ export default defineNuxtRouteMiddleware(async (to) => {
   }
 
   // Si no está logueado y NO está en /login → redirigir a /login
-  if (!loggedIn.value && to.path !== '/socios/login') {
-    return navigateTo('/socios/login')
+  if (!loggedIn.value && to.path !== '/login') {
+    return navigateTo('/login')
   }
 
   if (loggedIn.value && to.path === 'login') {
-    return navigateTo('/socios/')
+    return navigateTo('/usuario')
   }
 })

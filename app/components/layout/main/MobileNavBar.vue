@@ -67,14 +67,14 @@
 
         <!-- Authentication buttons (si no están en la lista principal) -->
         <template v-if="!loggedIn">
-          <NuxtLink to="/socios/signup">
+          <NuxtLink to="/signup">
             <Button variant="outline" class="w-full">
               <Icon name="lucide:user-plus" class="mr-2 h-4 w-4" />
               Hazte Socio
             </Button>
           </NuxtLink>
 
-          <NuxtLink to="/socios/login">
+          <NuxtLink to="/login">
             <Button class="w-full bg-tyto-primary hover:bg-tyto-primary/90">
               <Icon name="lucide:log-in" class="mr-2 h-4 w-4" />
               Iniciar Sesión
@@ -83,7 +83,7 @@
         </template>
 
         <template v-else>
-          <NuxtLink to="/socios/">
+          <NuxtLink to="/usuario">
             <Button class="w-full bg-tyto-primary hover:bg-tyto-primary/90">
               <Icon name="lucide:user" class="mr-2 h-4 w-4" />
               Mi Área

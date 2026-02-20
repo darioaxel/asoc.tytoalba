@@ -1,46 +1,22 @@
-<script setup>
-const email = ref('')
-const password = ref('')
-const errorMessage = ref('')
+<script lang="ts">
+export const description = "Una página de inicio de sesión con un color de fondo atenuado."
+</script>
 
-const { loggedIn, fetch } = useUserSession()
-
-// Si ya está logueado, redirigimos desde aquí también
-if (loggedIn.value) {
-  navigateTo('/protected')
-}
-
-const loginUser = async () => {
-  errorMessage.value = ''
-
-  try {
-    await $fetch('/api/auth/login', {
-      method: 'POST',
-      body: { email: email.value, password: password.value }
-    })
-
-    // refrescamos la sesión en el cliente
-    await fetch()
-
-    navigateTo('/protected')
-  } catch (error) {
-    errorMessage.value = error?.data?.message || 'Credenciales incorrectas'
-  }
-}
+<script setup lang="ts">
+import { GalleryVerticalEnd } from "lucide-vue-next"
+import LoginForm from '@/components/LoginForm.vue'
 </script>
 
 <template>
-  <div class="flex flex-col items-center justify-center min-h-screen">
-    <h1 class="text-2xl mb-4">Login</h1>
-
-    <form @submit.prevent="loginUser" class="flex flex-col gap-3 w-64">
-      <input v-model="email" type="email" placeholder="Email" class="border p-2 rounded" />
-      <input v-model="password" type="password" placeholder="Password" class="border p-2 rounded" />
-      <button class="bg-blue-600 text-white p-2 rounded">
-        Entrar
-      </button>
-    </form>
-
-    <p v-if="errorMessage" class="text-red-500 mt-4">{{ errorMessage }}</p>
+  <div class="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
+    <div class="flex w-full max-w-sm flex-col gap-6">
+      <a href="#" class="flex items-center gap-2 self-center font-medium">
+        <div class="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
+          <GalleryVerticalEnd class="size-4" />
+        </div>
+        Campus Digital FP
+      </a>
+      <LoginForm />
+    </div>
   </div>
 </template>

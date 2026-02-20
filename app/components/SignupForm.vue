@@ -127,7 +127,7 @@ const handleSubmit = async () => {
       description: 'Tu cuenta ha sido creada exitosamente'
     })
     
-    await navigateTo('/socios/login')
+    await navigateTo('/login')
     
   } catch (error: any) {
     if (error.data?.message?.includes('email')) {
@@ -385,7 +385,7 @@ const handleSubmit = async () => {
               </Button>
               
               <FieldDescription class="px-6 text-center">
-                ¿Ya tienes una cuenta? <NuxtLink to="/socios/login" class="text-primary hover:underline">Inicia sesión</NuxtLink>
+                ¿Ya tienes una cuenta? <NuxtLink to="/login" class="text-primary hover:underline">Inicia sesión</NuxtLink>
               </FieldDescription>
             </Field>
           </FieldGroup>

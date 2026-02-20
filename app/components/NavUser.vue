@@ -88,17 +88,11 @@ const { user } = await useUserSession()
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem as-child>
-              <NuxtLink :to="`/socios/perfil`">
+              <NuxtLink :to="`/usuario/perfil`">
                 <User class="mr-2 h-4 w-4" />
                 Datos personales
               </NuxtLink>
-            </DropdownMenuItem>
-            <DropdownMenuItem as-child>
-              <NuxtLink :to="`/socios/banco`">
-                <CreditCard class="mr-2 h-4 w-4" />
-                Datos de pagos
-              </NuxtLink>
-            </DropdownMenuItem>
+            </DropdownMenuItem>            
           </DropdownMenuGroup>
           <DropdownMenuSeparator />          
         </DropdownMenuContent>

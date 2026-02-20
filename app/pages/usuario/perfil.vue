@@ -55,7 +55,7 @@ const loadUserData = async () => {
     toast.error('Error al cargar datos del perfil')
     
     if (error.statusCode === 401) {
-      await router.push('/socios/login')
+      await router.push('/login')
     }
   } finally {
     isLoading.value = false
@@ -134,7 +134,7 @@ const changePassword = async () => {
 const handleLogout = async () => {
   await $fetch('/api/auth/logout', { method: 'POST' })
   await clearUserSession()
-  await router.push('/socios/login')
+  await router.push('/login')
 }
 
 // Cargar datos al montar

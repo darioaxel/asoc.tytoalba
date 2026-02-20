@@ -66,8 +66,8 @@ export const siteConfig = {
           icon: "lucide:receipt",
           isActive: true,
           items: [
-            { title: "Mis Recibos", url: "/socios/recibos" },
-            { title: "Pagar Recibos", url: "/socios/pagar" },            
+            { title: "Mi Horario", url: "/usuario" },
+            { title: "Calendario", url: "/usuario/calendario" },            
           ],
         },                
         {

@@ -74,11 +74,11 @@ const handleSubmit = async () => {
       // Redirigir según rol
       const { user } = await useUserSession()
       if (user?.role === 'ROOT') {
-        await navigateTo('/admin/system')
+        await navigateTo('/admin/')
       } else if (user?.role === 'ADMIN') {
-        await navigateTo('/socios/')
+        await navigateTo('/admin/')
       } else {
-        await navigateTo('/socios/')
+        await navigateTo('/usuario/')
       }
     }
   } catch (error: any) {
@@ -185,7 +185,7 @@ const handleSubmit = async () => {
               
               <FieldDescription class="text-center">
                 ¿No tienes una cuenta?
-                <NuxtLink to="/socios/signup" class="text-primary hover:underline">
+                <NuxtLink to="/signup" class="text-primary hover:underline">
                   Regístrate
                 </NuxtLink>
               </FieldDescription>
