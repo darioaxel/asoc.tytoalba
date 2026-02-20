@@ -1,15 +1,13 @@
-import { User, Role, MembershipType } from '../../generated/client'
+import { User, Role } from '@prisma/client'
 import { prisma } from '../config.js'
 import { hash } from '../utils/hash.js'
 import { UserData } from '../types.js'
 
-export class UserSeeder {
-  private membershipTypes: MembershipType[] = []
+export class UserSeeder {  
 
-  async run(users: UserData[], membershipTypes: MembershipType[]): Promise<User[]> {
+  async run(users: UserData[]): Promise<User[]> {
     console.log('👤 Seed de usuarios...\n')
-    this.membershipTypes = membershipTypes
-
+   
     const createdUsers: User[] = []
 
     for (const u of users) {
@@ -21,14 +19,7 @@ export class UserSeeder {
         console.log(`✔  Ya existe: ${u.email} (${u.role})`)
         createdUsers.push(exists)
         continue
-      }
-
-      // Buscar memberTypeId si el usuario tiene memberType
-      let memberTypeId: string | undefined
-      if (u.memberType) {
-        const mt = membershipTypes.find((m) => m.type === u.memberType)
-        memberTypeId = mt?.id
-      }
+      }      
 
       const user = await prisma.user.create({
         data: {
@@ -46,15 +37,11 @@ export class UserSeeder {
           picture: `https://ui-avatars.com/api/?name=${encodeURIComponent(
             u.firstName + '+' + u.lastName
           )}&background=random`,
-          address: u.address ? { create: u.address } : undefined,
-          memberTypeId,
+          address: u.address ? { create: u.address } : undefined,          
         },
       })
 
-      await this.createPaymentData(user.id, u.role)
-
-      const memberTypeLabel = memberTypeId ? ` [${u.memberType}]` : ''
-      console.log(`✔  Creado: ${user.email} (${user.role})${memberTypeLabel}`)
+      console.log(`✔  Creado: ${user.email} (${user.role})`)
       createdUsers.push(user)
     }
 

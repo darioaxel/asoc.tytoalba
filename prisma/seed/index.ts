@@ -9,7 +9,7 @@ async function main() {
     
     // 1. Usuarios 
     const userSeeder = new UserSeeder(prisma)  
-    const createdUsers = await userSeeder.run(rawUsers, createdMembershipTypes)     
+    const createdUsers = await userSeeder.run(rawUsers)     
 
     console.log('\n✨ Seed completado exitosamente')
   } catch (error) {
