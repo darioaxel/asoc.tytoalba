@@ -27,13 +27,13 @@ export interface NavSection {
 }
 
 export const siteConfig = {
-  name: 'asoc.tytoalba',
-  url: 'https://asoc.tytoalba.org',
+  name: 'Campus Digital FP - Intranet',
+  url: 'https://intranet.campusdigitalfp.com',
   ogImage: 'https://shadcn-vue.com/og.jpg',
   description:
-    'Sitio web oficial de la asociación Tyto Alba.',
+    'Intranet del Campus Digital FP.',
   links: {
-    instagram: 'https://instagram.com/asoc.tytoalba',
+    instagram: 'https://instagram.com/campusdigitalfp',
   },
   navItems: [
     {
@@ -41,49 +41,7 @@ export const siteConfig = {
       label: 'Nosotr@s',
       icon: 'lucide:users',
       requiresAuth: false,
-    },
-    {
-      href: '/rocodromo',
-      label: 'Rocódromo',
-      icon: 'lucide:mountain',
-      requiresAuth: false,
-    },
-    {
-      href: '/musica',
-      label: 'Música',
-      icon: 'lucide:music',
-      requiresAuth: false,
-    },
-    {
-      href: '/contacto',
-      label: 'Contacto',
-      icon: 'lucide:mail',
-      requiresAuth: false,
-    },
-    {
-      href: '/blog',
-      label: 'Blog',
-      icon: 'lucide:newspaper',
-      requiresAuth: false,
-    },
-    {
-      href: '/socios',
-      label: 'Socios',
-      icon: 'lucide:users',
-      requiresAuth: false,
-      children: [
-        {
-          href: '/socios/landing',
-          label: 'Soci@s',
-          icon: 'lucide:info',
-        },
-        {
-          href: '/socios/solicitud',
-          label: 'Hazte Socio',
-          icon: 'lucide:user-plus',
-        },
-      ],
-    },
+    }
   ] as NavItem[],
   user: {
     name: "shadcn",
@@ -92,42 +50,32 @@ export const siteConfig = {
   },
   teams: [
     {
-      name: "Asociación Tyto Alba",
+      name: "Campus Digital FP",
       logo: "lucide:GalleryVerticalEnd",
       plan: "Enterprise",
     }
   ],
   navSections: [
     {
-      title: 'Socio',
+      title: 'Profesor',
       roles: ['ROOT', 'USER', 'ADMIN'],
       items: [
         {
-          title: "Mis Cuotas",
-          url: "/socios/recibos",
+          title: "Mis Horarios",
+          url: "/profesor/horarios",
           icon: "lucide:receipt",
           isActive: true,
           items: [
             { title: "Mis Recibos", url: "/socios/recibos" },
             { title: "Pagar Recibos", url: "/socios/pagar" },            
           ],
-        },   
-        {
-          title: "Propuestas",
-          url: "/socios/propuestas",
-          icon: "lucide:vote",
-          isActive: true,
-          items: [
-            { title: "Ver/Votar propuestas", url: "/socios/propuestas" },
-            { title: "Crear propuestas", url: "/socios/propuesta/nueva" },            
-          ],
-        },       
+        },                
         {
           title: "Documentación",
           url: "#",
           icon: "lucide:book-open",
           items: [
-            { title: "Estatutos", url: "#" },
+            { title: "Calidad", url: "#" },
             { title: "Otros", url: "#" },
           ],
         },
@@ -138,42 +86,13 @@ export const siteConfig = {
       roles: ['ADMIN', 'ROOT'],
       items: [
         {
-          title: "Administrar socios",
+          title: "Listado de Profesorado",
           url: "#",
           icon: "lucide:user-check",
           items: [
-            { title: "Lista socios", url: "/socios/lista" },            
+            { title: "Lista profesorado", url: "/" },            
           ],
-        },
-        {
-          title: "Resumen cuentas",
-          url: "#",
-          icon: "lucide:bot",
-          items: [
-            { title: "Lista Morosos", url: "#" },
-            { title: "Ingresos - Gastos", url: "#" },
-            { title: "Cargar Facturas", url: "#" },
-          ],
-        },
-        {
-          title: "Tesorería",
-          url: "#",
-          icon: "lucide:settings-2",
-          items: [
-            { title: "Validación Pagos", url: "#" },
-            { title: "Creación de Recibos", url: "#" },           
-          ],
-        },
-        {
-          title: "Tareas",
-          url: "#",
-          icon: "lucide:list-todo",
-          isActive: true,
-          items: [
-            { title: "Gestionar tareas", url: "/socios/tareas" },
-            { title: "Crear tarea", url: "/socios/tarea/nueva" },
-          ],
-        },
+        }        
       ]
     },
   ] as NavSection[],

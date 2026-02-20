@@ -1,10 +1,9 @@
-
 export {}
 declare module '#auth-utils' {
   interface User {
     id: string
     email: string
-    role: 'USER' | 'ADMIN' | 'ROOT'
+    role: 'ADMIN' | 'ROOT' | 'PROFESOR' | 'EXPERTO' | 'JEFE_DEPT'  
     isActive: boolean
     firstName?: string | null
     lastName?: string | null

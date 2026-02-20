@@ -33,48 +33,11 @@ model User {
   providerId          String?
   role                Role      @default(USER)
 
-  memberTypeId String?
-  memberType   MembershipType? @relation(fields: [memberTypeId], references: [id])
-
   address     Address?
-  paymentData UserPaymentData?
-
-  posts Post[]
-
-  // Relaciones con Receipt (como socio)
-  receipts Receipt[]
-
-  // Relaciones con Receipt (como admin que desbloquea/valida)
-  unlockedReceipts  Receipt[] @relation("ReceiptUnlockedBy")
-  validatedReceipts Receipt[] @relation("ReceiptValidatedBy")
-
-  // Relaciones con Task
-  createdTasks   Task[]         @relation("TaskCreator")
-  assignedTasks  TaskAssignee[]
-  validatedTasks Task[]         @relation("TaskValidator")
-
-  // Relaciones con Proposal
-  createdProposals    Proposal[]           @relation("ProposalCreator")
-  responsibleFor     ProposalResponsible[]
-  votes              Vote[]
-
+  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([isActive, role])
   @@index([provider, providerId])
-}
-
-model MembershipType {
-  id          String     @id @default(uuid())
-  type        MemberType @unique
-  name        String // "Socio Normal", "Socio Juvenil"...
-  monthlyFee  Decimal    @db.Decimal(10, 2)
-  description String?
-  isActive    Boolean    @default(true)
-  createdAt   DateTime   @default(now())
-
-  users User[]
-
-  @@map("membership_types")
 }

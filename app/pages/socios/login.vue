@@ -14,7 +14,7 @@ import LoginForm from '@/components/LoginForm.vue'
         <div class="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
           <GalleryVerticalEnd class="size-4" />
         </div>
-        Asoc. Tyto Alba
+        Campus Digital FP
       </a>
       <LoginForm />
     </div>
