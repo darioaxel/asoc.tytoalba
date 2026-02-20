@@ -20,8 +20,7 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "shadcn-nuxt",
     "@nuxt/image",
-    "@nuxt/fonts",
-    // "@nuxtjs/seo", // Temporalmente deshabilitado - causa error useHead
+    "@nuxt/fonts",   
     "@nuxt/icon",
     "nuxt-svgo",
     '@vueuse/nuxt',
@@ -67,7 +66,7 @@ export default defineNuxtConfig({
   },
   nitro: {
     externals: {
-      inline: ['@prisma/client']
+      external: ['@prisma/client', '.prisma/client']
     },
     publicAssets: [
       {
