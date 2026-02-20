@@ -1,4 +1,4 @@
-import { Role, MemberType } from '../../generated/client'
+import { Role } from '../../generated/client'
 import { UserData } from '../types'
 
 const yearsAgo = (years: number) => new Date(new Date().getFullYear() - years, 0, 1)
@@ -44,7 +44,7 @@ export const rawUsers: UserData[] = [
   {
     email: 'admin2@example.com',
     password: 'admin1234',
-    role: Role.ADMIN,
+    role: Role.JEFE_DEPT,
     firstName: 'Laura',
     lastName: 'Fernández',
     dni: '22222222C',
@@ -62,20 +62,19 @@ export const rawUsers: UserData[] = [
 
   // SOCIOS NORMALES
   {
-    email: 'user1@example.com',
-    password: 'user1234',
-    role: Role.USER,
+    email: 'profesor@example.com',
+    password: 'profesor1234',
+    role: Role.PROFESOR,
     firstName: 'Ana',
     lastName: 'Martínez',
     dni: '33333333D',
     phone: '+34333333333',
     birthDate: yearsAgo(32),
-    emailPersonal: 'ana.martinez@email.com',
-    memberType: MemberType.NORMAL,
+    emailPersonal: 'ana.martinez@email.com',  
     receiptScenario: 'perfect',
   },
   {
-    email: 'user2@example.com',
+    email: 'user@example.com',
     password: 'user1234',
     role: Role.USER,
     firstName: 'Luis',
@@ -91,92 +90,16 @@ export const rawUsers: UserData[] = [
       locality: 'Barcelona',
       province: 'Barcelona',
     },
-    memberType: MemberType.NORMAL,
-    receiptScenario: 'with_returns',
-  },
-
-  // SOCIOS JUVENILES
+  },  
   {
-    email: 'user3@example.com',
-    password: 'user1234',
-    role: Role.USER,
+    email: 'experto@example.com',
+    password: 'experto1234',
+    role: Role.EXPERTO,
     firstName: 'Marta',
     lastName: 'López',
     dni: '55555555F',
     phone: '+34555555555',
     birthDate: yearsAgo(22),
-    emailPersonal: 'marta.lopez@email.com',
-    memberType: MemberType.JUVENIL,
-    receiptScenario: 'unpaid_last_3',
-  },
-  {
-    email: 'user4@example.com',
-    password: 'user1234',
-    role: Role.USER,
-    firstName: 'Pablo',
-    lastName: 'Ramírez',
-    dni: '66666666G',
-    phone: '+34666666666',
-    birthDate: yearsAgo(20),
-    emailPersonal: 'pablo.ramirez@email.com',
-    address: {
-      addressLine: 'Avenida del Pinar 45',
-      floorDoor: '2º A',
-      postalCode: '29001',
-      locality: 'Málaga',
-      province: 'Málaga',
-    },
-    memberType: MemberType.JUVENIL,
-    receiptScenario: 'random',
-  },
-
-  // SOCIO FUNDADOR
-  {
-    email: 'founder@example.com',
-    password: 'founder1234',
-    role: Role.USER,
-    firstName: 'Antonio',
-    lastName: 'García',
-    dni: '77777777H',
-    phone: '+34777777777',
-    birthDate: yearsAgo(55),
-    emailPersonal: 'antonio.garcia@email.com',
-    address: {
-      addressLine: 'Calle Fundadores 1',
-      floorDoor: 'Principal',
-      postalCode: '28013',
-      locality: 'Madrid',
-      province: 'Madrid',
-    },
-    memberType: MemberType.FUNDADOR,
-    receiptScenario: 'zero_fee',
-  },
-
-  // MÁS VARIEDAD
-  {
-    email: 'user5@example.com',
-    password: 'user1234',
-    role: Role.USER,
-    firstName: 'Carmen',
-    lastName: 'Ruiz',
-    dni: '88888888I',
-    phone: '+34888888888',
-    birthDate: yearsAgo(35),
-    emailPersonal: 'carmen.ruiz@email.com',
-    memberType: MemberType.NORMAL,
-    receiptScenario: 'mixed_review',
-  },
-  {
-    email: 'user6@example.com',
-    password: 'user1234',
-    role: Role.USER,
-    firstName: 'David',
-    lastName: 'Moreno',
-    dni: '99999999J',
-    phone: '+34999999999',
-    birthDate: yearsAgo(19),
-    emailPersonal: 'david.moreno@email.com',
-    memberType: MemberType.JUVENIL,
-    receiptScenario: 'perfect',
-  },
+    emailPersonal: 'marta.lopez@email.com',    
+  },    
 ]
