@@ -11,16 +11,13 @@
       <div class="absolute inset-0 bg-black/40" />
       <PageHeader class="relative z-10">
         <PageHeaderHeading class="max-w-4xl text-white">
-          Asociación Tyto Alba
+          Campus Virtual FP - Intranet
         </PageHeaderHeading>
-        <PageHeaderDescription class="text-white/90">Mi descripción</PageHeaderDescription>
+        <PageHeaderDescription class="text-white/90">Aplicación para la gestión de tareas, horarios, etc.</PageHeaderDescription>
         <PageActions>
           <Button as-child size="sm">
-            <NuxtLink to="/"> Nosotr@s </NuxtLink>
-          </Button>
-          <Button as-child size="sm" variant="secondary">
-            <NuxtLink to="/"> blog </NuxtLink>
-          </Button>
+            <a target="_blank" href="https://campusdigitalfp.com"> Web </a>
+          </Button>         
         </PageActions>
       </PageHeader>
     </div>   

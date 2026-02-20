@@ -3,8 +3,8 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
   app: {
     head: {
-      title: 'Asociación Tyto Alba',
-      titleTemplate: '%s - Tyto Alba',
+      title: 'Campus Digital FP',
+      titleTemplate: 'Intranet',
     }
   },
   modules: [
