@@ -1,4 +1,4 @@
-import { Role } from '../../../prisma/generated/client'
+import { Role } from '@prisma/client'
 
 export default defineEventHandler(async (event) => {
   const session = await getUserSession(event)
@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
     const users = await prisma.user.findMany({
       where: {
         isActive: true,
-        role: { in: [Role.USER, Role.ADMIN, Role.ROOT] }
+        role: { in: [Role.USER, Role.ADMIN, Role.ROOT, Role.JEFE_DEPT, Role.EXPERTO, Role.PROFESOR] }
       },
       select: {
         id: true,
