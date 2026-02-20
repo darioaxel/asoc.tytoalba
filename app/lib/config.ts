@@ -37,9 +37,9 @@ export const siteConfig = {
   },
   navItems: [
     {
-      href: '/nosotros',
-      label: 'Nosotr@s',
-      icon: 'lucide:users',
+      href: '/',
+      label: 'Documentación',
+      icon: 'lucide:book-open',
       requiresAuth: false,
     }
   ] as NavItem[],
