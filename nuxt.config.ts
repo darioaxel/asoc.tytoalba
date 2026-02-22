@@ -28,6 +28,19 @@ export default defineNuxtConfig({
     '@nuxt/content',
   ],
 
+  // Configuración de color-mode para themes light/dark
+  colorMode: {
+    preference: 'system',
+    fallback: 'light',
+    hid: 'nuxt-color-mode-script',
+    globalName: '__NUXT_COLOR_MODE__',
+    componentName: 'ColorScheme',
+    classPrefix: '',
+    classSuffix: '',
+    storage: 'localStorage',
+    storageKey: 'nuxt-color-mode'
+  },
+
   fonts: {
     providers: {
       fontsource: false, // Desactiva Fontsource

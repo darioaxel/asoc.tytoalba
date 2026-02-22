@@ -259,7 +259,8 @@
           <h2 class="text-3xl font-bold">Estatutos</h2>
         </div>
 
-        <Card class="bg-slate-50 border-slate-200">
+        <!-- Corregido para dark mode -->
+        <Card class="bg-slate-50 border-slate-200 dark:bg-slate-800 dark:border-slate-700">
           <CardContent class="pt-6">
             <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
               <div>

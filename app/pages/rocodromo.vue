@@ -63,8 +63,8 @@
             </div>
           </div>
 
-          <!-- Equipamiento -->
-          <Card class="bg-gradient-to-br from-slate-50 to-slate-100">
+          <!-- Equipamiento - Corregido para dark mode -->
+          <Card class="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900">
             <CardHeader>
               <CardTitle class="flex items-center gap-2">
                 <Dumbbell class="w-5 h-5" />

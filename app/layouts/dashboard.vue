@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AppSidebar from '@/components/AppSidebar.vue'
+import ThemeToggle from '@/components/ThemeToggle.vue'
 import { Separator } from '@/components/ui/separator'
 import {
   SidebarInset,
@@ -17,20 +18,22 @@ definePageMeta({
   <SidebarProvider>
     <AppSidebar />
     <SidebarInset>
-      <header class="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+      <header class="flex h-16 shrink-0 items-center justify-between gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
         <div class="flex items-center gap-2 px-4">
           <SidebarTrigger class="-ml-1" />
           <Separator
             orientation="vertical"
             class="mr-2 data-[orientation=vertical]:h-4"
           />
-          <DynamicBreadCrumb :url="useRoute().path" />
-            
+          <DynamicBreadCrumb :url="useRoute().path" />          
+        </div>
+        <div class="flex items-center gap-2 px-4">
+          <ThemeToggle />
         </div>
       </header>
-       <main class="flex-1">
-      <slot />
-    </main>
+      <main class="flex-1 p-4">
+        <slot />
+      </main>
     </SidebarInset>
   </SidebarProvider>
   <LayoutMainFooter />

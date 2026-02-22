@@ -42,73 +42,124 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/* ========================================
+   LIGHT THEME - Campus Digital FP Style
+   ======================================== */
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  
+  /* Background - gris muy claro como en la imagen */
+  --background: #f5f5f5;
+  --foreground: #1f2937;
+  
+  /* Cards - blanco puro con sombras */
+  --card: #ffffff;
+  --card-foreground: #1f2937;
+  
+  /* Popover */
+  --popover: #ffffff;
+  --popover-foreground: #1f2937;
+  
+  /* Primary - naranja/dorado como en la imagen */
+  --primary: #d4a01f;
+  --primary-foreground: #ffffff;
+  
+  /* Secondary - gris claro */
+  --secondary: #f3f4f6;
+  --secondary-foreground: #1f2937;
+  
+  /* Muted */
+  --muted: #f3f4f6;
+  --muted-foreground: #6b7280;
+  
+  /* Accent - variante más clara del primary */
+  --accent: #fef3c7;
+  --accent-foreground: #92400e;
+  
+  /* Destructive - rojo suave */
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  
+  /* Borders e inputs */
+  --border: #e5e7eb;
+  --input: #e5e7eb;
+  --ring: #d4a01f;
+  
+  /* Charts */
+  --chart-1: #d4a01f;
+  --chart-2: #f59e0b;
+  --chart-3: #fbbf24;
+  --chart-4: #fcd34d;
+  --chart-5: #fde68a;
+  
+  /* Sidebar - gris claro */
+  --sidebar: #f3f4f6;
+  --sidebar-foreground: #374151;
+  --sidebar-primary: #d4a01f;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #fef3c7;
+  --sidebar-accent-foreground: #92400e;
+  --sidebar-border: #e5e7eb;
+  --sidebar-ring: #d4a01f;
 }
 
+/* ========================================
+   DARK THEME - Campus Connect Style
+   ======================================== */
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* Background - slate oscuro */
+  --background: #0f172a;
+  --foreground: #f1f5f9;
+  
+  /* Cards - slate más claro */
+  --card: #1e293b;
+  --card-foreground: #f1f5f9;
+  
+  /* Popover */
+  --popover: #1e293b;
+  --popover-foreground: #f1f5f9;
+  
+  /* Primary - naranja/dorado (mismo que light) */
+  --primary: #f59e0b;
+  --primary-foreground: #0f172a;
+  
+  /* Secondary - slate */
+  --secondary: #334155;
+  --secondary-foreground: #f1f5f9;
+  
+  /* Muted */
+  --muted: #334155;
+  --muted-foreground: #94a3b8;
+  
+  /* Accent */
+  --accent: #451a03;
+  --accent-foreground: #fbbf24;
+  
+  /* Destructive */
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  
+  /* Borders e inputs */
+  --border: #334155;
+  --input: #334155;
+  --ring: #f59e0b;
+  
+  /* Charts */
+  --chart-1: #f59e0b;
+  --chart-2: #fbbf24;
+  --chart-3: #fcd34d;
+  --chart-4: #fde68a;
+  --chart-5: #fef3c7;
+  
+  /* Sidebar - más oscuro que el fondo */
+  --sidebar: #0f172a;
+  --sidebar-foreground: #f1f5f9;
+  --sidebar-primary: #f59e0b;
+  --sidebar-primary-foreground: #0f172a;
+  --sidebar-accent: #451a03;
+  --sidebar-accent-foreground: #fbbf24;
+  --sidebar-border: #334155;
+  --sidebar-ring: #f59e0b;
 }
 
 @layer base {
@@ -117,5 +168,54 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* ========================================
+   COMPONENT STYLES - Theme Enhancements
+   ======================================== */
+
+/* Botón primario con gradiente (estilo imagen) */
+@layer components {
+  .btn-gradient {
+    background: linear-gradient(135deg, #d4a01f 0%, #f59e0b 100%);
+    @apply text-white shadow-lg shadow-amber-500/25;
+  }
+  
+  .dark .btn-gradient {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+    @apply text-slate-900 shadow-lg shadow-amber-500/25;
+  }
+  
+  /* Cards con sombra suave */
+  .card-shadow {
+    @apply shadow-md shadow-gray-200/50;
+  }
+  
+  .dark .card-shadow {
+    @apply shadow-lg shadow-black/20;
+  }
+  
+  /* Toggle switches estilo imagen */
+  .toggle-amber {
+    @apply data-[state=checked]:bg-amber-500 data-[state=unchecked]:bg-gray-300;
+  }
+  
+  .dark .toggle-amber {
+    @apply data-[state=checked]:bg-amber-500 data-[state=unchecked]:bg-slate-600;
+  }
+  
+  /* Sidebar item activo */
+  .sidebar-active {
+    @apply bg-amber-500 text-white;
+  }
+  
+  .dark .sidebar-active {
+    @apply bg-amber-500 text-slate-900;
+  }
+  
+  /* Progress bar estilo imagen */
+  .progress-amber {
+    @apply bg-amber-500;
   }
 }

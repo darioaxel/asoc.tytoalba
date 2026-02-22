@@ -5,6 +5,8 @@ import {
   ChevronsUpDown,
   CreditCard,
   LogOut,
+  Moon,
+  Sun,
   User,
 } from "lucide-vue-next"
 
@@ -40,7 +42,14 @@ const props = defineProps<{
 
 const { isMobile } = useSidebar()
 const { user } = await useUserSession()
+const colorMode = useColorMode()
 
+const toggleTheme = () => {
+  colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
+}
+
+const currentThemeIcon = computed(() => colorMode.value === 'dark' ? Sun : Moon)
+const currentThemeLabel = computed(() => colorMode.value === 'dark' ? 'Modo claro' : 'Modo oscuro')
 </script>
 
 <template>
@@ -100,7 +109,18 @@ const { user } = await useUserSession()
               </NuxtLink>
             </DropdownMenuItem>
           </DropdownMenuGroup>
-          <DropdownMenuSeparator />          
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <DropdownMenuItem @click="toggleTheme">
+              <component :is="currentThemeIcon" class="mr-2 h-4 w-4" />
+              {{ currentThemeLabel }}
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem @click="$fetch('/api/auth/logout', { method: 'POST' }).then(() => navigateTo('/login'))">
+            <LogOut class="mr-2 h-4 w-4" />
+            Cerrar sesión
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </SidebarMenuItem>

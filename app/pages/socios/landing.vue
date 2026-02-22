@@ -167,7 +167,7 @@
               <ul class="space-y-4">
                 <li class="flex items-start gap-3">
                   <div class="w-6 h-6 rounded-full bg-amber-500/10 flex items-center justify-center shrink-0">
-                    <Broom class="w-3 h-3 text-amber-500" />
+                    <Brush class="w-3 h-3 text-amber-500" />
                   </div>
                   <p class="text-sm text-muted-foreground">
                     Ser <strong>responsable del mantenimiento</strong> de las instalaciones, tanto de su limpieza, orden y buen estado de conservación.
@@ -211,7 +211,7 @@ import {
   DoorOpen,
   Vote,
   Lightbulb,
-  Broom,
+  Brush,
   HeartHandshake,
   Receipt
 } from 'lucide-vue-next'

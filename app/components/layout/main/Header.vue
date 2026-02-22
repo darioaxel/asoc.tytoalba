@@ -5,13 +5,16 @@
 
         <!-- Logo -->
         <div class="flex items-center gap-2">
-          <NuxtLink to="/" class="flex items-center gap-2 font-bold text-xl text-tyto-primary">
+          <NuxtLink to="/" class="flex items-center gap-2 font-bold text-xl text-primary">
             <Logo />           
           </NuxtLink>
         </div>
 
         <!-- Desktop Navigation -->
-        <MenuNavBar :nav-items="desktopNavItems" :logged-in="loggedIn" />
+        <div class="flex items-center gap-4">
+          <MenuNavBar :nav-items="desktopNavItems" :logged-in="loggedIn" />
+          <ThemeToggle />
+        </div>
 
         <!-- Mobile Navigation -->
         <MobileNavBar :nav-items="mobileNavItems" :logged-in="loggedIn" @logout="handleLogout" />
@@ -29,6 +32,7 @@ import { siteConfig } from '@/lib/config'
 import MenuNavBar from '@/components/layout/main/MenuNavBar.vue'
 import MobileNavBar from '@/components/layout/main/MobileNavBar.vue'
 import Logo from '@/components/layout/main/Logo.vue'
+import ThemeToggle from '@/components/ThemeToggle.vue'
 
 const { loggedIn } = useUserSession()
 
