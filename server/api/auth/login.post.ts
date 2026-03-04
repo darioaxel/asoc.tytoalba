@@ -87,6 +87,13 @@ export default defineEventHandler(async (event) => {
   console.log('=== ✅ LOGIN COMPLETADO ===')
 
   return {
-    success: true,    
+    success: true,
+    user: {
+      id: dbUser.id,
+      email: dbUser.email,
+      role: dbUser.role,
+      firstName: dbUser.firstName,
+      lastName: dbUser.lastName,
+    }
   }
 })
