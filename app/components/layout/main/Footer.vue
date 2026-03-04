@@ -15,7 +15,7 @@
           Nosotros
         </NuxtLink>
         <a 
-          href="https://instagram.com/tytoalba" 
+          href="https://instagram.com/asoc.tytoalba" 
           target="_blank" 
           rel="noopener"
           class="flex items-center gap-1 hover:text-foreground transition-colors"

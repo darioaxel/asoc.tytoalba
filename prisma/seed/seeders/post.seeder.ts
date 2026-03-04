@@ -28,7 +28,6 @@ export class PostSeeder {
           slug,
           excerpt: post.excerpt,
           content: post.content,
-          cover: post.cover,
           published: post.published,
           publishedAt: post.publishedAt,
           authorId: author.id,
