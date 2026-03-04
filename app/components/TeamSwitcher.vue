@@ -40,17 +40,18 @@ const activeTeam = ref(props.teams[0])
           <SidebarMenuButton
             size="lg"
             class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+            :tooltip="activeTeam.name"
           >
             <div class="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
               <component :is="activeTeam.logo" class="size-4" />
             </div>
-            <div class="grid flex-1 text-left text-sm leading-tight">
+            <div class="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
               <span class="truncate font-medium">
                 {{ activeTeam.name }}
               </span>
               <span class="truncate text-xs">{{ activeTeam.plan }}</span>
             </div>
-            <ChevronsUpDown class="ml-auto" />
+            <ChevronsUpDown class="ml-auto group-data-[collapsible=icon]:hidden" />
           </SidebarMenuButton>
         </DropdownMenuTrigger>
         <DropdownMenuContent

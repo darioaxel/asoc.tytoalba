@@ -15,13 +15,13 @@
           Nosotros
         </NuxtLink>
         <a 
-          href="https://instagram.com/asoc.tytoalba" 
+          href="https://instagram.com/asoc_tyto_alba/" 
           target="_blank" 
           rel="noopener"
           class="flex items-center gap-1 hover:text-foreground transition-colors"
         >
           <Instagram class="w-3.5 h-3.5" />
-          <span class="hidden sm:inline">@tytoalba</span>
+          <span class="hidden sm:inline">@asoc_tyto_alba</span>
         </a>
       </div>
     </div>

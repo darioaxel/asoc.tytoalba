@@ -60,6 +60,7 @@ const currentThemeLabel = computed(() => colorMode.value === 'dark' ? 'Modo clar
           <SidebarMenuButton
             size="lg"
             class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+            :tooltip="user?.firstName + ' ' + user?.lastName"
           >
             <Avatar class="h-8 w-8 rounded-lg">
               <AvatarImage :src="user?.picture || ''" :alt="user?.firstName || 'Usuario'" />
@@ -67,11 +68,11 @@ const currentThemeLabel = computed(() => colorMode.value === 'dark' ? 'Modo clar
                 {{ user?.firstName?.slice(0, 2).toUpperCase() || 'US' }}
               </AvatarFallback>
             </Avatar>
-            <div class="grid flex-1 text-left text-sm leading-tight">
+            <div class="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
               <span class="truncate font-medium">{{ user?.firstName }} {{ user?.lastName }}</span>
               <span class="truncate text-xs">{{ user?.email }}</span>
             </div>
-            <ChevronsUpDown class="ml-auto size-4" />
+            <ChevronsUpDown class="ml-auto size-4 group-data-[collapsible=icon]:hidden" />
           </SidebarMenuButton>
         </DropdownMenuTrigger>
         <DropdownMenuContent

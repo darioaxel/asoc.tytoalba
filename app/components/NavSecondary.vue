@@ -1,5 +1,13 @@
 <script setup lang="ts">
 import { LogOutIcon, type LucideIcon } from "lucide-vue-next"
+import { Icon } from '#components'
+import {
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from '@/components/ui/sidebar'
 
 
 interface NavItem {
@@ -23,23 +31,23 @@ async function onLogout() {
     <SidebarGroupContent>
       <SidebarMenu>
         <SidebarMenuItem v-for="item in items" :key="item.title">
-          <SidebarMenuButton as-child>
+          <SidebarMenuButton as-child :tooltip="item.title">
             <NuxtLink :to="item.url">
               <Icon v-if="item.icon" :name="item.icon" class="h-4 w-4" />
-              {{ item.title }}
+              <span class="group-data-[collapsible=icon]:hidden">{{ item.title }}</span>
             </NuxtLink>
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarMenu>
       
-      <Button        
+      <SidebarMenuButton 
         class="bg-sidebar-primary text-sidebar-primary-foreground w-full shadow-none"
-        size="sm"
         @click="onLogout"
+        tooltip="Desconectarse"
       >
         <LogOutIcon class="h-4 w-4" />
-        Desconectarse
-      </Button>
+        <span class="group-data-[collapsible=icon]:hidden">Desconectarse</span>
+      </SidebarMenuButton>
     </SidebarGroupContent>
   </SidebarGroup>
 </template>
