@@ -41,7 +41,7 @@ Puedes contactarnos en info@tytoalba.org`,
     coverUrl: 'https://www.tytoalba.org/images/posts/bienvenidos.jpg',
     tags: ['Presentación', 'Asociación'],
     published: true,
-    publishedAt: new Date('2024-01-15T10:00:00Z'),
+    publishedAt: new Date('2026-01-15T10:00:00Z'),
   },
   {
     title: 'Actividades 2024',
