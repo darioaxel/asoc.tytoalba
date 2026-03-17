@@ -32,7 +32,10 @@ export default defineEventHandler(async (event) => {
     ? ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
     : ['image/jpeg', 'image/png', 'image/webp', 'application/pdf']
   const maxSize = isBlogImage ? 10 * 1024 * 1024 : 5 * 1024 * 1024
-  const uploadDirName = isBlogImage ? 'blog' : 'receipts'
+  
+  // Las imágenes de blog van a public/images/uploads para evitar problemas con Nuxt Image
+  const uploadDirName = isBlogImage ? 'images/uploads' : 'receipts'
+  const publicPathPrefix = isBlogImage ? '/images/uploads' : '/uploads/receipts'
 
   // Validar tipo
   if (!allowedTypes.includes(file.type || '')) {
@@ -54,7 +57,9 @@ export default defineEventHandler(async (event) => {
   const hash = crypto.createHash('md5').update(file.data).digest('hex')
   const ext = file.filename?.split('.').pop() || 'bin'
   const fileName = `${Date.now()}-${hash.slice(0, 8)}.${ext}`
-  const uploadDir = join(process.cwd(), 'uploads', uploadDirName)
+  // Para blog, guardar en public/images/uploads/ para que sea accesible estáticamente
+  const baseDir = isBlogImage ? join(process.cwd(), 'public') : process.cwd()
+  const uploadDir = isBlogImage ? join(baseDir, 'images', 'uploads') : join(baseDir, 'uploads', 'receipts')
   const filePath = join(uploadDir, fileName)
 
   // Crear directorio si no existe
@@ -69,7 +74,7 @@ export default defineEventHandler(async (event) => {
       name: file.filename || fileName,
       mime: file.type || 'application/octet-stream',
       size: file.data.length,
-      path: `/uploads/${uploadDirName}/${fileName}`,
+      path: `${publicPathPrefix}/${fileName}`,
       checksum: hash,
     },
   })
