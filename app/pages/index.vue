@@ -13,13 +13,13 @@
         <PageHeaderHeading class="max-w-4xl text-white">
           Asociación Tyto Alba
         </PageHeaderHeading>
-        <PageHeaderDescription class="text-white/90">Mi descripción</PageHeaderDescription>
+        <PageHeaderDescription class="text-white/90">Página web en construcción de nuestra asociación :-)</PageHeaderDescription>
         <PageActions>
           <Button as-child size="sm">
             <NuxtLink to="/nosotros"> Nosotr@s </NuxtLink>
           </Button>
           <Button as-child size="sm" variant="secondary">
-            <NuxtLink to="/blog"> Ver todo el blog </NuxtLink>
+            <NuxtLink to="/blog"> Blog </NuxtLink>
           </Button>
         </PageActions>
       </PageHeader>

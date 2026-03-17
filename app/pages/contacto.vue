@@ -184,7 +184,7 @@
       </Card>
     </div>
 
-    <!-- Mapa (opcional) -->
+    <!-- Mapa -->
     <Card class="mt-8">
       <CardHeader>
         <CardTitle>¿Dónde encontrarnos?</CardTitle>
@@ -192,19 +192,24 @@
       </CardHeader>
       <CardContent>
         <div class="aspect-video rounded-lg overflow-hidden bg-muted">
-          <!-- Aquí puedes integrar Google Maps o un iframe -->
-          <div class="w-full h-full flex items-center justify-center text-muted-foreground">
-            <div class="text-center">
-              <Icon name="lucide:map-pin" class="h-12 w-12 mb-2" />
-              <p class="font-medium">C/ San Cristobal, 13</p>
-              <p class="text-sm">13300 Valdepeñas, Ciudad Real</p>
-              <Button variant="link" as-child class="mt-2">
-                <a href="https://maps.google.com/?q=Calle+la+iglesia,+s/n,+24414+Palacios+de+Compludo,+León" target="_blank" rel="noopener noreferrer">
-                  Ver en Google Maps
-                </a>
-              </Button>
-            </div>
-          </div>
+          <iframe
+            src="https://maps.google.com/maps?q=Calle+San+Cristobal,+13,+13300+Valdepeñas,+Ciudad+Real,+Spain&t=m&z=16&output=embed&iwloc=near"
+            width="100%"
+            height="100%"
+            style="border:0;"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Ubicación Asociación Tyto Alba - C/ San Cristobal, 13, Valdepeñas"
+          ></iframe>
+        </div>
+        <div class="mt-4 flex justify-center">
+          <Button variant="link" as-child>
+            <a href="https://maps.google.com/?q=Calle+San+Cristobal+13+Valdepeñas+Ciudad+Real" target="_blank" rel="noopener noreferrer">
+              <Icon name="lucide:external-link" class="mr-2 h-4 w-4" />
+              Ver mapa más grande
+            </a>
+          </Button>
         </div>
       </CardContent>
     </Card>
@@ -249,9 +254,17 @@ async function onSubmit() {
     
     isSubmitting.value = true
 
-    // Enviar email (aquí iría tu lógica de envío)
-    // Por ahora simulamos un envío exitoso
-    await new Promise(resolve => setTimeout(resolve, 1500))
+    // Enviar a la API
+    const response = await $fetch('/api/contact', {
+      method: 'POST',
+      body: {
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+        subject: form.subject,
+        message: form.message
+      }
+    })
     
     // Éxito
     submitSuccess.value = true
@@ -264,7 +277,7 @@ async function onSubmit() {
       message: ''
     })
 
-  } catch (error) {
+  } catch (error: any) {
     if (error instanceof z.ZodError) {
       // Mostrar errores de validación
       error.errors.forEach(err => {
@@ -274,7 +287,7 @@ async function onSubmit() {
       })
     } else {
       // Error general
-      submitError.value = 'Ha ocurrido un error. Por favor, inténtalo de nuevo.'
+      submitError.value = error?.data?.message || 'Ha ocurrido un error. Por favor, inténtalo de nuevo.'
     }
   } finally {
     isSubmitting.value = false

@@ -1,8 +1,8 @@
 # Lista de tareas a realizar
 
  * [X] Subir a repositorio público
- * [ ] Formulario de contacto
- * [ ] Mapa en google para contacto
+ * [X] Formulario de contacto
+ * [X] Mapa en google para contacto
  * [ ] Lista morosos a pdf para enviar
  * [ ] Ingresos-Gastos
  * [ ] Cargar facturas
