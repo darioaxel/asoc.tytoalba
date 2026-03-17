@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { TaskType, TaskStatus, Role } from '../../../prisma/generated/client'
+import { TaskType, TaskStatus, Role } from '../../prisma/generated/client'
 
 const contactSchema = z.object({
   name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
