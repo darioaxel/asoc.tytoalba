@@ -1,0 +1,74 @@
+# =============================================================================
+# Caddyfile - Asociación Tyto Alba
+# Reverse proxy para www.tytoalba.org
+# =============================================================================
+
+# Redirección de HTTP a HTTPS y www
+:80 {
+    redir https://www.tytoalba.org{uri}
+}
+
+# Dominio principal con www
+www.tytoalba.org {
+    # Logs de acceso
+    log {
+        output file /var/log/caddy/tytoalba.access.log {
+            roll_size 10MB
+            roll_keep 10
+            roll_keep_for 720h
+        }
+    }
+
+    # Proxy reverso a la app Nuxt
+    reverse_proxy localhost:3000 {
+        # Headers importantes
+        header_up Host {host}
+        header_up X-Real-IP {remote}
+        header_up X-Forwarded-For {remote}
+        header_up X-Forwarded-Proto {scheme}
+        
+        # Timeouts
+        transport http {
+            read_timeout 300s
+            write_timeout 300s
+        }
+    }
+
+    # Headers de seguridad
+    header {
+        # Prevenir clickjacking
+        X-Frame-Options "SAMEORIGIN"
+        
+        # Prevenir MIME sniffing
+        X-Content-Type-Options "nosniff"
+        
+        # XSS Protection
+        X-XSS-Protection "1; mode=block"
+        
+        # Referrer Policy
+        Referrer-Policy "strict-origin-when-cross-origin"
+        
+        # Permissions Policy
+        Permissions-Policy "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+    }
+
+    # Compresión
+    encode gzip zstd
+
+    # Caché para assets estáticos
+    @static {
+        path *.css *.js *.png *.jpg *.jpeg *.gif *.svg *.ico *.woff *.woff2 *.ttf *.eot
+    }
+    header @static Cache-Control "public, max-age=31536000, immutable"
+
+    # Caché para uploads
+    @uploads {
+        path /uploads/*
+    }
+    header @uploads Cache-Control "public, max-age=86400"
+}
+
+# Redirección del dominio sin www a www
+tytoalba.org {
+    redir https://www.tytoalba.org{uri}
+}

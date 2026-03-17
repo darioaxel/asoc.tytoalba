@@ -1,0 +1,101 @@
+# =============================================================================
+# GitHub Actions - Deploy a Hetzner
+# Asociación Tyto Alba
+# =============================================================================
+
+name: Deploy to Hetzner
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:  # Permitir ejecución manual
+
+concurrency:
+  group: production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    
+    steps:
+      # -----------------------------------------------------------------------
+      # Checkout del código
+      # -----------------------------------------------------------------------
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # -----------------------------------------------------------------------
+      # Verificar cambios relevantes
+      # -----------------------------------------------------------------------
+      - name: Check for relevant changes
+        id: check_changes
+        run: |
+          # Si es workflow_dispatch, siempre deployar
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
+          # Verificar si hay cambios en archivos relevantes
+          CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD || echo "")
+          echo "Archivos cambiados:"
+          echo "$CHANGED_FILES"
+          
+          # Archivos que requieren rebuild
+          REBUILD_PATTERNS="package\.json|pnpm-lock\.yaml|Dockerfile|docker-compose\.yml|prisma/|server/|app/|nuxt\.config\.ts|tsconfig\.json|components\.json|tailwind\.css|content\.config\.ts|lib/|plugins/|public/"
+          
+          if echo "$CHANGED_FILES" | grep -qE "$REBUILD_PATTERNS"; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Se detectaron cambios relevantes para deploy"
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No hay cambios relevantes para deploy"
+          fi
+
+      # -----------------------------------------------------------------------
+      # Deploy via SSH
+      # -----------------------------------------------------------------------
+      - name: Deploy to Hetzner
+        if: steps.check_changes.outputs.has_changes == 'true'
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HETZNER_HOST }}
+          username: ${{ secrets.HETZNER_USER }}
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          port: ${{ secrets.HETZNER_PORT || '22' }}
+          script_stop: true
+          command_timeout: 15m
+          script: |
+            cd /apps/tytoalba
+            
+            # Verificar que existe el script de deploy
+            if [ ! -f "./deploy-github.sh" ]; then
+              echo "❌ Error: No se encontró deploy-github.sh"
+              exit 1
+            fi
+            
+            # Ejecutar script de deploy
+            chmod +x ./deploy-github.sh
+            ./deploy-github.sh
+
+      # -----------------------------------------------------------------------
+      # Notificación de éxito (opcional)
+      # -----------------------------------------------------------------------
+      - name: Notify success
+        if: success() && steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          echo "✅ Deploy completado exitosamente"
+          echo "🌐 URL: https://www.tytoalba.org"
+          echo "🔀 Commit: ${{ github.sha }}"
+
+      # -----------------------------------------------------------------------
+      # Notificación de cancelación
+      # -----------------------------------------------------------------------
+      - name: Skip notification
+        if: steps.check_changes.outputs.has_changes == 'false'
+        run: |
+          echo "⏭️ No se requiere deploy - sin cambios relevantes"
