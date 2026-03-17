@@ -148,9 +148,9 @@ export const siteConfig = {
         {
           title: "Resumen cuentas",
           url: "#",
-          icon: "lucide:bot",
+          icon: "lucide:wallet",
           items: [
-            { title: "Lista Morosos", url: "#" },
+            { title: "Lista Morosos", url: "/socios/morosos" },
             { title: "Ingresos - Gastos", url: "#" },
             { title: "Cargar Facturas", url: "#" },
           ],

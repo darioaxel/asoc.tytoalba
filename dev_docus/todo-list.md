@@ -9,4 +9,4 @@
  * [ ] Creación de recibos
  * [ ] Gestión de tareas - Programacion tareas
  * [ ] Pantalla de bienvenida admin
- * [ ] Blog y gestión de posts
+ * [X] Blog y gestión de posts

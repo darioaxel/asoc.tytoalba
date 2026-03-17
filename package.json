@@ -44,6 +44,7 @@
     "nuxt-security": "^2.4.0",
     "nuxt-svgo": "^4.2.6",
     "nuxt-vitalizer": "^0.10.0",
+    "pdfkit": "^0.18.0",
     "pg": "^8.17.2",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",
