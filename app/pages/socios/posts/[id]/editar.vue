@@ -211,7 +211,7 @@ const editorRef = ref()
 // Cargar el post
 const fetchPost = async () => {
   try {
-    const data = await $fetch(`/api/posts/${postId}`)
+    const data = await $fetch(`/api/posts/manage/${postId}`)
     post.value = data
     content.value = data.content || ''
     published.value = data.published || false
@@ -261,7 +261,7 @@ const insertImageFromUrl = () => {
 const insertImageFromGallery = async () => {
   try {
     // Obtener imágenes relacionadas con el post
-    const images = await $fetch(`/api/posts/${postId}/images`)
+    const images = await $fetch(`/api/posts/manage/${postId}/images`)
     
     if (!images || images.length === 0) {
       toast.info('No hay imágenes', {
@@ -298,7 +298,7 @@ const goBackToStep1 = () => {
 // Guardar contenido
 const saveContent = async (showToast = true): Promise<boolean> => {
   try {
-    const { error } = await $fetch(`/api/posts/${postId}`, {
+    const { error } = await $fetch(`/api/posts/manage/${postId}`, {
       method: 'PUT',
       body: {
         content: content.value,
@@ -330,7 +330,7 @@ const publish = async () => {
   isPublishing.value = true
   
   try {
-    const { error } = await $fetch(`/api/posts/${postId}`, {
+    const { error } = await $fetch(`/api/posts/manage/${postId}`, {
       method: 'PUT',
       body: {
         content: content.value,

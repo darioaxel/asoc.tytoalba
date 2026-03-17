@@ -1,12 +1,17 @@
 <template>
   <Card class="grid grid-cols-3 gap-0 p-0 overflow-hidden">
     <!-- IZQUIERDA: imagen -->
-    <div class="col-span-1">
+    <div class="col-span-1 bg-muted">
       <img
+        v-if="cover"
         :src="cover"
         alt="Cover"
         class="w-full h-full object-cover"
+        loading="lazy"
       />
+      <div v-else class="w-full h-full flex items-center justify-center text-muted-foreground">
+        <Icon name="lucide:image" class="h-12 w-12" />
+      </div>
     </div>
 
     <!-- DERECHA: contenido -->
@@ -35,8 +40,8 @@
 
         <!-- tags -->
         <div class="flex flex-wrap gap-2 mb-4">
-          <Badge v-for="t in tags" :key="t" variant="secondary">
-            {{ t }}
+          <Badge v-for="tag in tags" :key="tag.slug || tag" variant="secondary">
+            {{ tag.name || tag }}
           </Badge>
         </div>
       </div>
@@ -60,7 +65,7 @@ defineProps<{
   authorName: string
   authorAvatar: string
   publishedAt: string // formato legible, ej. "12 ene 2026"
-  tags: string[]
+  tags: (string | { name: string; slug: string })[]
 }>()
 
 defineEmits<{

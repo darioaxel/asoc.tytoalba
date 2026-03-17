@@ -13,7 +13,11 @@
         <PageHeaderHeading class="max-w-4xl text-white">
           Asociación Tyto Alba
         </PageHeaderHeading>
-        <PageHeaderDescription class="text-white/90">Página web en construcción de nuestra asociación :-)</PageHeaderDescription>
+        <PageHeaderDescription class="text-white/90">Bienvenidos a nuestra asociación cultural y deportiva.
+Un proyecto social y autogestionado, creado por y para la comunidad local y regional.
+Llevamos fomentando la escalada, la música, las actividades de montaña y acogiendo eventos culturales desde 1998.
+Ven a conocernos y únete a este bonito proyecto! WEB EN PRUEBAS!
+:-)</PageHeaderDescription>
         <PageActions>
           <Button as-child size="sm">
             <NuxtLink to="/nosotros"> Nosotr@s </NuxtLink>

@@ -30,9 +30,14 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 401, message: 'No autenticado' })
   }
 
-  const id = getRouterParam(event, 'id')
-  if (!id) {
+  const idParam = getRouterParam(event, 'id')
+  if (!idParam) {
     throw createError({ statusCode: 400, message: 'ID requerido' })
+  }
+
+  const id = Number(idParam)
+  if (isNaN(id)) {
+    throw createError({ statusCode: 400, message: 'ID inválido' })
   }
 
   try {
@@ -42,7 +47,7 @@ export default defineEventHandler(async (event) => {
     // Verificar que el post existe y pertenece al usuario
     const existingPost = await prisma.post.findFirst({
       where: { 
-        id: Number(id),
+        id,
         authorId: session.user.id
       }
     })
@@ -56,8 +61,8 @@ export default defineEventHandler(async (event) => {
 
     // Si se cambia el slug, verificar que no exista otro
     if (validated.slug && validated.slug !== existingPost.slug) {
-      const slugExists = await prisma.post.findUnique({
-        where: { slug: validated.slug }
+      const slugExists = await prisma.post.findFirst({
+        where: { slug: validated.slug, id: { not: id } }
       })
       if (slugExists) {
         throw createError({
@@ -115,7 +120,7 @@ export default defineEventHandler(async (event) => {
 
     // Actualizar el post
     const post = await prisma.post.update({
-      where: { id: Number(id) },
+      where: { id },
       data: updateData,
       include: {
         author: {

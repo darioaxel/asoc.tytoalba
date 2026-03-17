@@ -7,15 +7,20 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 401, message: 'No autenticado' })
   }
 
-  const id = getRouterParam(event, 'id')
-  if (!id) {
+  const idParam = getRouterParam(event, 'id')
+  if (!idParam) {
     throw createError({ statusCode: 400, message: 'ID requerido' })
+  }
+
+  const id = Number(idParam)
+  if (isNaN(id)) {
+    throw createError({ statusCode: 400, message: 'ID inválido' })
   }
 
   // Obtener el post con sus imágenes
   const post = await prisma.post.findFirst({
     where: { 
-      id: Number(id),
+      id,
       authorId: session.user.id
     },
     include: {
@@ -63,7 +68,7 @@ export default defineEventHandler(async (event) => {
 
   // Eliminar el post (esto elimina las relaciones PostImage en cascada)
   await prisma.post.delete({
-    where: { id: Number(id) }
+    where: { id }
   })
 
   // Eliminar registros de File huérfanos

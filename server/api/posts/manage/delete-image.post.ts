@@ -7,9 +7,14 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 401, message: 'No autenticado' })
   }
 
-  const id = getRouterParam(event, 'id')
-  if (!id) {
+  const idParam = getRouterParam(event, 'id')
+  if (!idParam) {
     throw createError({ statusCode: 400, message: 'ID requerido' })
+  }
+
+  const id = Number(idParam)
+  if (isNaN(id)) {
+    throw createError({ statusCode: 400, message: 'ID inválido' })
   }
 
   const body = await readBody(event)
@@ -22,7 +27,7 @@ export default defineEventHandler(async (event) => {
   // Verificar que el post existe y pertenece al usuario
   const post = await prisma.post.findFirst({
     where: { 
-      id: Number(id),
+      id,
       authorId: session.user.id
     }
   })
@@ -42,7 +47,7 @@ export default defineEventHandler(async (event) => {
 
   // Verificar que la imagen pertenece a este post
   const postImage = await prisma.postImage.findFirst({
-    where: { postId: Number(id), fileId }
+    where: { postId: id, fileId }
   })
 
   const isCoverImage = post.coverImageId === fileId

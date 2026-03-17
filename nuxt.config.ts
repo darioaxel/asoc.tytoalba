@@ -19,7 +19,7 @@ export default defineNuxtConfig({
     "@nuxt/eslint",
     "@vueuse/nuxt",
     "shadcn-nuxt",
-    "@nuxt/image",
+    // "@nuxt/image", // Temporalmente deshabilitado - causa problemas con imágenes locales
     "@nuxt/fonts",
     // "@nuxtjs/seo", // Temporalmente deshabilitado - causa error useHead
     "@nuxt/icon",
@@ -71,6 +71,8 @@ export default defineNuxtConfig({
     componentName: 'Icon',
     provider: 'server',
   },
+  
+
   // 1. Desactivar CSP en desarrollo
   security: {
     headers: {
@@ -78,13 +80,14 @@ export default defineNuxtConfig({
       contentSecurityPolicy: false,        // ← desactiva CSP completo
     },
   },
+
   nitro: {
     externals: {
       inline: ['@prisma/client']
     },
     publicAssets: [
       {
-        dir: 'uploads',
+        dir: 'public/uploads',
         baseURL: '/uploads',
         maxAge: 60 * 60 * 24 * 365 // 1 año de caché
       }

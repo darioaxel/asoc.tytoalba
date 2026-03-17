@@ -90,12 +90,12 @@ const debouncedSearch = refDebounced(search, 300)
 
 // Fetch posts con los nuevos campos
 const { data, pending, refresh } = await useLazyFetch('/api/posts', {
-  query: {
-    page: currentPage,
+  query: computed(() => ({
+    page: currentPage.value,
     limit: pageSize,
-    search: debouncedSearch,
-    tag: selectedTag,
-  },
+    search: debouncedSearch.value || undefined,
+    tag: selectedTag.value !== 'ALL' ? selectedTag.value : undefined,
+  })),
 })
 
 // Tags disponibles
