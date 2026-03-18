@@ -1,6 +1,9 @@
 import tailwindcss from "@tailwindcss/vite"; 
 
 export default defineNuxtConfig({
+  // Desactivar SSR temporalmente para reducir uso de memoria en build
+  ssr: false,
+  
   hooks: {
     // Desactivar completamente el prerender para evitar out of memory en build
     'prerender:routes'({ routes }) {
