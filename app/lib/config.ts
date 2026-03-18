@@ -84,12 +84,7 @@ export const siteConfig = {
         },
       ],
     },
-  ] as NavItem[],
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "avatars/shadcn.jpg",
-  },
+  ] as NavItem[], 
   teams: [
     {
       name: "Asociación Tyto Alba",
@@ -121,7 +116,15 @@ export const siteConfig = {
             { title: "Ver/Votar propuestas", url: "/socios/propuestas" },
             { title: "Crear propuestas", url: "/socios/propuesta/nueva" },            
           ],
-        },       
+        },
+        {
+          title: "Noticias - Blog",
+          url: "/socios/noticias",
+          icon: "lucide:book-open",
+          items: [
+            { title: "Crear noticia", url: "/socios/noticia/crear" },
+          ],
+        },
         {
           title: "Documentación",
           url: "#",
