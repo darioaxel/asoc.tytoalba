@@ -1,37 +1,30 @@
 import type { PrismaClient } from '../../prisma/generated/client'
 
-/**
- * Plugin de Nitro para inicializar Prisma al arrancar el servidor
- * El prefijo "01." asegura que se ejecute primero que otros plugins
- * 
- * Esta arquitectura detecta automáticamente el entorno:
- * - Neon (desarrollo): Usa adaptador WebSockets
- * - PostgreSQL local (producción/Docker): Usa PrismaClient estándar
- */
-
 export default defineNitroPlugin(async () => {
   console.log('[Prisma Plugin] Inicializando cliente...')
   
   const { PrismaClient } = await import('../../prisma/generated/client')
   
-  // Detectar si es Neon por el dominio en la URL
-  const isNeon = process.env.DATABASE_URL?.includes('neon.tech')
-  
+  const dbAdapter = process.env.DB_ADAPTER || 'neon'
   let client: PrismaClient
   
-  if (isNeon) {
-    console.log('[Prisma Plugin] Detectado Neon.tech - Usando adaptador Neon (WebSockets)')
-    const { PrismaNeon } = await import('@prisma/adapter-neon')
-    const pool = new PrismaNeon({ connectionString: process.env.DATABASE_URL })
-    client = new PrismaClient({ adapter: pool })
+  if (dbAdapter === 'pg') {
+    console.log('[Prisma Plugin] Usando PrismaPg adapter (PostgreSQL)')
+    const { PrismaPg } = await import('@prisma/adapter-pg')
+    const { Pool } = await import('pg')
+    const pool = new Pool({ connectionString: process.env.DATABASE_URL })
+    const adapter = new PrismaPg(pool)
+    client = new PrismaClient({ adapter })
   } else {
-    console.log('[Prisma Plugin] Usando PrismaClient estándar (PostgreSQL local/Docker)')
-    client = new PrismaClient()
+    console.log('[Prisma Plugin] Usando PrismaNeon adapter (Neon)')
+    const { PrismaNeon } = await import('@prisma/adapter-neon')
+    const neonPool = new PrismaNeon({ connectionString: process.env.DATABASE_URL })
+    client = new PrismaClient({ adapter: neonPool })
   }
   
-  // Guardar en global para que db.ts lo pueda reutilizar
+  // Guardar en global para reutilización
   // @ts-expect-error - extendiendo global
   globalThis.__prisma = client
   
-  console.log('[Prisma Plugin] Cliente Prisma inicializado correctamente')
+  console.log('[Prisma Plugin] Cliente inicializado correctamente')
 })
