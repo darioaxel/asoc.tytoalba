@@ -25,13 +25,20 @@ RUN pnpm install --frozen-lockfile
 # -----------------------------------------------------------------------------
 FROM node:20-slim AS builder
 
+# Instalar herramientas necesarias para compilar better-sqlite3
+RUN apt-get update && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
+
 RUN corepack enable && corepack prepare pnpm@10.12.1 --activate
 
 WORKDIR /app
 
-# Copiar dependencias instaladas
-COPY --from=dependencies /app/node_modules ./node_modules
-COPY --from=dependencies /app/prisma ./prisma
+# Copiar archivos de dependencias
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY prisma.config.ts ./
+COPY prisma ./prisma/
+
+# Reinstalar dependencias (para compilar native modules correctamente)
+RUN pnpm install --frozen-lockfile
 
 # Copiar todo el código fuente
 COPY . .
