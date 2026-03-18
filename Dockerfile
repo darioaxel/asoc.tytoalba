@@ -43,7 +43,9 @@ ENV NUXT_TELEMETRY_DISABLED=1
 # Generar cliente Prisma
 RUN pnpm prisma generate
 
-# Build de la aplicación
+# Build de la aplicación (con 3GB de memoria para evitar heap out of memory)
+# Si sigue fallando, prueba con 2048 o desactiva el prerenderer en nuxt.config.ts
+ENV NODE_OPTIONS="--max-old-space-size=3072"
 RUN pnpm build
 
 # -----------------------------------------------------------------------------
