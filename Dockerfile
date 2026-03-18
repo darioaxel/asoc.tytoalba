@@ -4,29 +4,9 @@
 # =============================================================================
 
 # -----------------------------------------------------------------------------
-# Stage 1: Dependencies
-# -----------------------------------------------------------------------------
-FROM node:20-slim AS dependencies
-
-RUN corepack enable && corepack prepare pnpm@10.12.1 --activate
-
-WORKDIR /app
-
-# Copiar archivos de dependencias primero (para cacheo)
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY prisma.config.ts ./
-COPY prisma ./prisma/
-
-# Instalar dependencias
-RUN pnpm install --frozen-lockfile
-
-# -----------------------------------------------------------------------------
-# Stage 2: Builder
+# Stage 1: Builder
 # -----------------------------------------------------------------------------
 FROM node:20-slim AS builder
-
-# Instalar herramientas necesarias para compilar better-sqlite3
-RUN apt-get update && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
 
 RUN corepack enable && corepack prepare pnpm@10.12.1 --activate
 
@@ -37,9 +17,8 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY prisma.config.ts ./
 COPY prisma ./prisma/
 
-# Reinstalar dependencias (para compilar native modules correctamente)
-RUN pnpm install --frozen-lockfile && \
-    pnpm rebuild better-sqlite3
+# Instalar dependencias
+RUN pnpm install --frozen-lockfile
 
 # Copiar todo el código fuente
 COPY . .
@@ -57,7 +36,7 @@ ENV NODE_OPTIONS="--max-old-space-size=3072"
 RUN pnpm build
 
 # -----------------------------------------------------------------------------
-# Stage 3: Production
+# Stage 2: Production
 # -----------------------------------------------------------------------------
 FROM node:20-slim AS production
 

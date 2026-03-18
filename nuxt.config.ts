@@ -34,6 +34,14 @@ export default defineNuxtConfig({
     '@nuxt/content',
   ],
 
+  // Configuración de Nuxt Content - usar pglite (pure JS) en lugar de better-sqlite3
+  content: {
+    database: {
+      type: 'pglite',
+      url: './content.db'
+    }
+  },
+
   // Configuración de color-mode para themes light/dark
   colorMode: {
     preference: 'system',
