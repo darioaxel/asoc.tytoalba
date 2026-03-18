@@ -6,7 +6,7 @@
 # -----------------------------------------------------------------------------
 # Stage 1: Dependencies
 # -----------------------------------------------------------------------------
-FROM node:20-alpine AS dependencies
+FROM node:20-slim AS dependencies
 
 RUN corepack enable && corepack prepare pnpm@10.12.1 --activate
 
@@ -23,7 +23,7 @@ RUN pnpm install --frozen-lockfile
 # -----------------------------------------------------------------------------
 # Stage 2: Builder
 # -----------------------------------------------------------------------------
-FROM node:20-alpine AS builder
+FROM node:20-slim AS builder
 
 RUN corepack enable && corepack prepare pnpm@10.12.1 --activate
 
@@ -51,14 +51,14 @@ RUN pnpm build
 # -----------------------------------------------------------------------------
 # Stage 3: Production
 # -----------------------------------------------------------------------------
-FROM node:20-alpine AS production
+FROM node:20-slim AS production
 
 # Instalar herramientas necesarias
-RUN apk add --no-cache dumb-init
+RUN apt-get update && apt-get install -y dumb-init wget && rm -rf /var/lib/apt/lists/*
 
 # Crear usuario no-root
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nuxt -u 1001
+RUN groupadd -g 1001 nodejs && \
+    useradd -S -u 1001 -g nodejs nuxt
 
 WORKDIR /app
 
