@@ -1,6 +1,12 @@
 import tailwindcss from "@tailwindcss/vite"; 
 
 export default defineNuxtConfig({
+  hooks: {
+    // Desactivar completamente el prerender para evitar out of memory en build
+    'prerender:routes'({ routes }) {
+      routes.clear()
+    }
+  },
   app: {
     head: {
       title: 'Asociación Tyto Alba',
@@ -63,6 +69,9 @@ export default defineNuxtConfig({
 
   vite: {
      plugins: [tailwindcss()],
+     build: {
+       sourcemap: false, // Desactivar sourcemaps para evitar warnings de Tailwind
+     },
   },
   
   devtools: { enabled: true },
@@ -84,10 +93,6 @@ export default defineNuxtConfig({
   nitro: {
     externals: {
       inline: ['@prisma/client']
-    },
-    // Desactivar prerender para evitar out of memory en build
-    prerender: {
-      enabled: false
     },
     publicAssets: [
       {
