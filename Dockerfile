@@ -38,7 +38,8 @@ COPY prisma.config.ts ./
 COPY prisma ./prisma/
 
 # Reinstalar dependencias (para compilar native modules correctamente)
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile && \
+    pnpm rebuild better-sqlite3
 
 # Copiar todo el código fuente
 COPY . .
