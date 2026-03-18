@@ -79,9 +79,9 @@ USER nuxt
 # Exponer puerto
 EXPOSE 3000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1
+# Health check - verifica que la app y la base de datos estén funcionando
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD wget --no-verbose --tries=1 --spider --header="Accept: application/json" http://localhost:3000/api/health || exit 1
 
 # Usar dumb-init para manejar señales correctamente
 ENTRYPOINT ["dumb-init", "--"]
