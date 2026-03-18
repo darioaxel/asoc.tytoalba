@@ -14,8 +14,8 @@ export class PostSeeder {
       u.role === Role.ADMIN || u.role === Role.ROOT
     )
 
-    // Asegurar que existe el directorio de uploads
-    const uploadsDir = join(process.cwd(), 'public', 'images', 'uploads')
+    // Asegurar que existe el directorio de uploads (en el volumen persistente)
+    const uploadsDir = join(process.cwd(), 'uploads', 'images')
     await mkdir(uploadsDir, { recursive: true })
 
     for (let i = 0; i < posts.length; i++) {
@@ -46,7 +46,7 @@ export class PostSeeder {
             // Generar nombre único para el archivo
             const fileName = `${Date.now()}-${i}-${slug}.jpg`
             const destPath = join(uploadsDir, fileName)
-            const publicPath = `/images/uploads/${fileName}`
+            const publicPath = `/uploads/images/${fileName}`
             
             // Copiar archivo
             await copyFile(sourcePath, destPath)
@@ -78,7 +78,7 @@ export class PostSeeder {
               const buffer = Buffer.from(await response.arrayBuffer())
               const fileName = `${Date.now()}-${i}-${slug}.jpg`
               const destPath = join(uploadsDir, fileName)
-              const publicPath = `/images/uploads/${fileName}`
+              const publicPath = `/uploads/images/${fileName}`
               
               // Guardar archivo
               const { writeFile } = await import('fs/promises')

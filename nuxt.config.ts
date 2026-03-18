@@ -96,7 +96,7 @@ export default defineNuxtConfig({
     },
     publicAssets: [
       {
-        dir: 'public/uploads',
+        dir: 'uploads',
         baseURL: '/uploads',
         maxAge: 60 * 60 * 24 * 365 // 1 año de caché
       }
