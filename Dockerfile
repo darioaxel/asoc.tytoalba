@@ -8,13 +8,13 @@
 # -----------------------------------------------------------------------------
 FROM node:20-alpine AS dependencies
 
-# Instalar pnpm
-RUN npm install -g pnpm
+RUN corepack enable && corepack prepare pnpm@10.12.1 --activate
 
 WORKDIR /app
 
 # Copiar archivos de dependencias primero (para cacheo)
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY prisma.config.ts ./
 COPY prisma ./prisma/
 
 # Instalar dependencias
@@ -25,8 +25,7 @@ RUN pnpm install --frozen-lockfile
 # -----------------------------------------------------------------------------
 FROM node:20-alpine AS builder
 
-# Instalar pnpm
-RUN npm install -g pnpm
+RUN corepack enable && corepack prepare pnpm@10.12.1 --activate
 
 WORKDIR /app
 
@@ -64,6 +63,7 @@ WORKDIR /app
 # Copiar archivos necesarios desde builder
 COPY --from=builder --chown=nuxt:nodejs /app/.output ./.output
 COPY --from=builder --chown=nuxt:nodejs /app/prisma ./prisma
+COPY --from=builder --chown=nuxt:nodejs /app/prisma.config.ts ./prisma.config.ts
 COPY --from=builder --chown=nuxt:nodejs /app/node_modules/.pnpm/@prisma+client@7.3.0* ./node_modules/.pnpm/
 COPY --from=builder --chown=nuxt:nodejs /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=builder --chown=nuxt:nodejs /app/package.json ./

@@ -1,13 +1,22 @@
-import 'dotenv/config'
-import { defineConfig, env } from "prisma/config"
+import { defineConfig } from "prisma/config"
+
+// Cargar dotenv solo si existe (no en Docker build)
+try {
+  await import('dotenv/config')
+} catch {
+  // Ignorar si no existe
+}
+
+// Para prisma generate no se necesita conexion real, solo un valor valido
+const databaseUrl = process.env.DATABASE_URL || "postgresql://user:pass@localhost:5432/db"
 
 export default defineConfig({
-  schema: "prisma/schema",
+  schema: "./prisma/schema",
   migrations: {
-    path: "prisma/migrations",
+    path: "./prisma/migrations",
     seed: 'tsx ./prisma/seed/index.ts',
   },
   datasource: {
-    url: env("DATABASE_URL"),    
+    url: databaseUrl,
   },
 })
