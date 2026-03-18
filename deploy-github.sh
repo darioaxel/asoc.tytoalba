@@ -8,8 +8,8 @@
 set -e
 
 APP_DIR="/apps/tytoalba"
-BACKUP_DIR="/apps/backups/tytoalba"
-DB_BACKUP_DIR="/apps/backups/tytoalba/db"
+BACKUP_DIR="$APP_DIR/backups"
+DB_BACKUP_DIR="$APP_DIR/backups/db"
 
 # Colores
 GREEN='\033[0;32m'
@@ -67,8 +67,9 @@ else
     log_warning "Contenedor de PostgreSQL no esta corriendo - puede ser el primer deploy"
 fi
 
-# Limpiar backups antiguos (mantener últimos 10)
-ls -t "$DB_BACKUP_DIR"/tytoalba-db-*.sql.gz 2>/dev/null | tail -n +11 | xargs -r rm -f
+# Limpiar backups antiguos (mantener solo los últimos 4)
+ls -t "$DB_BACKUP_DIR"/tytoalba-db-*.sql.gz 2>/dev/null | tail -n +5 | xargs -r rm -f
+log_info "Manteniendo solo los últimos 4 backups"
 
 # =============================================================================
 # ACTUALIZAR CÓDIGO

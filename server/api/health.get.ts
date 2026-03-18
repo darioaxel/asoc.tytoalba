@@ -1,4 +1,4 @@
-import { prisma } from '~/server/utils/db'
+import { prisma } from '../utils/db'
 
 /**
  * Endpoint de health check para monitoreo
