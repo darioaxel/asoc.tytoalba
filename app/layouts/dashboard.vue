@@ -37,22 +37,26 @@ const isAdmin = computed(() => {
           <DynamicBreadCrumb :url="useRoute().path" />          
         </div>
         <div class="flex items-center gap-2 px-4">
-          <!-- Enlaces de Admin -->
+          <!-- Enlace Dashboard para todos -->
+          <Button variant="ghost" size="sm" as-child>
+            <NuxtLink to="/socios" class="flex items-center gap-1.5">
+              <Home class="h-4 w-4" />
+              <span class="hidden sm:inline">Dashboard</span>
+            </NuxtLink>
+          </Button>
+          
+          <!-- Enlaces exclusivos de Admin -->
           <template v-if="isAdmin">
-            <Button variant="ghost" size="sm" as-child>
-              <NuxtLink to="/socios" class="flex items-center gap-1.5">
-                <Home class="h-4 w-4" />
-                <span class="hidden sm:inline">Dashboard</span>
-              </NuxtLink>
-            </Button>
+            <Separator orientation="vertical" class="h-4 mx-1" />
             <Button variant="ghost" size="sm" as-child>
               <NuxtLink to="/socios/lista" class="flex items-center gap-1.5">
                 <Users class="h-4 w-4" />
                 <span class="hidden sm:inline">Socios</span>
               </NuxtLink>
             </Button>
-            <Separator orientation="vertical" class="h-4 mx-1" />
           </template>
+          
+          <Separator orientation="vertical" class="h-4 mx-1" />
           <ThemeToggle />
         </div>
       </header>
