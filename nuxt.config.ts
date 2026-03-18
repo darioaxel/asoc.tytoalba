@@ -85,6 +85,10 @@ export default defineNuxtConfig({
     externals: {
       inline: ['@prisma/client']
     },
+    // Desactivar prerender para evitar out of memory en build
+    prerender: {
+      enabled: false
+    },
     publicAssets: [
       {
         dir: 'public/uploads',
