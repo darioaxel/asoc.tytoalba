@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SidebarProps } from '@/components/ui/sidebar'
+import type { SidebarProps } from './ui/sidebar'
 
 import NavMain from '@/components/NavMain.vue'
 import NavSecondary from '@/components/NavSecondary.vue'
@@ -12,7 +12,7 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from '@/components/ui/sidebar'
+} from './ui/sidebar'
 import { siteConfig } from '@/lib/config'
 
 const props = withDefaults(defineProps<SidebarProps>(), {
