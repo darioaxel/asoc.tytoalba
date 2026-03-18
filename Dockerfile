@@ -58,7 +58,7 @@ RUN apt-get update && apt-get install -y dumb-init wget && rm -rf /var/lib/apt/l
 
 # Crear usuario no-root
 RUN groupadd -g 1001 nodejs && \
-    useradd -S -u 1001 -g nodejs nuxt
+    useradd --system -u 1001 -g nodejs nuxt
 
 WORKDIR /app
 
