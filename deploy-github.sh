@@ -51,7 +51,7 @@ log_info "Directorio de trabajo: $(pwd)"
 log_info "Creando backup de base de datos..."
 mkdir -p "$DB_BACKUP_DIR"
 
-DB_BACKUP_FILE="$DB_BACKUP_DIR/tytoalba-db-"$(date +%Y%m%d-%H%M%S).sql"
+DB_BACKUP_FILE="$DB_BACKUP_DIR/tytoalba-db-$(date +%Y%m%d-%H%M%S).sql"
 
 # Backup de PostgreSQL local
 if docker ps -q -f name=tytoalba-postgres | grep -q .; then
@@ -60,11 +60,11 @@ if docker ps -q -f name=tytoalba-postgres | grep -q .; then
         log_success "Backup de BD creado: $DB_BACKUP_FILE"
         gzip "$DB_BACKUP_FILE" 2>/dev/null || true
     else
-        log_warning "No se pudo crear backup de BD (puede ser la primera vez)"
+        log_warning "No se pudo crear backup de BD - puede ser la primera vez"
         rm -f "$DB_BACKUP_FILE"
     fi
 else
-    log_warning "Contenedor de PostgreSQL no está corriendo (puede ser el primer deploy)"
+    log_warning "Contenedor de PostgreSQL no esta corriendo - puede ser el primer deploy"
 fi
 
 # Limpiar backups antiguos (mantener últimos 10)
