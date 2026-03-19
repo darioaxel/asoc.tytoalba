@@ -453,10 +453,8 @@ const deleteProposal = async () => {
     deleteDialog.value.open = false
     fetchProposals()
   } catch (error: any) {
-    toast({
-      title: 'Error',
-      description: error.message || 'No se pudo eliminar la propuesta',
-      variant: 'destructive',
+    toast.error('Error', {
+      description: error?.data?.message || error.message || 'No se pudo eliminar la propuesta',
     })
   } finally {
     deleteDialog.value.loading = false

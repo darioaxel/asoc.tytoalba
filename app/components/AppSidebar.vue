@@ -23,10 +23,10 @@ const { session } = useAppUserSession()
 const user = computed(() => session.value.user)
 
 const user_data = computed(() => ({
-  name: user.value?.name || 'castaña',
-  lastName: user.value?.lastName || 'test',
-  email: user.value?.email || siteConfig.user.email,
-  picture: user.value?.picture || siteConfig.user.avatar
+  name: user.value?.name || 'Usuario',
+  lastName: user.value?.lastName || '',
+  email: user.value?.email || 'usuario@ejemplo.com',
+  picture: user.value?.picture || ''
 }))
 
 const user_role = computed(() => user.value?.role || 'none')

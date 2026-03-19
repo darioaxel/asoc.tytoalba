@@ -41,7 +41,6 @@ const props = defineProps<{
 }>()
 
 const { isMobile } = useSidebar()
-const { user } = await useUserSession()
 const colorMode = useColorMode()
 
 const toggleTheme = () => {
@@ -60,17 +59,17 @@ const currentThemeLabel = computed(() => colorMode.value === 'dark' ? 'Modo clar
           <SidebarMenuButton
             size="lg"
             class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-            :tooltip="user?.firstName + ' ' + user?.lastName"
+            :tooltip="(props.user?.name || '') + ' ' + (props.user?.lastName || '')"
           >
             <Avatar class="h-8 w-8 rounded-lg">
-              <AvatarImage :src="user?.picture || ''" :alt="user?.firstName || 'Usuario'" />
+              <AvatarImage :src="props.user?.picture || ''" :alt="props.user?.name || 'Usuario'" />
               <AvatarFallback class="rounded-lg">
-                {{ user?.firstName?.slice(0, 2).toUpperCase() || 'US' }}
+                {{ (props.user?.name || 'U')?.slice(0, 2).toUpperCase() }}
               </AvatarFallback>
             </Avatar>
             <div class="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
-              <span class="truncate font-medium">{{ user?.firstName }} {{ user?.lastName }}</span>
-              <span class="truncate text-xs">{{ user?.email }}</span>
+              <span class="truncate font-medium">{{ props.user?.name }} {{ props.user?.lastName }}</span>
+              <span class="truncate text-xs">{{ props.user?.email }}</span>
             </div>
             <ChevronsUpDown class="ml-auto size-4 group-data-[collapsible=icon]:hidden" />
           </SidebarMenuButton>
@@ -84,14 +83,14 @@ const currentThemeLabel = computed(() => colorMode.value === 'dark' ? 'Modo clar
           <DropdownMenuLabel class="p-0 font-normal">
             <div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
               <Avatar class="h-8 w-8 rounded-lg">
-                <AvatarImage :src="user?.picture || ''" :alt="user?.firstName || 'Usuario'" />
+                <AvatarImage :src="props.user?.picture || ''" :alt="props.user?.name || 'Usuario'" />
                 <AvatarFallback class="rounded-lg">
-                  {{ user?.firstName?.slice(0, 2).toUpperCase() || 'US' }}
+                  {{ (props.user?.name || 'U')?.slice(0, 2).toUpperCase() }}
                 </AvatarFallback>
               </Avatar>
               <div class="grid flex-1 text-left text-sm leading-tight">
-                <span class="truncate font-semibold">{{ user?.firstName }}</span>
-                <span class="truncate text-xs">{{ user?.email }}</span>
+                <span class="truncate font-semibold">{{ props.user?.name }}</span>
+                <span class="truncate text-xs">{{ props.user?.email }}</span>
               </div>
             </div>
           </DropdownMenuLabel>

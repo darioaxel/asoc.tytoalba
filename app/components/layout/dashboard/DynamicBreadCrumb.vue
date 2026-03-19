@@ -22,6 +22,29 @@ const props = defineProps<{
   url: string
 }>()
 
+// Mapeo de segmentos de URL a etiquetas legibles
+const routeLabels: Record<string, string> = {
+  'socios': 'Área Socios',
+  'recibos': 'Mis Recibos',
+  'pagar': 'Pagar',
+  'tareas': 'Tareas',
+  'tarea': 'Tarea',
+  'propuestas': 'Propuestas',
+  'propuesta': 'Propuesta',
+  'nueva': 'Nueva',
+  'posts': 'Posts',
+  'crear': 'Crear',
+  'editar': 'Editar',
+  'perfil': 'Mi Perfil',
+  'banco': 'Datos Bancarios',
+  'lista': 'Lista de Socios',
+  'morosos': 'Morosos',
+  'login': 'Login',
+  'signup': 'Registro',
+  'landing': 'Bienvenida',
+  'solicitud': 'Solicitud',
+}
+
 const breadcrumbs = computed(() => {
   const segments = props.url.split('/').filter(Boolean)
   const result = []
@@ -29,8 +52,14 @@ const breadcrumbs = computed(() => {
   let path = ''
   for (const segment of segments) {
     path += `/${segment}`
+    
+    // Si es un ID numérico, lo omitimos del breadcrumb
+    if (/^\d+$/.test(segment)) {
+      continue
+    }
+    
     result.push({
-      label: segment.charAt(0).toUpperCase() + segment.slice(1),
+      label: routeLabels[segment] || (segment.charAt(0).toUpperCase() + segment.slice(1)),
       path,
     })
   }

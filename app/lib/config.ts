@@ -122,7 +122,7 @@ export const siteConfig = {
           url: "/socios/noticias",
           icon: "lucide:book-open",
           items: [
-            { title: "Crear noticia", url: "/socios/noticia/crear" },
+            { title: "Crear noticia", url: "/socios/posts/crear" },
           ],
         },
         {

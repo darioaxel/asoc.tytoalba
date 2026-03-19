@@ -159,11 +159,12 @@
         </CardContent>
 
         <!-- Acciones -->
-        <CardFooter class="flex gap-3" v-if="canUpdateStatus">
+        <CardFooter class="flex gap-3 pt-6" v-if="canUpdateStatus">
           <Button 
             v-if="task.status === 'CREADA' || task.status === 'ASIGNADA'"
             @click="updateStatus('EN_CURSO')"
             :disabled="updating"
+            class="bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-600 dark:hover:bg-blue-500"
           >
             <Icon v-if="updating" name="lucide:loader-2" class="mr-2 h-4 w-4 animate-spin" />
             <Icon v-else name="lucide:play" class="mr-2 h-4 w-4" />
@@ -174,7 +175,7 @@
             v-if="task.status === 'EN_CURSO'"
             @click="updateStatus('ESPERANDO_VALIDACION')"
             :disabled="updating"
-            variant="secondary"
+            class="bg-green-600 hover:bg-green-700 text-white dark:bg-green-600 dark:hover:bg-green-500"
           >
             <Icon v-if="updating" name="lucide:loader-2" class="mr-2 h-4 w-4 animate-spin" />
             <Icon v-else name="lucide:check-check" class="mr-2 h-4 w-4" />

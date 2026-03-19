@@ -71,15 +71,15 @@ const handleSubmit = async () => {
         description: 'Has iniciado sesión correctamente',
       })
       
-      // Redirigir según rol (usar datos de la respuesta, no la sesión)
+      // Redirigir según rol
       const userRole = response.user?.role
+      let redirectPath = '/socios'
       if (userRole === 'ROOT') {
-        await navigateTo('/admin/system')
-      } else if (userRole === 'ADMIN') {
-        await navigateTo('/socios')
-      } else {
-        await navigateTo('/socios')
+        redirectPath = '/admin/system'
       }
+      
+      // Forzar recarga completa para que el middleware de auth funcione correctamente
+      reloadNuxtApp({ path: redirectPath })
     }
   } catch (error: any) {
     console.log('❌ Error completo:', error)

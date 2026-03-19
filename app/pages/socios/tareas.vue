@@ -9,12 +9,6 @@
         </p>
       </div>
       <div class="flex gap-2">
-        <Button variant="outline" as-child>
-          <NuxtLink to="/socios">
-            <Icon name="lucide:home" class="mr-2 h-4 w-4" />
-            Dashboard
-          </NuxtLink>
-        </Button>
         <Button as-child>
           <NuxtLink to="/socios/tareas/nueva">
             <Icon name="lucide:plus" class="mr-2 h-4 w-4" />

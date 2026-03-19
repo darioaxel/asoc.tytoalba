@@ -50,6 +50,7 @@
 
 <script setup lang="ts">
 import { CreditCard as CreditCardIcon } from 'lucide-vue-next'
+import { toast } from 'vue-sonner'
 import PaymentSummary from '~/components/payment/PaymentSummary.vue'
 import ReceiptsSelector from '~/components/payment/ReceiptsSelector.vue'
 import FileUpload from '~/components/payment/FileUpload.vue'
@@ -114,6 +115,15 @@ function cancel() {
 }
 
 async function submit() {
+  if (selectedIds.value.length === 0) {
+    toast.error('Selecciona al menos un recibo')
+    return
+  }
+  if (!uploadedFile.value) {
+    toast.error('Adjunta el justificante de transferencia')
+    return
+  }
+
   submitting.value = true
   try {
     await $fetch('/api/receipts/pay', {
@@ -123,7 +133,14 @@ async function submit() {
         fileId: uploadedFile.value?.id,
       },
     })
+    toast.success('Pago registrado', {
+      description: 'Tu pago ha sido registrado y está pendiente de validación',
+    })
     navigateTo('/socios/recibos')
+  } catch (error: any) {
+    toast.error('Error al procesar el pago', {
+      description: error?.data?.message || error?.message || 'Ha ocurrido un error inesperado',
+    })
   } finally {
     submitting.value = false
   }

@@ -19,7 +19,8 @@
             </div>
             <Button 
               v-if="pendingReceipts.length > 0"
-              :to="`/pagar-recibo/${pendingReceipts[0].id}`"
+              as-child
+              @click="navigateTo('/socios/pagar')"
               class="ml-4"
             >
               Pagar ahora
@@ -102,7 +103,8 @@
                         <Button
                           v-if="canPay(receipt)"
                           size="sm"
-                          :to="`/pagar-recibo/${receipt.id}`"
+                          as-child
+                          @click="navigateTo('/socios/pagar')"
                         >
                           Pagar
                         </Button>

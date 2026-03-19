@@ -1,5 +1,5 @@
 <template>
-  <div class="border rounded-lg overflow-hidden bg-background">
+  <div class="novel-editor-container border rounded-lg overflow-hidden bg-background dark:bg-background">
     <Editor
       ref="editorRef"
       :default-value="defaultValue"
@@ -7,6 +7,7 @@
       :on-debounced-update="handleDebouncedUpdate"
       :storage-key="storageKey"
       :class="editorClass"
+      class="dark-mode-compatible"
     />
   </div>
 </template>
@@ -151,40 +152,28 @@ defineExpose({
 </script>
 
 <style>
-/* Novel Editor Custom Styles */
-.novel-editor {
-  --novel-white: hsl(var(--background));
-  --novel-black: hsl(var(--foreground));
-  --novel-stone-50: hsl(var(--muted));
-  --novel-stone-100: hsl(var(--muted));
-  --novel-stone-200: hsl(var(--border));
-  --novel-stone-300: hsl(var(--border));
-  --novel-stone-400: hsl(var(--muted-foreground));
-  --novel-stone-500: hsl(var(--muted-foreground));
-  --novel-stone-600: hsl(var(--foreground));
-  --novel-stone-700: hsl(var(--foreground));
-  --novel-stone-800: hsl(var(--foreground));
-  --novel-stone-900: hsl(var(--foreground));
-  
-  --novel-highlight-default: hsl(var(--muted));
-  --novel-highlight-purple: rgba(168, 85, 247, 0.2);
-  --novel-highlight-red: rgba(239, 68, 68, 0.2);
-  --novel-highlight-yellow: rgba(234, 179, 8, 0.2);
-  --novel-highlight-blue: rgba(59, 130, 246, 0.2);
-  --novel-highlight-green: rgba(34, 197, 94, 0.2);
-  --novel-highlight-orange: rgba(249, 115, 22, 0.2);
-  --novel-highlight-pink: rgba(236, 72, 153, 0.2);
-  --novel-highlight-gray: hsl(var(--muted));
+/* Novel Editor Custom Styles - Modo claro y oscuro */
+.novel-editor-container {
+  background-color: hsl(var(--background));
 }
 
-.novel-editor .ProseMirror {
+.novel-editor-container .ProseMirror {
   padding: 1rem;
   min-height: 400px;
   outline: none;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+/* Forzar colores en modo oscuro */
+.dark .novel-editor-container,
+.dark .novel-editor-container .ProseMirror {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
 }
 
 /* Placeholder traducido */
-.novel-editor .ProseMirror p.is-editor-empty:first-child::before {
+.novel-editor-container .ProseMirror p.is-editor-empty:first-child::before {
   color: hsl(var(--muted-foreground));
   content: "Empieza a escribir o usa el menú '/' para comandos...";
   float: left;
@@ -194,7 +183,7 @@ defineExpose({
 }
 
 /* Estilos para imágenes */
-.novel-editor .ProseMirror img {
+.novel-editor-container .ProseMirror img {
   max-width: 100%;
   height: auto;
   border-radius: 0.5rem;
@@ -202,13 +191,13 @@ defineExpose({
   display: block;
 }
 
-.novel-editor .ProseMirror img.ProseMirror-selectednode {
+.novel-editor-container .ProseMirror img.ProseMirror-selectednode {
   outline: 2px solid hsl(var(--primary));
   outline-offset: 2px;
 }
 
 /* Estilos para el menú de burbuja */
-.novel-editor [data-bubble-menu="true"] {
+.novel-editor-container [data-bubble-menu="true"] {
   background: hsl(var(--background));
   border: 1px solid hsl(var(--border));
   border-radius: 0.5rem;
@@ -217,10 +206,31 @@ defineExpose({
 }
 
 /* Estilos para el menú slash */
-.novel-editor [data-slash-menu="true"] {
+.novel-editor-container [data-slash-menu="true"] {
   background: hsl(var(--background));
   border: 1px solid hsl(var(--border));
   border-radius: 0.5rem;
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+/* Asegurar que los textos del editor sean visibles */
+.novel-editor-container .ProseMirror p,
+.novel-editor-container .ProseMirror h1,
+.novel-editor-container .ProseMirror h2,
+.novel-editor-container .ProseMirror h3,
+.novel-editor-container .ProseMirror h4,
+.novel-editor-container .ProseMirror h5,
+.novel-editor-container .ProseMirror h6,
+.novel-editor-container .ProseMirror li,
+.novel-editor-container .ProseMirror blockquote {
+  color: hsl(var(--foreground));
+}
+
+/* Fix para elementos del editor en modo oscuro */
+.dark .novel-editor-container [data-bubble-menu="true"],
+.dark .novel-editor-container [data-slash-menu="true"] {
+  background: hsl(var(--popover));
+  border-color: hsl(var(--border));
+  color: hsl(var(--popover-foreground));
 }
 </style>
