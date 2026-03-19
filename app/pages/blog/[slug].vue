@@ -25,7 +25,7 @@
         </p>
 
         <!-- Meta -->
-        <div class="flex items-center gap-4 text-sm text-muted-foreground">
+        <div class="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
           <div class="flex items-center gap-2">
             <Avatar class="h-8 w-8">
               <AvatarImage :src="post.author.picture" :alt="`${post.author.firstName} ${post.author.lastName}`" />
@@ -36,6 +36,20 @@
           <time :datetime="post.publishedAt">
             {{ formatDate(post.publishedAt) }}
           </time>
+          
+          <!-- Botón Modificar (solo para autor o admin) -->
+          <Button
+            v-if="canEdit"
+            variant="outline"
+            size="sm"
+            as-child
+          >
+            <NuxtLink :to="`/socios/posts/${post.id}/editar`">
+              <Icon name="lucide:pencil" class="h-4 w-4 mr-2" />
+              Modificar
+            </NuxtLink>
+          </Button>
+          
           <Button
             variant="ghost"
             size="sm"
@@ -93,12 +107,34 @@
 </template>
 
 <script setup lang="ts">
+import { useAppUserSession } from '@/composables/useAppUserSession'
+
 // Obtener slug
 const route = useRoute()
 const slug = route.params.slug as string
 
 // Fetch post
 const { data: post, pending, error } = await useLazyFetch(`/api/posts/${slug}`)
+
+// Sesión del usuario
+const { session } = useAppUserSession()
+
+// Verificar si el usuario puede editar el post
+const canEdit = computed(() => {
+  if (!session.value?.user || !post.value) return false
+  
+  const userId = session.value.user.id
+  const userRole = session.value.user.role
+  const authorId = post.value.authorId || post.value.author?.id
+  
+  // Admin o root pueden editar cualquier post
+  if (userRole === 'ADMIN' || userRole === 'ROOT') return true
+  
+  // El autor puede editar su propio post
+  if (authorId && userId === authorId) return true
+  
+  return false
+})
 
 // Renderizar contenido markdown
 const renderedContent = computed(() => {

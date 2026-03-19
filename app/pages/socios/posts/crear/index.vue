@@ -218,7 +218,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { toast } from 'vue-sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -246,6 +246,9 @@ definePageMeta({
   layout: 'dashboard',
 })
 
+// Clave para localStorage
+const STORAGE_KEY = 'post-creation-draft'
+
 // Formulario - Solo datos básicos
 const form = ref({
   title: '',
@@ -261,6 +264,35 @@ const newTag = ref('')
 const isSubmitting = ref(false)
 const fileInput = ref<HTMLInputElement>()
 const isDragging = ref(false)
+
+// Restaurar datos del borrador si existen
+onMounted(() => {
+  const saved = localStorage.getItem(STORAGE_KEY)
+  if (saved) {
+    try {
+      const draft = JSON.parse(saved)
+      // Solo restaurar si es de los últimos 30 minutos
+      if (draft.timestamp && Date.now() - draft.timestamp < 30 * 60 * 1000) {
+        form.value = { ...form.value, ...draft.data }
+        toast.info('Borrador recuperado', {
+          description: 'Se han restaurado los datos de tu sesión anterior'
+        })
+      } else {
+        localStorage.removeItem(STORAGE_KEY)
+      }
+    } catch {
+      localStorage.removeItem(STORAGE_KEY)
+    }
+  }
+})
+
+// Guardar borrador automáticamente
+watch(form, (newVal) => {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({
+    data: newVal,
+    timestamp: Date.now()
+  }))
+}, { deep: true })
 
 // Generar slug automáticamente desde el título
 watch(() => form.value.title, (newTitle, oldTitle) => {
@@ -381,18 +413,21 @@ const handleSubmit = async () => {
       published: false, // Siempre borrador en el paso 1
     }
 
-    // Usar $fetch en lugar de useFetch para acciones del cliente
+    // Crear el post en BD
     const response = await $fetch('/api/posts', {
       method: 'POST',
       body: payload
     })
 
+    // Limpiar localStorage ya que ya se guardó en BD
+    localStorage.removeItem(STORAGE_KEY)
+
     toast.success('Post creado', {
       description: 'Ahora puedes añadir el contenido'
     })
 
-    // Redirigir al paso 2 (editor de contenido)
-    navigateTo(`/socios/posts/${response.post?.id}/editar`)
+    // Redirigir al paso 2 usando la ruta con query param para el paso
+    navigateTo(`/socios/posts/crear/contenido?id=${response.post?.id}`)
     
   } catch (error: any) {
     console.error('Error creando post:', error)

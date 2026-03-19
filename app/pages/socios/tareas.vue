@@ -82,24 +82,37 @@
             v-for="task in tasks" 
             :key="task.id"
             class="cursor-pointer hover:bg-muted/50"
-            @click="navigateTo(`/socios/tarea/${task.id}`)"
           >
             <TableCell class="font-medium max-w-[300px] truncate">
-              {{ task.shortDesc }}
+              <NuxtLink :to="`/socios/tarea/${task.id}`" class="block hover:underline">
+                {{ task.shortDesc }}
+              </NuxtLink>
             </TableCell>
             <TableCell>
-              <Badge :class="taskTypeColors[task.type]">
-                {{ taskTypeLabels[task.type] }}
-              </Badge>
+              <NuxtLink :to="`/socios/tarea/${task.id}`" class="block">
+                <Badge :class="taskTypeColors[task.type]">
+                  {{ taskTypeLabels[task.type] }}
+                </Badge>
+              </NuxtLink>
             </TableCell>
             <TableCell>
-              <Badge :class="taskStatusColors[task.status]">
-                {{ taskStatusLabels[task.status] }}
-              </Badge>
+              <NuxtLink :to="`/socios/tarea/${task.id}`" class="block">
+                <Badge :class="taskStatusColors[task.status]">
+                  {{ taskStatusLabels[task.status] }}
+                </Badge>
+              </NuxtLink>
             </TableCell>
-            <TableCell>{{ formatDate(task.createdAt) }}</TableCell>
-            <TableCell>{{ formatDate(task.startDate) || '-' }}</TableCell>
-            <TableCell @click.stop>
+            <TableCell>
+              <NuxtLink :to="`/socios/tarea/${task.id}`" class="block">
+                {{ formatDate(task.createdAt) }}
+              </NuxtLink>
+            </TableCell>
+            <TableCell>
+              <NuxtLink :to="`/socios/tarea/${task.id}`" class="block">
+                {{ formatDate(task.startDate) || '-' }}
+              </NuxtLink>
+            </TableCell>
+            <TableCell>
               <Button variant="ghost" size="icon" as-child>
                 <NuxtLink :to="`/socios/tarea/${task.id}`">
                   <Icon name="lucide:eye" class="h-4 w-4" />
