@@ -43,9 +43,11 @@ FROM node:20-slim AS production
 # Instalar herramientas necesarias
 RUN apt-get update && apt-get install -y dumb-init wget && rm -rf /var/lib/apt/lists/*
 
-# Crear usuario no-root
+# Crear usuario no-root con directorio home
 RUN groupadd -g 1001 nodejs && \
-    useradd --system -u 1001 -g nodejs nuxt
+    useradd -m -u 1001 -g nodejs nuxt && \
+    mkdir -p /home/nuxt/.npm && \
+    chown -R nuxt:nodejs /home/nuxt
 
 WORKDIR /app
 
