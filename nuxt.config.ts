@@ -105,10 +105,12 @@ export default defineNuxtConfig({
     externals: {
       external: ['@prisma/client', '.prisma/client']
     },
-    routeRules: {
-      '/uploads/**': { 
-        proxy: '/api/uploads/**'
+    publicAssets: [
+      {
+        dir: 'uploads',
+        baseURL: '/uploads',
+        maxAge: 60 * 60 * 24 * 365 // 1 año de caché
       }
-    }
+    ]
   }, 
 })
