@@ -110,7 +110,7 @@
           v-model="content"
           :storage-key="`novel-post-${postId}`"
           placeholder="Empieza a escribir tu artículo..."
-          class="min-h-[500px]"
+          class="min-h-[500px] max-h-[600px] overflow-y-auto"
         />
       </CardContent>
     </Card>
@@ -121,10 +121,10 @@
         <CardTitle>Publicación</CardTitle>
       </CardHeader>
       <CardContent class="space-y-4">
-        <div class="flex items-center justify-between p-4 bg-muted/50 rounded-lg border">
+        <div class="flex items-center justify-between">
           <div>
-            <Label class="text-base font-medium">Publicar ahora</Label>
-            <p class="text-sm text-muted-foreground mt-1">
+            <Label class="text-base">Publicar ahora</Label>
+            <p class="text-sm text-muted-foreground">
               Si está desactivado, se guardará como borrador
             </p>
           </div>
@@ -143,36 +143,31 @@
       </CardContent>
     </Card>
 
-    <!-- Botones de acción -->
-    <div class="flex flex-col sm:flex-row gap-3 pt-6 border-t">
+    <!-- Botones -->
+    <div class="flex gap-4 pt-4">
       <Button
         type="button"
         variant="outline"
-        class="order-3 sm:order-1"
         @click="goBackToStep1"
       >
         <Icon name="lucide:arrow-left" class="mr-2 h-4 w-4" />
         Volver
       </Button>
-      
-      <div class="flex-1"></div>
-      
       <Button
         type="button"
         :disabled="isSaving"
         variant="secondary"
-        class="order-2 sm:order-2"
+        class="flex-1"
         @click="saveDraft"
       >
         <Icon v-if="isSaving" name="lucide:loader-2" class="mr-2 h-4 w-4 animate-spin" />
         <Icon v-else name="lucide:save" class="mr-2 h-4 w-4" />
         {{ isSaving ? 'Guardando...' : 'Guardar borrador' }}
       </Button>
-      
       <Button
         type="button"
         :disabled="isPublishing"
-        class="order-1 sm:order-3 bg-primary hover:bg-primary/90"
+        class="flex-1 bg-primary hover:bg-primary/90"
         @click="publish"
       >
         <Icon v-if="isPublishing" name="lucide:loader-2" class="mr-2 h-4 w-4 animate-spin" />

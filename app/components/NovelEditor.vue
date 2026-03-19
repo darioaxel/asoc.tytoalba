@@ -1,5 +1,5 @@
 <template>
-  <div class="novel-editor-container border rounded-lg overflow-hidden bg-background dark:bg-background">
+  <div class="novel-editor-container border rounded-lg overflow-hidden bg-background dark:bg-background h-full">
     <Editor
       ref="editorRef"
       :default-value="defaultValue"
@@ -7,7 +7,7 @@
       :on-debounced-update="handleDebouncedUpdate"
       :storage-key="storageKey"
       :class="editorClass"
-      class="dark-mode-compatible"
+      class="dark-mode-compatible h-full"
     />
   </div>
 </template>
@@ -23,6 +23,7 @@ const props = defineProps<{
   modelValue: string
   placeholder?: string
   storageKey?: string
+  class?: string
 }>()
 
 const emit = defineEmits<{
@@ -34,8 +35,8 @@ const editorRef = ref()
 // Generar storage key única para cada post
 const storageKey = computed(() => props.storageKey || 'novel__content')
 
-// Clases del editor
-const editorClass = 'min-h-[400px]'
+// Clases del editor - usar la clase pasada o default
+const editorClass = computed(() => props.class || 'min-h-[400px]')
 
 // Convertir HTML/markdown a JSONContent para Novel
 const defaultValue = computed<JSONContent>(() => {
@@ -151,12 +152,13 @@ defineExpose({
 })
 </script>
 
-<style>
-/* Novel Editor Custom Styles - Modo claro y oscuro */
-.novel-editor-container {
-  background-color: hsl(var(--background));
-}
+<style scoped>
+/* Novel Editor - Estilos encapsulados (scoped) para no afectar a la web */
+/* IMPORTANTE: Los estilos de Novel Vue se importan globalmente en el script */
+/* Aquí sobrescribimos solo lo necesario para mantener la consistencia */
 
+/* Novel Editor Custom Styles - Modo claro y oscuro */
+.novel-editor-container :deep(.ProseMirror),
 .novel-editor-container .ProseMirror {
   padding: 1rem;
   min-height: 400px;
@@ -166,13 +168,14 @@ defineExpose({
 }
 
 /* Forzar colores en modo oscuro */
-.dark .novel-editor-container,
+:deep(.dark) .novel-editor-container :deep(.ProseMirror),
 .dark .novel-editor-container .ProseMirror {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
 }
 
 /* Placeholder traducido */
+.novel-editor-container :deep(.ProseMirror p.is-editor-empty:first-child::before),
 .novel-editor-container .ProseMirror p.is-editor-empty:first-child::before {
   color: hsl(var(--muted-foreground));
   content: "Empieza a escribir o usa el menú '/' para comandos...";
@@ -183,6 +186,7 @@ defineExpose({
 }
 
 /* Estilos para imágenes */
+.novel-editor-container :deep(.ProseMirror img),
 .novel-editor-container .ProseMirror img {
   max-width: 100%;
   height: auto;
@@ -191,12 +195,14 @@ defineExpose({
   display: block;
 }
 
+.novel-editor-container :deep(.ProseMirror img.ProseMirror-selectednode),
 .novel-editor-container .ProseMirror img.ProseMirror-selectednode {
   outline: 2px solid hsl(var(--primary));
   outline-offset: 2px;
 }
 
 /* Estilos para el menú de burbuja */
+.novel-editor-container :deep([data-bubble-menu="true"]),
 .novel-editor-container [data-bubble-menu="true"] {
   background: hsl(var(--background));
   border: 1px solid hsl(var(--border));
@@ -206,6 +212,7 @@ defineExpose({
 }
 
 /* Estilos para el menú slash */
+.novel-editor-container :deep([data-slash-menu="true"]),
 .novel-editor-container [data-slash-menu="true"] {
   background: hsl(var(--background));
   border: 1px solid hsl(var(--border));
@@ -214,6 +221,15 @@ defineExpose({
 }
 
 /* Asegurar que los textos del editor sean visibles */
+.novel-editor-container :deep(.ProseMirror p),
+.novel-editor-container :deep(.ProseMirror h1),
+.novel-editor-container :deep(.ProseMirror h2),
+.novel-editor-container :deep(.ProseMirror h3),
+.novel-editor-container :deep(.ProseMirror h4),
+.novel-editor-container :deep(.ProseMirror h5),
+.novel-editor-container :deep(.ProseMirror h6),
+.novel-editor-container :deep(.ProseMirror li),
+.novel-editor-container :deep(.ProseMirror blockquote),
 .novel-editor-container .ProseMirror p,
 .novel-editor-container .ProseMirror h1,
 .novel-editor-container .ProseMirror h2,
@@ -227,6 +243,8 @@ defineExpose({
 }
 
 /* Fix para elementos del editor en modo oscuro */
+:deep(.dark) .novel-editor-container :deep([data-bubble-menu="true"]),
+:deep(.dark) .novel-editor-container :deep([data-slash-menu="true"]),
 .dark .novel-editor-container [data-bubble-menu="true"],
 .dark .novel-editor-container [data-slash-menu="true"] {
   background: hsl(var(--popover));
