@@ -17,8 +17,8 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY prisma.config.ts ./
 COPY prisma ./prisma/
 
-# Instalar dependencias
-RUN pnpm install --frozen-lockfile
+# Instalar dependencias (sin frozen-lockfile para regenerar sin better-sqlite3)
+RUN pnpm install --no-frozen-lockfile
 
 # Copiar todo el código fuente
 COPY . .
