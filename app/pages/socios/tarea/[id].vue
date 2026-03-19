@@ -158,29 +158,94 @@
           </div>
         </CardContent>
 
+        <!-- Sección de Recibo (para tareas de validación de pago) -->
+        <CardContent v-if="task.receipt" class="border-t pt-6">
+          <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
+            <h3 class="font-semibold text-amber-900 mb-2 flex items-center gap-2">
+              <Icon name="lucide:receipt" class="h-5 w-5" />
+              Recibo pendiente de validación
+            </h3>
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-amber-800 font-medium">{{ task.receipt.number }}</p>
+                <p class="text-amber-700 text-sm">
+                  Importe: {{ formatCurrency(task.receipt.totalAmount) }}
+                </p>
+              </div>
+              <div class="flex gap-2">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  as-child
+                >
+                  <NuxtLink to="/socios/recibos">
+                    <Icon name="lucide:eye" class="mr-2 h-4 w-4" />
+                    Ver recibo
+                  </NuxtLink>
+                </Button>
+              </div>
+            </div>
+            
+            <!-- Justificante subido -->
+            <div v-if="task.receipt.receiptFiles?.length > 0" class="mt-4 pt-4 border-t border-amber-200">
+              <p class="text-sm text-amber-800 mb-2">Justificante de transferencia:</p>
+              <div 
+                v-for="rf in task.receipt.receiptFiles" 
+                :key="rf.id"
+                class="flex items-center justify-between bg-white rounded p-2"
+              >
+                <span class="text-sm truncate">{{ rf.file.name }}</span>
+                <Button variant="ghost" size="sm" as-child>
+                  <a :href="rf.file.path" target="_blank" download>
+                    <Icon name="lucide:download" class="mr-1 h-4 w-4" />
+                    Descargar
+                  </a>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+
         <!-- Acciones -->
         <CardFooter class="flex gap-3 pt-6" v-if="canUpdateStatus">
-          <Button 
-            v-if="task.status === 'CREADA' || task.status === 'ASIGNADA'"
-            @click="updateStatus('EN_CURSO')"
-            :disabled="updating"
-            class="bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-600 dark:hover:bg-blue-500"
-          >
-            <Icon v-if="updating" name="lucide:loader-2" class="mr-2 h-4 w-4 animate-spin" />
-            <Icon v-else name="lucide:play" class="mr-2 h-4 w-4" />
-            Iniciar tarea
-          </Button>
+          <!-- Botón para tareas de validación de pago - un solo paso -->
+          <template v-if="task.receipt">
+            <Button 
+              v-if="['CREADA', 'ASIGNADA', 'EN_CURSO'].includes(task.status)"
+              @click="validatePayment"
+              :disabled="updating"
+              class="bg-primary hover:bg-primary/90 text-primary-foreground"
+            >
+              <Icon v-if="updating" name="lucide:loader-2" class="mr-2 h-4 w-4 animate-spin" />
+              <Icon v-else name="lucide:shield-check" class="mr-2 h-4 w-4" />
+              Validar pago
+            </Button>
+          </template>
           
-          <Button 
-            v-if="task.status === 'EN_CURSO'"
-            @click="updateStatus('ESPERANDO_VALIDACION')"
-            :disabled="updating"
-            class="bg-green-600 hover:bg-green-700 text-white dark:bg-green-600 dark:hover:bg-green-500"
-          >
-            <Icon v-if="updating" name="lucide:loader-2" class="mr-2 h-4 w-4 animate-spin" />
-            <Icon v-else name="lucide:check-check" class="mr-2 h-4 w-4" />
-            Marcar como completada
-          </Button>
+          <!-- Botones normales para otras tareas -->
+          <template v-else>
+            <Button 
+              v-if="task.status === 'CREADA' || task.status === 'ASIGNADA'"
+              @click="updateStatus('EN_CURSO')"
+              :disabled="updating"
+              class="bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-600 dark:hover:bg-blue-500"
+            >
+              <Icon v-if="updating" name="lucide:loader-2" class="mr-2 h-4 w-4 animate-spin" />
+              <Icon v-else name="lucide:play" class="mr-2 h-4 w-4" />
+              Iniciar tarea
+            </Button>
+            
+            <Button 
+              v-if="task.status === 'EN_CURSO'"
+              @click="updateStatus('ESPERANDO_VALIDACION')"
+              :disabled="updating"
+              class="bg-green-600 hover:bg-green-700 text-white dark:bg-green-600 dark:hover:bg-green-500"
+            >
+              <Icon v-if="updating" name="lucide:loader-2" class="mr-2 h-4 w-4 animate-spin" />
+              <Icon v-else name="lucide:check-check" class="mr-2 h-4 w-4" />
+              Marcar como completada
+            </Button>
+          </template>
         </CardFooter>
       </Card>
     </div>
@@ -221,6 +286,21 @@ interface Task {
   validator: User | null
   assignees: { user: User; assignedAt: string }[]
   documents: { id: string; originalName: string; url: string }[]
+  receiptId: string | null
+  receipt: {
+    id: string
+    number: string
+    totalAmount: number
+    user: User
+    receiptFiles: {
+      id: string
+      file: {
+        id: string
+        name: string
+        path: string
+      }
+    }[]
+  } | null
 }
 
 // Labels y colores
@@ -268,6 +348,13 @@ const canUpdateStatus = computed(() => {
 })
 
 // Helpers
+const formatCurrency = (amount: number) => {
+  return new Intl.NumberFormat('es-ES', {
+    style: 'currency',
+    currency: 'EUR'
+  }).format(amount)
+}
+
 const getFullName = (user: User) => {
   if (user.firstName && user.lastName) {
     return `${user.firstName} ${user.lastName}`
@@ -318,6 +405,31 @@ const updateStatus = async (newStatus: string) => {
   } catch (error) {
     toast.error('Error', {
       description: 'No se pudo actualizar el estado de la tarea'
+    })
+  } finally {
+    updating.value = false
+  }
+}
+
+// Validar pago directamente (un solo paso para tareas de validación)
+const validatePayment = async () => {
+  updating.value = true
+  try {
+    // Marcar tarea como resuelta directamente
+    await $fetch(`/api/tasks/${taskId}`, {
+      method: 'PUT',
+      body: { status: 'RESUELTA' }
+    })
+    
+    toast.success('Pago validado', {
+      description: 'El pago ha sido validado correctamente'
+    })
+    
+    // Redirigir a la lista de tareas o a la validación del recibo
+    navigateTo('/socios/tareas')
+  } catch (error) {
+    toast.error('Error', {
+      description: 'No se pudo validar el pago'
     })
   } finally {
     updating.value = false

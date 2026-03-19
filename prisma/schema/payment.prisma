@@ -8,8 +8,8 @@ model Payment {
   paymentDate DateTime      @default(now())
   reference   String?
 
-  // Si fue por transferencia, vincular al justificante (1:1)
-  receiptFileId String?      @unique // ← AÑADIDO @unique
+  // Si fue por transferencia, vincular al justificante (N:1 - múltiples pagos pueden usar mismo justificante)
+  receiptFileId String?
   receiptFile   ReceiptFile? @relation(fields: [receiptFileId], references: [id])
 
   // Quién registró el pago (sistema o admin)

@@ -57,14 +57,16 @@ model ReceiptFile {
   receiptId String
   receipt   Receipt @relation(fields: [receiptId], references: [id], onDelete: Cascade)
 
-  fileId String @unique
+  fileId String
   file   File   @relation(fields: [fileId], references: [id])
 
-  // RELACIÓN INVERSA 1:1 con Payment
-  payment Payment?
+  // RELACIÓN INVERSA 1:N con Payment (un ReceiptFile puede tener múltiples pagos)
+  payments Payment[]
 
   uploadedAt DateTime @default(now())
   fileType   String
 
+  @@index([fileId])
+  @@index([receiptId])
   @@map("receipt_files")
 }

@@ -103,7 +103,6 @@
                         <Button
                           v-if="canPay(receipt)"
                           size="sm"
-                          as-child
                           @click="navigateTo('/socios/pagar')"
                         >
                           Pagar
@@ -115,14 +114,6 @@
                           disabled
                         >
                           En trámite
-                        </Button>
-                        <Button
-                          v-else-if="receipt.status === 'FULLY_PAID'"
-                          size="sm"
-                          variant="ghost"
-                          @click="downloadReceipt(receipt)"
-                        >
-                          <Download class="h-4 w-4" />
                         </Button>
                       </div>
                     </TableCell>

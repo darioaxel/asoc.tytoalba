@@ -9,7 +9,7 @@ model File {
   createdAt DateTime @default(now())
 
   // Relaciones inversas
-  receiptFile     ReceiptFile?
+  receiptFiles    ReceiptFile[] // Un archivo puede estar en múltiples recibos (ej: mismo justificante para varios pagos)
   supplierPayment SupplierPayment?
   
   // Relaciones con posts

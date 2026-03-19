@@ -30,6 +30,20 @@ export default defineEventHandler(async (event) => {
         },
         documents: {
           select: { id: true, originalName: true, url: true }
+        },
+        // Incluir recibo y su justificante si es una tarea de validación de pago
+        receipt: {
+          include: {
+            user: {
+              select: { id: true, firstName: true, lastName: true, email: true }
+            },
+            receiptFiles: {
+              where: { fileType: 'transfer_receipt' },
+              include: {
+                file: true
+              }
+            }
+          }
         }
       }
     })
