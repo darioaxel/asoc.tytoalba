@@ -1,6 +1,6 @@
 <template>
   <Card>
-    <CardHeader class="pb-3">
+    <CardHeader class="pb-2 pt-4 px-4">
       <div class="flex items-center justify-between">
         <div>
           <CardTitle>Recibos pendientes</CardTitle>
@@ -70,7 +70,7 @@
         </div>
       </div>
     </CardContent>
-    <CardFooter v-if="receipts.length > 0" class="border-t bg-muted/50 py-3">
+    <CardFooter v-if="receipts.length > 0" class="border-t bg-muted/50 py-2 px-4">
       <div class="flex items-center justify-between w-full text-sm">
         <span class="text-muted-foreground">
           {{ selectedCount }} de {{ receipts.length }} seleccionados

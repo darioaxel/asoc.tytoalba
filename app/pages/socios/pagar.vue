@@ -115,6 +115,10 @@ function cancel() {
 }
 
 async function submit() {
+  console.log('🚀 Iniciando submit de pago')
+  console.log('📋 selectedIds:', selectedIds.value)
+  console.log('📎 uploadedFile:', uploadedFile.value)
+
   if (selectedIds.value.length === 0) {
     toast.error('Selecciona al menos un recibo')
     return
@@ -126,18 +130,28 @@ async function submit() {
 
   submitting.value = true
   try {
-    await $fetch('/api/receipts/pay', {
+    const body = {
+      receiptIds: selectedIds.value,
+      fileId: uploadedFile.value.id,
+    }
+    console.log('📤 Enviando payload:', body)
+
+    const response = await $fetch('/api/receipts/pay', {
       method: 'POST',
-      body: {
-        receiptIds: selectedIds.value,
-        fileId: uploadedFile.value?.id,
-      },
+      body,
     })
+    console.log('✅ Respuesta del servidor:', response)
+    
     toast.success('Pago registrado', {
       description: 'Tu pago ha sido registrado y está pendiente de validación',
     })
     navigateTo('/socios/recibos')
   } catch (error: any) {
+    console.error('❌ Error completo:', error)
+    console.error('📄 Error data:', error?.data)
+    console.error('📝 Error message:', error?.message)
+    console.error('🔢 Error status:', error?.status)
+    
     toast.error('Error al procesar el pago', {
       description: error?.data?.message || error?.message || 'Ha ocurrido un error inesperado',
     })

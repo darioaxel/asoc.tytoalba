@@ -114,6 +114,12 @@ private async createReceipt(
     },
   })
 
+    // Crear archivo de justificante si es transferencia o está marcado con flag
+    let receiptFileId: string | undefined
+    if ((isPaid && config.paymentMethod === 'TRANSFERENCIA') || config.withTransferReceipt) {
+      receiptFileId = await this.createTransferReceiptFile(receipt.id, number)
+    }
+
     // Crear pago asociado si aplica
     if (isPaid && !isZeroFee && config.paymentMethod) {
       await this.prisma.payment.create({
@@ -122,20 +128,16 @@ private async createReceipt(
           amount: totalAmount,
           method: config.paymentMethod,
           reference: config.paymentReference,
+          receiptFileId: receiptFileId, // Vincular con ReceiptFile si existe
           registeredById: config.validatedByAdmin ? this.getAdminId() : null,
         },
       })
     }
 
-    // Crear archivo de justificante si está en trámite
-    if (config.withTransferReceipt) {
-      await this.createTransferReceiptFile(receipt.id, number)
-    }
-
     return receipt
   }
 
-  private async createTransferReceiptFile(receiptId: string, number: string): Promise<void> {
+  private async createTransferReceiptFile(receiptId: string, number: string): Promise<string> {
     const file = await this.prisma.file.create({
       data: {
         name: `justificante_${number}.pdf`,
@@ -146,13 +148,15 @@ private async createReceipt(
       },
     })
 
-    await this.prisma.receiptFile.create({
+    const receiptFile = await this.prisma.receiptFile.create({
       data: {
         receiptId,
         fileId: file.id,
         fileType: 'transfer_receipt',
       },
     })
+
+    return receiptFile.id
   }
 
   private getAdminId(): string | undefined {
