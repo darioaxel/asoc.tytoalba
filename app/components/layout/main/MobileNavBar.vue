@@ -16,32 +16,10 @@
       </SheetHeader>
 
       <nav class="flex flex-col gap-4 mt-8">
-        <!-- Mobile menu items -->
+        <!-- Mobile menu items - same as desktop -->
         <template v-for="item in navItems" :key="item.href">
-          <!-- Regular items without children -->
-          <NuxtLink v-if="item.type === 'auth-login' && !loggedIn" :to="item.href"
-            class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors hover:bg-tyto-primary/10 hover:text-tyto-primary"
-            :class="{ 'bg-tyto-primary/10 text-tyto-primary': isActive(item.href) }">
-            <Icon v-if="item.icon" :name="item.icon" class="h-5 w-5" />
-            <span class="font-medium">{{ item.label }}</span>
-          </NuxtLink>
-
-          <NuxtLink v-else-if="item.type === 'auth-profile' && loggedIn" :to="item.href"
-            class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors hover:bg-tyto-primary/10 hover:text-tyto-primary"
-            :class="{ 'bg-tyto-primary/10 text-tyto-primary': isActive(item.href) }">
-            <Icon v-if="item.icon" :name="item.icon" class="h-5 w-5" />
-            <span class="font-medium">{{ item.label }}</span>
-          </NuxtLink>
-
-          <NuxtLink v-else-if="!item.type" :to="item.href"
-            class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors hover:bg-tyto-primary/10 hover:text-tyto-primary"
-            :class="{ 'bg-tyto-primary/10 text-tyto-primary': isActive(item.href) }">
-            <Icon v-if="item.icon" :name="item.icon" class="h-5 w-5" />
-            <span class="font-medium">{{ item.label }}</span>
-          </NuxtLink>
-
           <!-- Items with children (Socios dropdown) -->
-          <template v-else-if="item.children?.length && !item.type">
+          <template v-if="item.children?.length">
             <Separator class="my-2" />
 
             <!-- Parent label -->
@@ -60,24 +38,25 @@
               </NuxtLink>
             </div>
           </template>
+
+          <!-- Regular items without children -->
+          <NuxtLink v-else :to="item.href"
+            class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors hover:bg-tyto-primary/10 hover:text-tyto-primary"
+            :class="{ 'bg-tyto-primary/10 text-tyto-primary': isActive(item.href) }">
+            <Icon v-if="item.icon" :name="item.icon" class="h-5 w-5" />
+            <span class="font-medium">{{ item.label }}</span>
+          </NuxtLink>
         </template>
 
         <!-- Auth section separator -->
         <Separator class="my-4" />
 
-        <!-- Authentication buttons (si no están en la lista principal) -->
+        <!-- Authentication buttons - same as desktop -->
         <template v-if="!loggedIn">
-          <NuxtLink to="/socios/signup">
-            <Button variant="outline" class="w-full">
-              <Icon name="lucide:user-plus" class="mr-2 h-4 w-4" />
-              Hazte Socio
-            </Button>
-          </NuxtLink>
-
           <NuxtLink to="/socios/login">
             <Button class="w-full bg-tyto-primary hover:bg-tyto-primary/90">
               <Icon name="lucide:log-in" class="mr-2 h-4 w-4" />
-              Iniciar Sesión
+              Login
             </Button>
           </NuxtLink>
         </template>
