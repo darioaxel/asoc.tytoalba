@@ -212,25 +212,25 @@ if (error.value?.statusCode === 404) {
 }
 </script>
 
-<style scoped>
-/* Estilos para el contenido markdown */
-.content-markdown :deep(img.post-image) {
-  max-width: 100%;
-  height: auto;
-  border-radius: 0.5rem;
-  margin: 1.5rem auto;
-  display: block;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+<style>
+/* Estilos globales para el contenido markdown (v-html no funciona bien con scoped) */
+.content-markdown img {
+  max-width: 100% !important;
+  height: auto !important;
+  border-radius: 0.5rem !important;
+  margin: 1.5rem auto !important;
+  display: block !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
 }
 
-.content-markdown :deep(h1) {
+.content-markdown h1 {
   font-size: 1.875rem;
   font-weight: 700;
   margin-top: 2rem;
   margin-bottom: 1rem;
 }
 
-.content-markdown :deep(h2) {
+.content-markdown h2 {
   font-size: 1.5rem;
   font-weight: 600;
   margin-top: 2rem;
@@ -238,31 +238,31 @@ if (error.value?.statusCode === 404) {
   color: hsl(var(--primary));
 }
 
-.content-markdown :deep(h3) {
+.content-markdown h3 {
   font-size: 1.25rem;
   font-weight: 600;
   margin-top: 1.5rem;
   margin-bottom: 0.75rem;
 }
 
-.content-markdown :deep(p) {
+.content-markdown p {
   margin-bottom: 1rem;
   line-height: 1.75;
 }
 
-.content-markdown :deep(ul) {
+.content-markdown ul {
   list-style: none;
   padding-left: 1.5rem;
   margin-bottom: 1rem;
 }
 
-.content-markdown :deep(li) {
+.content-markdown li {
   position: relative;
   padding-left: 1rem;
   margin-bottom: 0.5rem;
 }
 
-.content-markdown :deep(li::before) {
+.content-markdown li::before {
   content: '✓';
   position: absolute;
   left: -1rem;
@@ -270,18 +270,18 @@ if (error.value?.statusCode === 404) {
   font-weight: bold;
 }
 
-.content-markdown :deep(hr) {
+.content-markdown hr {
   border: none;
   border-top: 1px solid hsl(var(--border));
   margin: 2rem 0;
 }
 
-.content-markdown :deep(a) {
+.content-markdown a {
   color: hsl(var(--primary));
   text-decoration: underline;
 }
 
-.content-markdown :deep(a:hover) {
+.content-markdown a:hover {
   text-decoration: none;
 }
 </style>
