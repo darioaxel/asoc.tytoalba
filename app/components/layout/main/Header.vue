@@ -11,13 +11,15 @@
         </div>
 
         <!-- Desktop Navigation -->
-        <div class="flex items-center gap-4">
+        <div class="hidden lg:flex items-center gap-4">
           <MenuNavBar :nav-items="desktopNavItems" :logged-in="loggedIn" />
           <ThemeToggle />
         </div>
 
         <!-- Mobile Navigation -->
-        <MobileNavBar :nav-items="mobileNavItems" :logged-in="loggedIn" @logout="handleLogout" />
+        <div class="flex lg:hidden items-center gap-2">
+          <MobileNavBar :nav-items="mobileNavItems" :logged-in="loggedIn" @logout="handleLogout" />
+        </div>
 
       </div>
     </div>

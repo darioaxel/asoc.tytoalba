@@ -1,7 +1,7 @@
 <template>
   <Sheet>
     <SheetTrigger as-child class="lg:hidden">
-      <Button variant="ghost" size="icon">
+      <Button variant="outline" size="icon" class="border-tyto-primary/50 hover:bg-tyto-primary/10 hover:text-tyto-primary">
         <Icon name="lucide:menu" class="h-6 w-6" />
         <span class="sr-only">Abrir menú</span>
       </Button>
@@ -11,11 +11,11 @@
       <SheetHeader>
         <SheetTitle class="flex items-center gap-2 text-tyto-primary">
           <Icon name="lucide:home" class="w-6 h-6" />
-          Menú
+          Menú Mobile
         </SheetTitle>
       </SheetHeader>
 
-      <nav class="flex flex-col gap-4 mt-8">
+      <nav class="flex flex-col gap-4">
         <!-- Mobile menu items - same as desktop -->
         <template v-for="item in navItems" :key="item.href">
           <!-- Items with children (Socios dropdown) -->
@@ -49,11 +49,11 @@
         </template>
 
         <!-- Auth section separator -->
-        <Separator class="my-4" />
-
+        <Separator />
+      
         <!-- Authentication buttons - same as desktop -->
         <template v-if="!loggedIn">
-          <NuxtLink to="/socios/login">
+          <NuxtLink to="/socios/login" class="w-3/4 mx-auto">
             <Button class="w-full bg-tyto-primary hover:bg-tyto-primary/90">
               <Icon name="lucide:log-in" class="mr-2 h-4 w-4" />
               Login
@@ -62,14 +62,14 @@
         </template>
 
         <template v-else>
-          <NuxtLink to="/socios/">
+          <NuxtLink to="/socios/" class="w-3/4 mx-auto">
             <Button class="w-full bg-tyto-primary hover:bg-tyto-primary/90">
               <Icon name="lucide:user" class="mr-2 h-4 w-4" />
               Mi Área
             </Button>
           </NuxtLink>
 
-          <Button variant="outline" class="w-full" @click="$emit('logout')">
+          <Button variant="outline" class="w-3/4 mx-auto" @click="$emit('logout')">
             <Icon name="lucide:log-out" class="mr-2 h-4 w-4" />
             Cerrar Sesión
           </Button>
