@@ -10,9 +10,7 @@
       <!-- Capa oscura semitransparente para mejorar legibilidad -->
       <div class="absolute inset-0 bg-black/40" />
       <PageHeader class="relative z-10">
-        <PageHeaderHeading class="max-w-4xl text-white">
-          Asociación Tyto Alba
-        </PageHeaderHeading>
+        <img src="/images/logo-tytoalba.svg" alt="Asociación Tyto Alba" class="max-w-md md:max-w-lg lg:max-w-xl w-full h-auto mx-auto" />
         <PageHeaderDescription class="text-white/90">Bienvenidos a nuestra asociación cultural y deportiva.
 Un proyecto social y autogestionado, creado por y para la comunidad local y regional.
 Llevamos fomentando la escalada, la música, las actividades de montaña y acogiendo eventos culturales desde 1998.

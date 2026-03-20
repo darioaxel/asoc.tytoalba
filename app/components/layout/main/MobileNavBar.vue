@@ -11,7 +11,7 @@
       <SheetHeader>
         <SheetTitle class="flex items-center gap-2 text-tyto-primary">
           <Icon name="lucide:home" class="w-6 h-6" />
-          Menú Mobile
+          Menú
         </SheetTitle>
       </SheetHeader>
 
